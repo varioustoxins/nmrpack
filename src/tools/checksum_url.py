@@ -38,7 +38,9 @@ def get_bar(display_length, data_length, total_data_length):
 def write_progress(url, display_length, data_length, total_data_length):
 
     bar = get_bar(display_length, data_length, total_data_length)
-    sys.stdout.write(f"\r{url} {bar}")
+    url_components = urlparse(url)
+    file = split(url_components.path)[-1]
+    sys.stdout.write(f"\r{file} {bar}")
     sys.stdout.flush()
 
 
