@@ -46,7 +46,7 @@ class DownloadFailedException(Exception):
         super(DownloadFailedException, self).__init__(msg)
 
 
-def get_hash_from_url(show_progress=False):
+def get_hash_from_url(url, show_progress=False):
 
     response = requests.get(url, allow_redirects=True, timeout=10, stream=True)
     total_data_length = response.headers.get('content-length')
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
     for url in args.urls:
         try:
-            hash = get_hash_from_url(args.verbose)
+            hash = get_hash_from_url(url, args.verbose)
             display_hash(url, hash)
         except DownloadFailedException as e:
 
