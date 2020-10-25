@@ -1,7 +1,7 @@
 
 import hashlib
 from re import finditer
-
+import argparse
 import requests
 import sys
 
@@ -17,36 +17,98 @@ def exception_to_message(exception):
     camels = [match.group(0).lower() for match in matches]
     return ' '.join(camels)
 
-if __name__ == '__main__':
-    for url in sys.argv[1:]:
+
+
+
+
+def write_digest(url, digest):
+    sys.stdout.write(f"\r{url} {digest}")
+
+
+def get_failure_message(url, message):
+    return f"\r{url} download failed [{message}]"
+
+
+def get_bar(display_length, data_length, total_data_length):
+    done = int(display_length * data_length / total_data_length)
+    return '[%s%s]' % ('=' * done, ' ' * (display_length - done))
+
+
+def write_progress(url, display_length, data_length, total_data_length):
+
+    bar = get_bar(display_length, data_length, total_data_length)
+    sys.stdout.write(f"\r{url} {bar}")
+    sys.stdout.flush()
+
+
+class DownloadFailedException(Exception):
+    def __init__(self, msg):
+        super(DownloadFailedException, self).__init__(msg)
+
+
+def get_hash_from_url(show_progress=False):
+
+    response = requests.get(url, allow_redirects=True, timeout=10, stream=True)
+    total_data_length = response.headers.get('content-length')
+
+    digester = hashlib.md5()
+
+    display_length = test_hash_length()
+
+    data = None
+    if response.status_code != 200:
+        raise DownloadFailedException(f"download failed [response was {response.status_code}]")
+    elif total_data_length is None:
+        digester.update(response.content)
+    else:
         try:
-            response = requests.get(url, allow_redirects=True, timeout=10, stream=True)
-            total_length = response.headers.get('content-length')
+            data_length = 0
+            total_data_length = int(total_data_length)
+            for data in response.iter_content(chunk_size=4096):
+                data_length += len(data)
+                digester.update(data)
 
-            m = hashlib.md5()
+                if show_progress:
+                    write_progress(url, display_length, data_length, total_data_length)
 
-            m_length = test_hash_length()
-
-            data = None
-            if response.status_code != 200:
-                sys.stdout.write(f"{url} : download failed [response was {response.status_code}]")
-            elif total_length is None:  # no content length header
-                m.update(response.content)
-            else:
-                try:
-                    dl = 0
-                    total_length = int(total_length)
-                    for data in response.iter_content(chunk_size=4096):
-                        dl += len(data)
-                        m.update(data)
-                        done = int(m_length * dl / total_length)
-                        sys.stdout.write(f"\r{url} : [%s%s]  " % ('=' * done, ' ' * (m_length - done)))
-                        sys.stdout.flush()
-                    sys.stdout.write(f"\r{url} : {m.hexdigest()}")
-                except Exception as e:
-                    sys.stdout.write(f"\r{url} : download failed [{exception_to_message(e)}]")
-
-            print()
         except Exception as e:
-            sys.stdout.write(f"\r{url} : download failed [{exception_to_message(e)}]")
+            raise DownloadFailedException(get_failure_message(exception_to_message(e)))
+    return digester.hexdigest()
+
+
+def report_error():
+    msg = " ".join(e.args)
+    sys.stdout.write(f"\r{url} {msg}")
+
+
+def exit_if_asked():
+
+    print()
+    print('exiting...')
+    sys.exit(1)
+
+
+def display_hash(url, hash):
+    sys.stdout.write(f"\r{url} {hash}")
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='calculate hashes from web links.')
+    parser.add_argument('-v','--verbose', dest='verbose', default=False, action='store_true', help='verbose output with origress bars')
+    parser.add_argument('-e','--fail-early', dest='fail_early', default=False, action='store_true', help='exit on first error')
+    parser.add_argument('urls', nargs='+')
+    args = parser.parse_args()
+
+    for url in args.urls:
+        try:
+            hash = get_hash_from_url(args.verbose)
+            display_hash(url, hash)
+        except DownloadFailedException as e:
+
+            report_error()
+
+            if args.fail_early:
+                exit_if_asked()
+        print()
 
