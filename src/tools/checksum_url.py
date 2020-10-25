@@ -4,7 +4,8 @@ from re import finditer
 import argparse
 import requests
 import sys
-
+from urllib.parse import urlparse
+from os.path import split
 
 def test_hash_length():
     m = hashlib.md5()
@@ -46,7 +47,9 @@ class DownloadFailedException(Exception):
         super(DownloadFailedException, self).__init__(msg)
 
 
-def get_hash_from_url(url, show_progress=False):
+def get_hash_from_url(url, show_progress=False, root=None):
+    if root:
+        url = f'{root}/{url}'
 
     response = requests.get(url, allow_redirects=True, timeout=10, stream=True)
     total_data_length = response.headers.get('content-length')
@@ -97,12 +100,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='calculate hashes from web links.')
     parser.add_argument('-v','--verbose', dest='verbose', default=False, action='store_true', help='verbose output with origress bars')
     parser.add_argument('-e','--fail-early', dest='fail_early', default=False, action='store_true', help='exit on first error')
+    parser.add_argument('-r', '--root', dest='root', help='root url to add command line arguments to')
     parser.add_argument('urls', nargs='+')
     args = parser.parse_args()
 
     for url in args.urls:
         try:
-            hash = get_hash_from_url(url, args.verbose)
+            hash = get_hash_from_url(url, args.verbose, root=args.root)
             display_hash(url, hash)
         except DownloadFailedException as e:
 
