@@ -48,26 +48,33 @@ class Nmrpipe(Package):
 
     base_url = 'http://www.ibbr.umd.edu/nmrpipe/'
 
-    # file_name : (parent_url md5)
+    # file_name : (parent_url md5 variant)
     _resources = {
-        's.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '3db6d675ae37f5160d90e5b4dd71da53'),
-        'install.com' : ('http://www.ibbr.umd.edu/nmrpipe','8d9449de19992d8c2de8a646cce27d71'),
-        'binval.com' : ('http://www.ibbr.umd.edu/nmrpipe','1b4c0998eeccb917dfa04932ae990dfb'),
-        'dyn.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '91fb6633c6c1e9f632b4676d8162ba30'),
+        's.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '3db6d675ae37f5160d90e5b4dd71da53', None),
+        'install.com' : ('http://www.ibbr.umd.edu/nmrpipe','8d9449de19992d8c2de8a646cce27d71', None),
+        'binval.com' : ('http://www.ibbr.umd.edu/nmrpipe','1b4c0998eeccb917dfa04932ae990dfb', None),
+        'dyn.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '91fb6633c6c1e9f632b4676d8162ba30', 'dyn'),
 
         # the urls for these resources must be from the niddk site not the ibbrsite
         # otherwise every download seems to be a different checksum...
-        'talos_nmrPipe.tZ' :  ('https://spin.niddk.nih.gov/bax/software', '19dea8ed8301434ed0c7d9fdaa766670'),
-        'plugin.smile.tZ' : ('https://spin.niddk.nih.gov/bax/software/SMILE', '044ce568d90227cc305e0cdf0be68298')
+        'talos_nmrPipe.tZ' :  ('https://spin.niddk.nih.gov/bax/software', '19dea8ed8301434ed0c7d9fdaa766670', 'talos'),
+        'plugin.smile.tZ' : ('https://spin.niddk.nih.gov/bax/software/SMILE', '044ce568d90227cc305e0cdf0be68298', 'smile')
     }
 
-    for file_name, (url,md5) in _resources.items():
+    variant('dyn', default=False, description='install the dyn molecular dynamics library')
+    variant('talos', default=False, description='install the talos chemical shift based dihedral angle predictor')
+    variant('smile', default=True, description='install the smile nus processing module')
+
+    # NOTE: we could be downloading resources we don't need because a variant is marked as not required
+    # however, how to access variants from the spec at this point...
+    for file_name, (url,md5, variant) in _resources.items():
         resource(name=file_name, url=f'{url}/{file_name}', md5=md5, expand=False, destination='',placement=f'tmp_{file_name}')
 
     def install(self, spec, prefix):
 
-        for file_name in self._resources.keys():
-            shutil.move(f'tmp_{file_name}/{file_name}', '.')
+        for file_name, (url,md5, variant) in self._resources.items():
+            if not variant or f'+{variant}' in self.spec:
+                shutil.move(f'tmp_{file_name}/{file_name}', '.')
 
         items = [f for f in os.listdir('.')]
         for item in items:
