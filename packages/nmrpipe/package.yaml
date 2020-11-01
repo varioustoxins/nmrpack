@@ -1,0 +1,17 @@
+---
+  '2020.219.15.07':
+    version: 2020.219.15.07
+    install_file: NMRPipeX.tZ
+    md5: cb9ba746854132f88434064a00ffcf17
+    root_url: http://www.ibbr.umd.edu/nmrpipe
+
+    resources:
+        s.tZ: ['http://www.ibbr.umd.edu/nmrpipe', '3db6d675ae37f5160d90e5b4dd71da53', null]
+        install.com: ['http://www.ibbr.umd.edu/nmrpipe','8d9449de19992d8c2de8a646cce27d71', null]
+        binval.com: ['http://www.ibbr.umd.edu/nmrpipe','1b4c0998eeccb917dfa04932ae990dfb', null]
+        dyn.tZ: ['http://www.ibbr.umd.edu/nmrpipe', '91fb6633c6c1e9f632b4676d8162ba30', 'dyn']
+
+        # the urls for these resources must be from the niddk site not the ibbr site
+        # otherwise every download seems to be a different checksum...
+        talos_nmrPipe.tZ: ['https://spin.niddk.nih.gov/bax/software', '19dea8ed8301434ed0c7d9fdaa766670', 'talos']
+        plugin.smile.tZ: ['https://spin.niddk.nih.gov/bax/software/SMILE', '044ce568d90227cc305e0cdf0be68298', 'smile']

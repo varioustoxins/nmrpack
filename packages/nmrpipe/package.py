@@ -11,23 +11,27 @@
 # next to all the things you'll want to change. Once you've handled
 # them, you can save this file and test your package like this:
 #
-#     spack install nmrpipex-tz
+#     spack install nmrpipe
 #
 # You can edit this file again by typing:
 #
-#     spack edit nmrpipex-tz
+#     spack edit nmrpipe
 #
 # See the Spack documentation for more information on packaging.
 # ----------------------------------------------------------------------------
 
 
 from spack import *
-import subprocess
+import spack.util.spack_yaml as syaml
 import os
 import shutil
 import llnl.util.tty as tty
 
+import pathlib
+
+
 csh = which('csh')
+
 
 def remove_local_files_no_error_but_warn(files):
     for file_name in files:
@@ -37,55 +41,60 @@ def remove_local_files_no_error_but_warn(files):
             tty.warn(f"couldn't remove installation file {file_name}")
 
 
+def read_releases():
+    parent_directory = pathlib.Path(__file__).parent.absolute()
+    file_name = f'{parent_directory}/package.yaml'
+
+    return syaml.load(open(file_name))
+
+
 class Nmrpipe(Package):
     """NMRPipe an extensive software system for processing, analyzing,
        and exploiting multidimensional NMR spectroscopic data"""
 
     homepage = "https://www.ibbr.umd.edu/nmrpipe/install.html"
 
-    _install_file='NMRPipeX.tZ'
-    version('2020.219.15.07', md5='cb9ba746854132f88434064a00ffcf17', url=f"http://www.ibbr.umd.edu/nmrpipe/{_install_file}", expand=False)
+    releases = read_releases()
+    for release_id, release in releases.items():
+        url = f"{release['root_url']}/{release['install_file']}"
+        version_number = release['version']
+        version(version_number, url=url, md5=release['md5'], expand=False)
 
-    base_url = 'http://www.ibbr.umd.edu/nmrpipe/'
-
-    # file_name : (parent_url md5 variant)
-    _resources = {
-        's.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '3db6d675ae37f5160d90e5b4dd71da53', None),
-        'install.com' : ('http://www.ibbr.umd.edu/nmrpipe','8d9449de19992d8c2de8a646cce27d71', None),
-        'binval.com' : ('http://www.ibbr.umd.edu/nmrpipe','1b4c0998eeccb917dfa04932ae990dfb', None),
-        'dyn.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '91fb6633c6c1e9f632b4676d8162ba30', 'dyn'),
-
-        # the urls for these resources must be from the niddk site not the ibbrsite
-        # otherwise every download seems to be a different checksum...
-        'talos_nmrPipe.tZ' :  ('https://spin.niddk.nih.gov/bax/software', '19dea8ed8301434ed0c7d9fdaa766670', 'talos'),
-        'plugin.smile.tZ' : ('https://spin.niddk.nih.gov/bax/software/SMILE', '044ce568d90227cc305e0cdf0be68298', 'smile')
-    }
+        # NOTE: we could be downloading resources we don't need because a variant is marked as not required
+        # however, how to access variants from the spec at this point...
+        for file_name, (url, md5, variant_name) in release['resources'].items():
+            resource(name=file_name, url=f'{url}/{file_name}', md5=md5, expand=False, destination='',
+                     placement=f'tmp_{file_name}', when=f'@{version_number}')
 
     variant('dyn', default=False, description='install the dyn molecular dynamics library')
     variant('talos', default=False, description='install the talos chemical shift based dihedral angle predictor')
     variant('smile', default=True, description='install the smile nus processing module')
 
-    # NOTE: we could be downloading resources we don't need because a variant is marked as not required
-    # however, how to access variants from the spec at this point...
-    for file_name, (url,md5, variant) in _resources.items():
-        resource(name=file_name, url=f'{url}/{file_name}', md5=md5, expand=False, destination='',placement=f'tmp_{file_name}')
-
     def install(self, spec, prefix):
 
-        for file_name, (url,md5, variant) in self._resources.items():
-            if not variant or f'+{variant}' in self.spec:
-                shutil.move(f'tmp_{file_name}/{file_name}', '.')
+        version_key = str(spec.version)
+        installed_release = self.releases[version_key]
+        installed_resources = installed_release['resources']
+        file_name_variants = [(file_name, variant_name) for file_name, (_, _, variant_name)
+                              in installed_resources.items()]
+        file_name_variants = [(file_name, variant_name) for file_name, variant_name in file_name_variants
+                              if not variant_name or f'+{variant_name}' in self.spec]
+
+        for file_name, variant_name in file_name_variants:
+            shutil.move(f'tmp_{file_name}/{file_name}', '.')
 
         items = [f for f in os.listdir('.')]
         for item in items:
-            if not item.startswith('tmp_') or item in self._resources.keys():
+            if not item.startswith('tmp_') or item in installed_resources.keys():
                 shutil.move(item, prefix)
 
         os.chdir(prefix)
         csh('./install.com')
 
-        install_files = list(self._resources.keys())
-        install_files.append(self._install_file)
+        install_files = []
+        for file_name, variant_name in file_name_variants:
+            install_files.append(file_name)
+        install_files.append(installed_release['install_file'])
         remove_local_files_no_error_but_warn(install_files)
 
     @run_after('install')
@@ -98,20 +107,19 @@ class Nmrpipe(Package):
         prefix = os.getcwd()
 
         import tempfile
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            tmpdirname = '/tmp'
+        with tempfile.TemporaryDirectory() as tmp_dir_name:
             script = f"""
                 source   {prefix}/example.cshrc
-                nmrPipe -help >& {tmpdirname}/test_output.txt
+                nmrPipe -help >& {tmp_dir_name}/test_output.txt
 
                 exit 0
             """
-            with open(f"{tmpdirname}/test_pipe.csh", 'w') as file_handle:
+            with open(f"{tmp_dir_name}/test_pipe.csh", 'w') as file_handle:
                 file_handle.write(script)
 
-            csh(f"{tmpdirname}/test_pipe.csh")
+            csh(f"{tmp_dir_name}/test_pipe.csh")
 
-            with open(f"{tmpdirname}/test_output.txt", 'r') as file_handle:
+            with open(f"{tmp_dir_name}/test_output.txt", 'r') as file_handle:
                 result = file_handle.readlines()
                 result = ''.join(result)
 
@@ -122,5 +130,3 @@ class Nmrpipe(Package):
                     tty.error("")
                     for line in result:
                         tty.error(line.strip())
-
-
