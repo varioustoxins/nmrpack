@@ -32,8 +32,8 @@ class Nmrpipe(Package):
 
     homepage = "https://www.ibbr.umd.edu/nmrpipe/install.html"
 
-    # FIXME: Add proper versions and checksums here.
-    version('2020.219.15.07', md5='cb9ba746854132f88434064a00ffcf17', url="http://www.ibbr.umd.edu/nmrpipe/NMRPipeX.tZ", expand=False)
+    _install_file='NMRPipeX.tZ'
+    version('2020.219.15.07', md5='cb9ba746854132f88434064a00ffcf17', url=f"http://www.ibbr.umd.edu/nmrpipe/{_install_file}", expand=False)
 
     base_url = 'http://www.ibbr.umd.edu/nmrpipe/'
 
@@ -53,10 +53,6 @@ class Nmrpipe(Package):
     for file_name, (url,md5) in _resources.items():
         resource(name=file_name, url=f'{url}/{file_name}', md5=md5, expand=False, destination='',placement=f'tmp_{file_name}')
 
-    # variant( 'dyn', default=False, description='Includes the dyn molecular dynamics tool')
-    # variant( 'talos', default=True, description='Includes the TALOS library for predicting Phi Psi and Chi angles from chemcial shifts')
-    # variant( 'smile', default=True, description='Includes the smile NUS reconstruction library')
-
     def install(self, spec, prefix):
 
 
@@ -64,13 +60,27 @@ class Nmrpipe(Package):
         for name,(_,_) in self._resources.items():
             shutil.move(f'tmp_{name}/{name}', '.')
 
-        csh = which('csh')
-        csh('./install.com')
-
         items = [f for f in os.listdir('.')]
         for item in items:
             if not item.startswith('tmp_') or item in self._resources.keys():
-                shutil.move(item,prefix)
+                shutil.move(item, prefix)
+
+        os.chdir(prefix)
+        csh = which('csh')
+        csh('./install.com')
+
+        for name, (_, _) in self._resources.items():
+            try:
+                os.remove(f'./{name}')
+            except Exception:
+                pass
+        try:
+            os.remove(f'./{self._install_file}')
+        except Exception:
+            pass
+
+
+
 
 
 
