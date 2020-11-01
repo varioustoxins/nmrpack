@@ -27,6 +27,7 @@ import os
 import shutil
 import llnl.util.tty as tty
 
+csh = which('csh')
 
 def remove_local_files_no_error_but_warn(files):
     for file_name in files:
@@ -74,7 +75,6 @@ class Nmrpipe(Package):
                 shutil.move(item, prefix)
 
         os.chdir(prefix)
-        csh = which('csh')
         csh('./install.com')
 
         install_files = list(self._resources.keys())
@@ -84,4 +84,36 @@ class Nmrpipe(Package):
     @run_after('install')
     @on_package_attributes(run_tests=True)
     def test(self):
-        print('testing...')
+
+        expected = '** NMRPipe System'
+        expected2 = 'nmrPipe -fn fnName'
+
+        prefix = os.getcwd()
+
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            tmpdirname = '/tmp'
+            script = f"""
+                source   {prefix}/example.cshrc
+                nmrPipe -help >& {tmpdirname}/test_output.txt
+
+                exit 0
+            """
+            with open(f"{tmpdirname}/test_pipe.csh", 'w') as file_handle:
+                file_handle.write(script)
+
+            csh(f"{tmpdirname}/test_pipe.csh")
+
+            with open(f"{tmpdirname}/test_output.txt", 'r') as file_handle:
+                result = file_handle.readlines()
+                result = ''.join(result)
+
+                if not ((expected in result) and (expected2 in result)):
+                    tty.error(f"during testing strings {expected} and {expected2} not found in test output")
+                    tty.error("")
+                    tty.error(f" output was")
+                    tty.error("")
+                    for line in result:
+                        tty.error(line.strip())
+
+
