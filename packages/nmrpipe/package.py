@@ -25,6 +25,16 @@ from spack import *
 import subprocess
 import os
 import shutil
+import llnl.util.tty as tty
+
+
+def remove_local_files_no_error_but_warn(files):
+    for file_name in files:
+        try:
+            os.remove(f'./{file_name}')
+        except Exception:
+            tty.warn(f"couldn't remove installation file {file_name}")
+
 
 class Nmrpipe(Package):
     """NMRPipe an extensive software system for processing, analyzing,
@@ -55,10 +65,8 @@ class Nmrpipe(Package):
 
     def install(self, spec, prefix):
 
-
-
-        for name,(_,_) in self._resources.items():
-            shutil.move(f'tmp_{name}/{name}', '.')
+        for file_name in self._resources.keys():
+            shutil.move(f'tmp_{file_name}/{file_name}', '.')
 
         items = [f for f in os.listdir('.')]
         for item in items:
@@ -69,24 +77,11 @@ class Nmrpipe(Package):
         csh = which('csh')
         csh('./install.com')
 
-        for name, (_, _) in self._resources.items():
-            try:
-                os.remove(f'./{name}')
-            except Exception:
-                pass
-        try:
-            os.remove(f'./{self._install_file}')
-        except Exception:
-            pass
+        install_files = list(self._resources.keys())
+        install_files.append(self._install_file)
+        remove_local_files_no_error_but_warn(install_files)
 
-
-
-
-
-
-
-    # # do something
-    #
-    #     # # FIXME: Unknown build system
-    #     # make()
-    #     # make('install')
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        print('testing...')
