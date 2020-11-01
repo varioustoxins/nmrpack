@@ -42,10 +42,12 @@ class Nmrpipe(Package):
         's.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '3db6d675ae37f5160d90e5b4dd71da53'),
         'install.com' : ('http://www.ibbr.umd.edu/nmrpipe','8d9449de19992d8c2de8a646cce27d71'),
         'binval.com' : ('http://www.ibbr.umd.edu/nmrpipe','1b4c0998eeccb917dfa04932ae990dfb'),
-        'dyn.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '91fb6633c6c1e9f632b4676d8162ba30')
-        # every download of talos seems to be different...
-        # 'talos' :  ('https://spin.niddk.nih.gov/bax/software/talos_nmrPipe.tZ', 'a3ae6f1b178dbbc9ac3396861be706fc'),
-        # 'smile' : ('https://spin.niddk.nih.gov/bax/software/smile/plugin.smile.tZ', '19dea8ed8301434ed0c7d9fdaa766670')
+        'dyn.tZ' : ('http://www.ibbr.umd.edu/nmrpipe', '91fb6633c6c1e9f632b4676d8162ba30'),
+
+        # the urls for these resources must be from the niddk site not the ibbrsite
+        # otherwise every download seems to be a different checksum...
+        'talos_nmrPipe.tZ' :  ('https://spin.niddk.nih.gov/bax/software', '19dea8ed8301434ed0c7d9fdaa766670'),
+        'plugin.smile.tZ' : ('https://spin.niddk.nih.gov/bax/software/SMILE', '044ce568d90227cc305e0cdf0be68298')
     }
 
     for file_name, (url,md5) in _resources.items():
