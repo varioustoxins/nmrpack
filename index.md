@@ -10,6 +10,13 @@ Packages that are currently supported include
 
 # Using NMRPack
 
+---
+**NOTE**
+
+This is a very early version of NMRPack and this is all *very* rough round the edges
+
+---
+
 1. Download Spack [using this link](https://github.com/spack/spack/archive/develop.zip) 
 2. Make a place to keep it (I use ~/programs/spack), move it there and expand it
 
