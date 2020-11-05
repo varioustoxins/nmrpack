@@ -25,10 +25,10 @@ cd ~/programs
 mv ~/Downloads/spack-develop.zip .
 unzip spack-develop.zip
 rm spack-develop.zip
-. spack/share/spack/setup-env.sh
 ```
-3. it should now be possible to run spack
+3. setup spack in this terminal after which it should now be possible to run spack
 ```bash
+$ . ~/programs/spack/share/spack/setup-env.sh
 $ spack
 usage: spack [-hkV] [--color {always,never,auto}] COMMAND ...
 
