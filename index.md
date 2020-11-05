@@ -22,7 +22,7 @@ rm spack-develop.zip
 ```
 3. it should now be possible to run spack
 ```bash
-(base) major:programs gst9$ spack
+$ spack
 usage: spack [-hkV] [--color {always,never,auto}] COMMAND ...
 
 A flexible package manager that supports multiple versions,
