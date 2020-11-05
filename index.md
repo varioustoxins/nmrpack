@@ -45,7 +45,7 @@ query packages:
 ```
 5. Add NMRPack as a spack repo
 ```bash
-spack repo add ~/programs/NMRPack
+spack repo add ~/programs/nmrpack
 ```
 6. Check you have added NMRPack to spack
 ```bash
