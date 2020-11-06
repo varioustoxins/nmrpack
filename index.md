@@ -43,46 +43,46 @@ query packages:
 ```
 4. Download NMRPack [using this link](https://github.com/varioustoxins/nmrpack/archive/master.zip)
 
-4. Move the NMRPack installation file to where you want to save it (I use ~/programs/NMRPack) and expand it 
+5. Move the NMRPack installation file to where you want to save it (I use ~/programs/NMRPack) and expand it 
 ```bash
  mv ~/Downloads/nmrpack-master.zip .
  unzip nmrpack-master.zip
  mv nmrpack-master nmrpack
  rm nmrpack-master.zip
 ```
-5. Add NMRPack as a spack repo
+6. Add NMRPack as a spack repo
 ```bash
 spack repo add ~/programs/nmrpack
 ```
-6. Check you have added NMRPack to spack
+7. Check you have added NMRPack to spack
 ```bash
 $ spack repo list
 ==> 2 package repositories.
 nmrpack    /Users/gst9/Dropbox/git/nmrpack
 builtin    /Users/gst9/programs/spack-test/var/spack/repos/builtin
 ```
-7. Install the modules system
+8. Install the modules system
 ```bash
 spack install environment-modules
 ```
-8. Load environment-modules
+9. Load environment-modules
 ```bash
 . ~/programs/spack/share/spack/setup-env.sh
 ```
-9.Install something
+10.Install something
 ```bash
 spack install nmrpipe
 ```
-10. Use modules to load the installed program
+11. Use modules to load the installed program
 ```bash
   eval   "`${HOME}/programs/spack/bin/spack  module tcl loads nmrpipe`"
 ```
-11. Check NMRPipe runs
+12. Check NMRPipe runs
 ```bash
 $ nmrPipe
 ** NMRPipe System Version 10.9 Rev 2020.219.15.07 64-bit **
 ```
-12. Unload NMRPipe
+13. Unload NMRPipe
 ```bash
 $ module list
 
