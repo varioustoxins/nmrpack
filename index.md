@@ -19,12 +19,12 @@ This is a very early version of NMRPack and this is all *very* rough round the e
 
 1. Download Spack [using this link](https://github.com/spack/spack/archive/develop.zip) 
 2. Make a place to keep it (I use ~/programs/spack), move it there and expand it
-       ```bash
+
        cd ~/programs
        mv ~/Downloads/spack-develop.zip .
        unzip spack-develop.zip
        rm spack-develop.zip
-       ```
+
 3. setup spack in this terminal after which it should now be possible to run spack
        ```bash
        $ . ~/programs/spack/share/spack/setup-env.sh
