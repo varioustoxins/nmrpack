@@ -68,7 +68,7 @@ This is a very early version of NMRPack and this is all *very* rough round the e
 
         . ~/programs/spack/share/spack/setup-env.sh
 
-10.Install something
+10. Install something
  
         spack install nmrpipe
  
