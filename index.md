@@ -26,7 +26,7 @@ This is a very early version of NMRPack and this is all *very* rough round the e
        rm spack-develop.zip
 
 3. setup spack in this terminal after which it should now be possible to run spack
-       ```bash
+
        $ . ~/programs/spack/share/spack/setup-env.sh
        $ spack
        usage: spack [-hkV] [--color {always,never,auto}] COMMAND ...
@@ -39,61 +39,61 @@ This is a very early version of NMRPack and this is all *very* rough round the e
        query packages:
        list                  list and search available packages
        ...
-       ```
+
 4. Download NMRPack [using this link](https://github.com/varioustoxins/nmrpack/archive/master.zip)
 
 5. Move the NMRPack installation file to where you want to save it (I use ~/programs/NMRPack) and expand it 
-```bash
- mv ~/Downloads/nmrpack-master.zip .
- unzip nmrpack-master.zip
- mv nmrpack-master nmrpack
- rm nmrpack-master.zip
-```
+
+        mv ~/Downloads/nmrpack-master.zip .
+        unzip nmrpack-master.zip
+        mv nmrpack-master nmrpack
+        rm nmrpack-master.zip
+
 6. Add NMRPack as a spack repo
-```bash
-spack repo add ~/programs/nmrpack
-```
+ 
+        spack repo add ~/programs/nmrpack
+ 
 7. Check you have added NMRPack to spack
-```bash
-$ spack repo list
-==> 2 package repositories.
-nmrpack    /Users/gst9/Dropbox/git/nmrpack
-builtin    /Users/gst9/programs/spack-test/var/spack/repos/builtin
-```
+ 
+        $ spack repo list
+        ==> 2 package repositories.
+        nmrpack    /Users/gst9/Dropbox/git/nmrpack
+        builtin    /Users/gst9/programs/spack-test/var/spack/repos/builtin
+
 8. Install the modules system
-```bash
-spack install environment-modules
-```
+
+        spack install environment-modules
+
 9. Load environment-modules
-```bash
-. ~/programs/spack/share/spack/setup-env.sh
-```
+
+        . ~/programs/spack/share/spack/setup-env.sh
+
 10.Install something
-```bash
-spack install nmrpipe
-```
+ 
+        spack install nmrpipe
+ 
 11. Use modules to load the installed program
-```bash
-  eval   "`${HOME}/programs/spack/bin/spack  module tcl loads nmrpipe`"
-```
+ 
+        eval   "`${HOME}/programs/spack/bin/spack  module tcl loads nmrpipe`"
+
 12. Check NMRPipe runs
-```bash
-$ nmrPipe
-** NMRPipe System Version 10.9 Rev 2020.219.15.07 64-bit **
-```
+
+        $ nmrPipe
+        ** NMRPipe System Version 10.9 Rev 2020.219.15.07 64-bit **
+
 13. Unload NMRPipe
-```bash
-$ module list
 
-Currently Loaded Modulefiles:
- 1) nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
- 
-$ module list
-Currently Loaded Modulefiles:
- 1) nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
- 
-$ module unload nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
+        $ module list
 
-$ nmrPipe
--bash: nmrPipe: command not found
-```
+        Currently Loaded Modulefiles:
+        1) nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
+ 
+        $ module list
+        Currently Loaded Modulefiles:
+        1) nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
+ 
+        $ module unload nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
+
+        $ nmrPipe
+        -bash: nmrPipe: command not found
+
