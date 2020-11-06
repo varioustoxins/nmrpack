@@ -19,28 +19,27 @@ This is a very early version of NMRPack and this is all *very* rough round the e
 
 1. Download Spack [using this link](https://github.com/spack/spack/archive/develop.zip) 
 2. Make a place to keep it (I use ~/programs/spack), move it there and expand it
-
-```bash
-cd ~/programs
-mv ~/Downloads/spack-develop.zip .
-unzip spack-develop.zip
-rm spack-develop.zip
-```
+       ```bash
+       cd ~/programs
+       mv ~/Downloads/spack-develop.zip .
+       unzip spack-develop.zip
+       rm spack-develop.zip
+       ```
 3. setup spack in this terminal after which it should now be possible to run spack
-```bash
-$ . ~/programs/spack/share/spack/setup-env.sh
-$ spack
-usage: spack [-hkV] [--color {always,never,auto}] COMMAND ...
+       ```bash
+       $ . ~/programs/spack/share/spack/setup-env.sh
+       $ spack
+       usage: spack [-hkV] [--color {always,never,auto}] COMMAND ...
 
-A flexible package manager that supports multiple versions,
-configurations, platforms, and compilers.
+       A flexible package manager that supports multiple versions,
+       configurations, platforms, and compilers.
 
-These are common spack commands:
+       These are common spack commands:
 
-query packages:
-  list                  list and search available packages
-  ...
-```
+       query packages:
+       list                  list and search available packages
+       ...
+       ```
 4. Download NMRPack [using this link](https://github.com/varioustoxins/nmrpack/archive/master.zip)
 
 5. Move the NMRPack installation file to where you want to save it (I use ~/programs/NMRPack) and expand it 
