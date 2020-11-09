@@ -1,0 +1,12 @@
+--- a/bin/getarch	2006-10-23 02:47:59.000000000 +0100
++++ b/bin/getarch	2017-10-09 15:39:46.000000000 +0100
+@@ -171,6 +171,9 @@
+     i[34567]86:Darwin:*:*)
+ 	echo mac-intel-darwin
+ 	exit 0 ;;
++    x86_64:Darwin:*:*)
++        echo mac-intel-darwin
++        exit 0 ;;
+     i[34567]86:CYGWIN*:*:*)
+         echo intel-${MACHINE}-cygwin
+ 	exit 0 ;;

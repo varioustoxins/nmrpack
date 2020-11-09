@@ -1,0 +1,72 @@
+--- a/source/machvar.f	1999-06-28 20:01:43.000000000 +0100
++++ b/source/machvar.f	2020-10-20 09:37:56.000000000 +0100
+@@ -35,6 +35,7 @@
+       DPTRUNC=DPTMPV
+       RETURN
+       END
++      
+ C
+ C ==========================================================================
+ C
+@@ -45,49 +46,27 @@
+       INCLUDE 'numbers.inc'
+       INCLUDE 'machvar.inc'
+ C
+-C Determine smallest FPEPS such that both 1+FPEPS and 1-FPEPS
+-C are different from 1.
++C Determine the machine epsilon i.e. the smallest FPEPS such that both
++C 1+FPEPS and 1-FPEPS are different from 1.
+ C
+ C local
+-      INTEGER           I
+-      DOUBLE PRECISION  ONEP, ONEM
+-      DOUBLE COMPLEX    DBCOMP
++      DOUBLE PRECISION ONEDP
++      DOUBLE COMPLEX DBCOMP
+ C
+ C external
+-      DOUBLE PRECISION  DPTRUNC
+-      EXTERNAL          DPTRUNC
++C NONE
+ C
+ C begin
+-      DBCOMP = DCMPLX(ZERO,ZERO)
+-      I = 1
+-      DO WHILE (I .LT. MXFPEPS2)
+-        FPEPS = TWO**(-I)
+-        ONEP = DPTRUNC(ONE) + DPTRUNC(FPEPS)
+-        ONEM = DPTRUNC(ONE) - DPTRUNC(FPEPS)
+-        IF (ONE .EQ. ONEP .OR. ONE .EQ. ONEM) THEN
+-          I = I - 1
+-          FPEPS = TWO**(-I)
+-          CALL DECLAR('FP_EPSILON', 'DP', ' ', DBCOMP, FPEPS)
+-          IF ( I .GT. 128 ) THEN
+-             WRITE (6,'(A,E10.3)')
+-     &       ' %SETFPEPS Machine epsilon determined to be ',FPEPS
+-             CALL WRNDIE(-5,'SETFPEPS',
+-     &       'Machine epsilon value is too small')
+-             CALL DIE
+-          END IF
+-          RETURN
+-        END IF
+-        I = I + 1
+-      END DO
+-C
+-      WRITE(6,'(A)')
+-     &      ' %SETFPEPS increase value of MXFPEPS2 and recompile'
+-      CALL WRNDIE(-5, 'SETFPEPS',
+-     &            'Could not determine machine epsilon')
+-      CALL DIE
+ C
++C ONEDP doesn't really need to be defined - EPSILON() only needs to know
++C the type
++      ONEDP=(1.00)
++      FPEPS = EPSILON(ONEDP)
++      DBCOMP = DCMPLX(ZERO,ZERO)
++      CALL DECLAR('FP_EPSILON', 'DP', ' ', DBCOMP, FPEPS)
+       RETURN
+       END
++
+ C
+ C ==========================================================================
+ C

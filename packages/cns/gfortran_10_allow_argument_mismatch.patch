@@ -1,0 +1,11 @@
+--- a/instlib/machine/supported/mac-intel-darwin/Makefile.header.5.gfortran	2006-10-08 22:17:14.000000000 +0100
++++ b/instlib/machine/supported/mac-intel-darwin/Makefile.header.5.gfortran	2020-11-08 17:55:48.000000000 +0000
+@@ -9,7 +9,7 @@
+ # fortran options
+ F77 = gfortran
+ F77STD = -fdefault-integer-8 -w
+-F77OPT = -O3 $(CNS_MALIGN_I86) -funroll-loops -ffast-math
++F77OPT = -O3 $(CNS_MALIGN_I86) -funroll-loops -ffast-math -fallow-argument-mismatch
+ F77FLAGS = $(F77STD) $(F77OPT) $(EXT_F77FLAGS) $(F77BUG)
+ 
+ # C options
