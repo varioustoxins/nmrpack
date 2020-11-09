@@ -1,0 +1,16 @@
+---
+  1.21:
+    version: 1.21
+    install_file: cns_solve_1.21_all-mp.tar.gz
+    md5: 500842fda47cd1290a4d42d2e501eabb
+    # http://cns-online.org/download/v1.21/cns_solve_1.21_all-mp.tar.gz
+    url_type: cns_url
+    root_url: http://cns-online.org/download/v1.21
+    expand: true
+#      file:/Users/gst9/Dropbox/git/nmrpack/packages/cns
+
+#    resources:
+#        null
+#        # http://aria.pasteur.fr/archives/aria2.3.2.tar.gz
+##        aria2.3.2.tar.gz : ['file:/Users/gst9/Dropbox/git/nmrpack/packages/cns', '1022338fb342c62af376dffcac318411', 'aria']
+#        aria2.3.2.tar.gz : ['http-cns://aria.pasteur.fr/archives', '1022338fb342c62af376dffcac318411', 'aria']

@@ -1,6 +1,6 @@
 import subprocess
 from os import path
-
+import os
 
 PREPEND='PREPEND'
 NEW='NEW'
@@ -10,6 +10,7 @@ def fail_if_file_not_there(file_name):
        raise Exception(f"I can't find the file {file_name}")
 
 def get_environment_change(prefix, file_name):
+
 
     result = []
 
@@ -37,8 +38,7 @@ def get_environment_change(prefix, file_name):
     pre_environment = split_environment(pre_lines)
     post_environment = split_environment(post_lines)
 
-    print('post lines', post_lines)
-    print(post_command)
+    # print(post_command)
 
     new_keys = post_environment.keys() - pre_environment.keys()
 

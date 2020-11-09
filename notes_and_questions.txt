@@ -1,0 +1,5 @@
+1. is it possible to decide what file should be downloaded based on a variant
+2. howto output nicely formatted text during installation
+3. can you call version and resource from an external library /  mixin class
+4. can you access variant from inside a fetch strategy?
+5. copying files from the package directory with shutil seems to cause a deadlock
