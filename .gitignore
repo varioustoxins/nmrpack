@@ -1,3 +1,6 @@
 __pycache__/
 *.py[cod]
+packages/.DS_Store
+test_data/
+unused_scraps/
 
