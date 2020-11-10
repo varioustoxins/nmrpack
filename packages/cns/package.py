@@ -35,8 +35,12 @@ from nmrpack.packages.cns.fetcher import CNS_URL_Fetch_Strategy
 from nmrpack.packages.cns.fetcher import ARIA_URL_Fetch_Strategy
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
+now with installations
+import llnl.util.tty as tty
 
 CNS_SOLVE_ENV = 'cns_solve_env'
+
+csh = which('csh')
 
 class Cns(Package):
     """CNS The Crystallography & NMR System for structure calculation (1.2 for ARIA) + aria patches"""
@@ -107,6 +111,71 @@ class Cns(Package):
 
         # remove a leftover from our previous edits
         os.remove(pathlib.Path(prefix)  / pathlib.Path('cns_solve_env' + '~'))
+
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        try:
+            import tempfile
+            with tempfile.TemporaryDirectory() as tmp_dir_name:
+                tmp_dir_name = '/tmp'
+
+                test_inp = f'''
+                stop
+                '''
+
+                with open(join_path(tmp_dir_name,'test.inp'),'w') as fp:
+                    fp.write(test_inp)
+
+
+                test_csh = f'''
+                source  {self.prefix}/cns_solve_env
+        
+                cns_solve < {tmp_dir_name}/test.inp >& {tmp_dir_name}/test_output.txt 
+                '''
+
+                with open(join_path(tmp_dir_name,'test.csh'), 'w') as fp:
+                    fp.write(test_csh)
+
+            csh(join(tmp_dir_name,'test.csh'))
+
+
+            expected = '''
+            ============================================================
+            |                                                          |
+            |            Crystallography & NMR System (CNS)            |
+            |                         CNSsolve                         |
+            |                                                          |
+            ============================================================
+             Version: 1.2 at patch level 1
+             Status: General release with ARIA enhancements
+            ============================================================
+            '''.split("\n")
+            expected = [line.strip() for line in expected if len(line)]
+
+            ok = True
+            result= ''
+            with open(f"{tmp_dir_name}/test_output.txt", 'r') as file_handle:
+                result = file_handle.readlines()
+                result = [line.strip() for line in result if len(line)]
+                for line in expected:
+                    if not line in result:
+                        tty.error(f'line --{line}-- not in result')
+                        ok = False
+                        break
+            if not ok:
+                tty.error(f'''during testing strings 
+                              {expected} 
+                              not found in test output")
+                           ''')
+                tty.error("")
+                tty.error(f" output was")
+                tty.error("")
+                for line in result:
+                    tty.error(line.strip())
+        except Exception as e:
+            tty.error('there was an error',e)
+
 
     def setup_run_environment(self, env):
 
