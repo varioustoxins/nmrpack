@@ -181,8 +181,8 @@ class Cns(Package):
 
         environment_changes = get_environment_change(self.prefix, CNS_SOLVE_ENV)
 
-        print('** environment_changes **', environment_changes)
-
+        # print('** environment_changes **', environment_changes)
+        #
         for name,type, value in environment_changes:
             if type == PREPEND:
                 env.prepend_path(name, value)
