@@ -14,7 +14,6 @@ class CNS_URL_Fetch_Strategy(URLFetchStrategy):
 
 
     def __init__(self, **kwargs):
-        # print('fetching registered', kwargs)
 
         if not 'cns_url' in kwargs:
             raise ValueError(f'CNS_URL_Fetch_Strategy requires a cns_url attribute, (i got {kwargs.keys()}):')
@@ -93,7 +92,6 @@ class ARIA_URL_Fetch_Strategy(URLFetchStrategy):
 
 
     def __init__(self, **kwargs):
-        # print('fetching registered', kwargs)
 
         if not self.url_attr in kwargs:
             raise ValueError(f'ARIA_URL_Fetch_Strategy requires a aria_url attribute, (i got {kwargs.keys()}):')
