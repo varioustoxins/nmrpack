@@ -35,7 +35,7 @@ from nmrpack.packages.cns.fetcher import CNS_URL_Fetch_Strategy
 from nmrpack.packages.cns.fetcher import ARIA_URL_Fetch_Strategy
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
-now with installations
+
 import llnl.util.tty as tty
 
 CNS_SOLVE_ENV = 'cns_solve_env'
