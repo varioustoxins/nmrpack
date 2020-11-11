@@ -77,11 +77,13 @@ class Cns(Package):
         dest_file = 'instlib/machine/supported/mac-intel-darwin/Makefile.header.5.gfortran'
         shutil.move(src_file, dest_file)
 
-        # patch the machine make file, can't be done with a patch statement it doesn't exists till we copy it
-        # tried just copying the file from the package directory but it caused a lockup
-        patch = which('patch')
-        patch_file = join_path(package_root,'nmrpack/packages/cns', 'gfortran_10_allow_argument_mismatch.patch')
-        patch('-p1', '-i',patch_file)
+
+        if not self.spec.satisfies('%fortran@:10.0.0'):
+            # patch the machine make file, can't be done with a patch statement it doesn't exists till we copy it
+            # tried just copying the file from the package directory but it caused a lockup
+            patch = which('patch')
+            patch_file = join_path(package_root,'nmrpack/packages/cns', 'gfortran_10_allow_argument_mismatch.patch')
+            patch('-p1', '-i',patch_file)
 
         if '+aria' in self.spec:
             from_path=pathlib.Path('aria2.3/cns/src')
