@@ -31,8 +31,9 @@ if not package_root in sys.path:
     sys.path.insert(0, package_root)
 
 from nmrpack.lib.yaml import read_releases
-from nmrpack.packages.cns.fetcher import CNS_URL_Fetch_Strategy
-from nmrpack.packages.cns.fetcher import ARIA_URL_Fetch_Strategy
+
+# this triggers
+import   nmrpack.packages.cns.fetchers
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
 
