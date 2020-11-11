@@ -5,21 +5,19 @@ from pathlib import Path
 import spack.util.spack_yaml as syaml
 
 
-def read_releases(package,version, resource, verbose = False):
+def read_releases(package,version, resource):
     package_root = str(pathlib.Path(__file__).parents[1])
 
     file_name = package_root / Path('packages') / Path(package) / Path('package.yaml')
 
-    # if verbose:
-    #     print(f'reading package definitions from {file_name}')
+
     releases =  syaml.load(open(file_name))
 
     for release_id, release in releases.items():
         url = f"{release['root_url']}/{release['install_file']}"
         version_number = release['version']
         check =  release['md5']
-        # if verbose:
-        #     print(f'creating version definition {version_number} url: {url} : check {check}')
+
         if 'url_type' in release:
             url_arg = release['url_type']
         else:
