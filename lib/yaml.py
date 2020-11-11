@@ -33,7 +33,6 @@ def read_releases(package,version, resource):
         if 'resources' in release:
             for file_name, (url, md5, variant_name) in release['resources'].items():
                 url = f'{url}/{file_name}'
-                if verbose:
-                    print(f'Loading resource definition {version_number} url: {url} : check {md5}')
-                resource(name=file_name, url=url, md5=md5, expand=False, destination='',
+                resource(name=file_name, url=url, md5=md5, expand=False, destination='.',
                          placement=f'tmp_{file_name}', when=f'@{version_number}')
+    return releases

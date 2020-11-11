@@ -24,7 +24,7 @@ if not package_root in sys.path:
     sys.path.insert(0, package_root)
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
-# from nmrpack.environment import read_releases
+from nmrpack.lib.yaml import read_releases
 
 import spack.util.spack_yaml as syaml
 import os
@@ -47,32 +47,13 @@ def remove_local_files_no_error_but_warn(files):
         except Exception:
             tty.warn(f"couldn't remove installation file {file_name}")
 
-
-def read_releases(filename):
-    parent_directory = pathlib.Path(__file__).parent.absolute()
-    file_name = f'{parent_directory}/package.yaml'
-
-    return syaml.load(open(file_name))
-
-    for release_id, release in releases.items():
-        url = f"{release['root_url']}/{release['install_file']}"
-        version_number = release['version']
-        version(version_number, url=url, md5=release['md5'], expand=False)
-
-        # NOTE: we could be downloading resources we don't need because a variant is marked as not required
-        # however, how to access variants from the spec at this point...
-        for file_name, (url, md5, variant_name) in release['resources'].items():
-            resource(name=file_name, url=f'{url}/{file_name}', md5=md5, expand=False, destination='',
-                     placement=f'tmp_{file_name}', when=f'@{version_number}')
-
-
 class Nmrpipe(Package):
     """NMRPipe an extensive software system for processing, analyzing,
        and exploiting multidimensional NMR spectroscopic data"""
 
     homepage = "https://www.ibbr.umd.edu/nmrpipe/install.html"
 
-    releases = read_releases('nmrpipe')
+    releases = read_releases('nmrpipe', version,resource)
 
     variant('dyn', default=False, description='install the dyn molecular dynamics library')
     variant('talos', default=False, description='install the talos chemical shift based dihedral angle predictor')
