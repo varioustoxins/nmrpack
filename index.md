@@ -7,6 +7,7 @@ Packages that are currently supported include
 * NMRPipe
 * SMILE
 * TALOS
+* CNS (@1.21 including ARIA patches)
 
 # Using NMRPack
 
