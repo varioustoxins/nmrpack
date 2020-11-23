@@ -21,10 +21,6 @@ def exception_to_message(exception):
     camels = [match.group(0).lower() for match in matches]
     return ' '.join(camels)
 
-
-
-
-
 def write_digest(url, digest):
     sys.stdout.write(f"\r{url} {digest}")
 
@@ -59,11 +55,9 @@ def get_hash_from_url(url, show_progress=False,  digest='sha256'):
     total_data_length = response.headers.get('content-length')
 
     digester = getattr(hashlib, digest)()
-    print(digester)
 
     display_length = test_hash_length()
 
-    data = None
     if response.status_code != 200:
         raise DownloadFailedException(f"download failed [response was {response.status_code}]")
     elif total_data_length is None:
