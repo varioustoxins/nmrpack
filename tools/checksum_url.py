@@ -6,6 +6,7 @@ import requests
 import sys
 from urllib.parse import urlparse
 from os.path import split
+from argparse import RawTextHelpFormatter
 
 def test_hash_length():
     m = hashlib.md5()
@@ -49,14 +50,15 @@ class DownloadFailedException(Exception):
         super(DownloadFailedException, self).__init__(msg)
 
 
-def get_hash_from_url(url, show_progress=False, root=None):
+def get_hash_from_url(url, show_progress=False, root=None, digest='sha256'):
     if root:
         url = f'{root}/{url}'
 
     response = requests.get(url, allow_redirects=True, timeout=10, stream=True)
     total_data_length = response.headers.get('content-length')
 
-    digester = hashlib.md5()
+    digester = getattr(hashlib, digest)()
+    print(digester)
 
     display_length = test_hash_length()
 
@@ -96,19 +98,32 @@ def exit_if_asked():
 def display_hash(url, hash):
     sys.stdout.write(f"\r{url} {hash}")
 
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+NEW_LINE='\n'
+
+def digests_formatted():
+    digests = list(chunks(list(hashlib.algorithms_available),5))
+    digests = [', '.join(group) for group in digests]
+    digests = '\n'.join(digests)
+    return digests
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser(description='calculate hashes from web links.')
+    parser = argparse.ArgumentParser(description='calculate hashes from web links.', formatter_class=RawTextHelpFormatter)
     parser.add_argument('-v','--verbose', dest='verbose', default=False, action='store_true', help='verbose output with origress bars')
     parser.add_argument('-e','--fail-early', dest='fail_early', default=False, action='store_true', help='exit on first error')
     parser.add_argument('-r', '--root', dest='root', help='root url to add command line arguments to')
+    parser.add_argument('-d', '--digest', dest ='digest', default='sha256', help=f'which digest algorithm to use: \n\n{digests_formatted()}\n')
     parser.add_argument('urls', nargs='+')
     args = parser.parse_args()
 
     for url in args.urls:
         try:
-            hash = get_hash_from_url(url, args.verbose, root=args.root)
+            hash = get_hash_from_url(url, args.verbose, root=args.root,digest=args.digest)
             display_hash(url, hash)
         except DownloadFailedException as e:
 
