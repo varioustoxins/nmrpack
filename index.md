@@ -116,6 +116,7 @@ This is a very early version of NMRPack and this is all *very* rough round the e
 9. Load environment-modules
     ```bash
     . ~/programs/spack/share/spack/setup-env.sh
+    spack load environment-modules
     ```
 
 10. Install something
