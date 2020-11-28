@@ -28,14 +28,14 @@ This is a very early version of NMRPack and this is all *very* rough round the e
    or using wget
 
    ```bash
-   wget  https://github.com/spack/spack/archive/develop.zip -o ~/Downloads/develop.zip
+   wget  -O ~/Downloads/develop.zip  https://github.com/spack/spack/archive/develop.zip 
    ```
    
 2. Make a place to keep it (I use ~/programs/spack), move it there and expand it
 
    ```bash
    cd ~/programs
-   mv ~/Downloads/develop.zip .
+   mv ~/Downloads/develop.zip spack-develop.zip
    unzip spack-develop.zip
    mv spack-develop spack
    rm spack-develop.zip
@@ -76,22 +76,21 @@ This is a very early version of NMRPack and this is all *very* rough round the e
     or alternatively using curl
     
     ```bash
-    curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o ~/Downloads/nmrpack-master.zip
+    curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o ~/Downloads/master.zip
     ```
     or using wget
     
     ```bash
-    wget  https://github.com/varioustoxins/nmrpack/archive/master.zipbrew  -o ~/Downloads/nmrpack-master.zip
+    wget  -O ~/Downloads/master.zip https://github.com/varioustoxins/nmrpack/archive/master.zip  
     ```
 5. Move the NMRPack installation file to where you want to save it (I use ~/programs/NMRPack) and expand it 
     
     ```bash
-    mv ~/Downloads/nmrpack-master.zip .
+    mv ~/Downloads/master.zip nmrpack-master.zip
     unzip nmrpack-master.zip
     mv nmrpack-master nmrpack
     rm nmrpack-master.zip
     ```
-        
 
 6. Add NMRPack as a spack repo
    ```bash
@@ -99,36 +98,49 @@ This is a very early version of NMRPack and this is all *very* rough round the e
    ```
  
 7. Check you have added NMRPack to spack
- 
-        $ spack repo list
+   ```bash
+   $ spack repo list
         ==> 2 package repositories.
         nmrpack    /Users/gst9/Dropbox/git/nmrpack
         builtin    /Users/gst9/programs/spack-test/var/spack/repos/builtin
+   ```
+        
 
 8. Install the modules system
+    ```bash
+    spack install environment-modules
+   ```
+   this may take a while as it has to compile Tcl
 
-        spack install environment-modules
 
 9. Load environment-modules
-
-        . ~/programs/spack/share/spack/setup-env.sh
+    ```bash
+    . ~/programs/spack/share/spack/setup-env.sh
+    ```
 
 10. Install something
- 
-        spack install nmrpipe
+    ```bash
+    spack install nmrpipe
+    ```
  
 11. Use modules to load the installed program
- 
-        eval   "`${HOME}/programs/spack/bin/spack  module tcl loads nmrpipe`"
+    ```bash
+    eval   "`${HOME}/programs/spack/bin/spack  module tcl loads nmrpipe`"
+    ```
 
 12. Check NMRPipe runs
-
-        $ nmrPipe
-        ** NMRPipe System Version 10.9 Rev 2020.219.15.07 64-bit **
+    ```bash
+    $ nmrPipe
+    ```
+    should give
+    ```bash
+    ** NMRPipe System Version 10.9 Rev 2020.219.15.07 64-bit **
+    ```
+        
 
 13. Unload NMRPipe
-
-        $ module list
+    ```bash
+    $ module list
 
         Currently Loaded Modulefiles:
         1) nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
@@ -137,8 +149,9 @@ This is a very early version of NMRPack and this is all *very* rough round the e
         Currently Loaded Modulefiles:
         1) nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
  
-        $ module unload nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
+    $ module unload nmrpipe-2020.219.15.07-apple-clang-12.0.0-qk4fw2b
 
-        $ nmrPipe
-        -bash: nmrPipe: command not found
-
+    $ nmrPipe
+    -bash: nmrPipe: command not found
+    ```
+        
