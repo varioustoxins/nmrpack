@@ -18,19 +18,46 @@ This is a very early version of NMRPack and this is all *very* rough round the e
 
 ---
 
-1. Download Spack [using this link](https://github.com/spack/spack/archive/develop.zip) 
+1. Download Spack [using this link](https://github.com/spack/spack/archive/develop.zip) or
+
+   or alternatively using curl
+   
+   ```bash
+   curl -L https://github.com/spack/spack/archive/develop.zip -o ~/Downloads/develop.zip
+   ```
+   or using wget
+
+   ```bash
+   wget  https://github.com/spack/spack/archive/develop.zip -o ~/Downloads/develop.zip
+   ```
+   
 2. Make a place to keep it (I use ~/programs/spack), move it there and expand it
 
-       cd ~/programs
-       mv ~/Downloads/spack-develop.zip .
-       unzip spack-develop.zip
-       rm spack-develop.zip
+   ```bash
+   cd ~/programs
+   mv ~/Downloads/develop.zip .
+   unzip spack-develop.zip
+   mv spack-develop spack
+   rm spack-develop.zip
+   ```
 
 3. setup spack in this terminal after which it should now be possible to run spack
 
-       $ . ~/programs/spack/share/spack/setup-env.sh
-       $ spack
-       usage: spack [-hkV] [--color {always,never,auto}] COMMAND ...
+   in bash / zsh
+   ```bash 
+   $ . ~/programs/spack/share/spack/setup-env.sh
+   ````
+   in csh
+   ```tcsh
+   $ source ~/programs/spack/share/spack/setup-env.csh
+   ```
+   now test it works
+   ```bash
+    $ spack
+   ```
+   this should now give
+   ```bash
+   usage: spack [-hkV] [--color {always,never,auto}] COMMAND ...
 
        A flexible package manager that supports multiple versions,
        configurations, platforms, and compilers.
@@ -40,19 +67,36 @@ This is a very early version of NMRPack and this is all *very* rough round the e
        query packages:
        list                  list and search available packages
        ...
+   
+   ```
+       
 
 4. Download NMRPack [using this link](https://github.com/varioustoxins/nmrpack/archive/master.zip)
-
+   
+    or alternatively using curl
+    
+    ```bash
+    curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o ~/Downloads/nmrpack-master.zip
+    ```
+    or using wget
+    
+    ```bash
+    wget  https://github.com/varioustoxins/nmrpack/archive/master.zipbrew  -o ~/Downloads/nmrpack-master.zip
+    ```
 5. Move the NMRPack installation file to where you want to save it (I use ~/programs/NMRPack) and expand it 
-
-        mv ~/Downloads/nmrpack-master.zip .
-        unzip nmrpack-master.zip
-        mv nmrpack-master nmrpack
-        rm nmrpack-master.zip
+    
+    ```bash
+    mv ~/Downloads/nmrpack-master.zip .
+    unzip nmrpack-master.zip
+    mv nmrpack-master nmrpack
+    rm nmrpack-master.zip
+    ```
+        
 
 6. Add NMRPack as a spack repo
- 
-        spack repo add ~/programs/nmrpack
+   ```bash
+   spack repo add ~/programs/nmrpack
+   ```
  
 7. Check you have added NMRPack to spack
  
