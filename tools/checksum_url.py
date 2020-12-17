@@ -71,14 +71,14 @@ def display_text(text, header):
 
     under_length //= 2
 
-    print('-'*under_length + header + '-'*under_length )
+    print('-'*under_length + header + '-'*under_length)
     print()
     print(text)
     print()
     print('-' * (under_length*2 + len(header)))
 
 
-def display_reponse(response, header='response'):
+def display_response(response, header='response'):
     text = html2text(response.text)
     display_text(text, header)
 
@@ -91,7 +91,7 @@ def get_hash_from_url(target_url, target_session, verbose, digest='sha256', user
     response = transfer_page(target_session, url, username_password)
 
     if verbose > 1:
-        display_reponse(response)
+        display_response(response)
 
     total_data_length = response.headers.get('content-length')
 
@@ -135,9 +135,9 @@ def transfer_page(target_session, target_url, username_password):
     return response
 
 
-def report_error(error):
+def report_error(target_url, error):
     msg = " ".join(error.args)
-    sys.stdout.write(f"\r{url} {msg}")
+    sys.stdout.write(f"\r{target_url} {msg}")
 
 
 def exit_if_asked():
@@ -167,18 +167,18 @@ def digests_formatted():
     return digests
 
 
-def check_root_set_or_exit(in_args):
-    if not in_args.root:
+def check_root_set_or_exit(target_args):
+    if not target_args.root:
         print('argument --template requires matching root_argument')
         print('exiting...')
         sys.exit()
 
 
-def get_urls_for_templates(in_page, templates):
+def get_urls_for_templates(target_page, templates):
 
     target_urls = []
     result = []
-    for link in BeautifulSoup(in_page, parse_only=SoupStrainer('a'), features="html.parser"):
+    for link in BeautifulSoup(target_page, parse_only=SoupStrainer('a'), features="html.parser"):
 
         if link.has_attr('href'):
             target_urls.append(link['href'])
@@ -195,7 +195,7 @@ def get_urls_for_templates(in_page, templates):
 def get_urls_from_args(root, target_urls):
 
     if root:
-        target_urls = [f'{args.root}/{target_url}' for target_url in target_urls]
+        target_urls = [f'{root}/{target_url}' for target_url in target_urls]
     
     return target_urls
 
@@ -210,26 +210,102 @@ def check_root_exists_or_exit(root, target_session, username_password=(None, Non
         sys.exit()
 
 
-def login_with_form(target_session, username_password, form):
-    username, password = username_password
-    user_field, pass_field, submit_field = form
+class Navigator:
+    def __init__(self, target_session, target_args):
+        self._browser = StatefulBrowser(session=target_session)
+        self._args = target_args
 
-    # for xplor these are 'UserName, Password, .submit'
-    data = {user_field: username, pass_field: password, submit_field: 'y'}
+    def login_with_form(self, target_url, username_password, form, verbose=0):  # username_password, form, verbose=0):
 
-    response = target_session.post(args.root, data=data)
+        browser = self._browser
+        username, password = username_password
+        form_selector, user_field, pass_field, selector = form
 
-    if verbose > 1:
-        display_reponse(response,'login-response')
+        response = browser.open(target_url)
 
-    if response.status_code != 200:
-        raise DownloadFailedException(f"couldn't open the password page\n\n{response.text}")
+        if verbose > 1:
+            display_response(response, 'login-form')
 
-    return response.content
+        if response.status_code != 200:
+            raise DownloadFailedException(f"couldn't open the password page\n\n{response.text}")
 
+        if not form_selector:
+            form_selector = 'form'
+            browser.select_form(form_selector)
+        else:
+            browser.select_form(form_selector, 0)
+
+        browser[user_field] = username
+        browser[pass_field] = password
+        response = browser.submit_selected()
+
+        if verbose > 1:
+            display_response(response, 'login-response')
+
+        if response.status_code != 200:
+            raise DownloadFailedException(f"bad response from password page\n\n{response.text}")
+
+        return browser
+
+
+class XplorNavigator(Navigator):
+    def __init__(self, browser, target_args):
+        super(XplorNavigator, self).__init__(browser, target_args)
+    # UserName Password
+
+    def login_with_form(self, target_url, username_password, form=None, verbose=0):
+        if not form:
+            form = (0, 'UserName', 'Password', None)
+        super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
+
+    def get_urls(self):
+        browser = self._browser
+
+        form = browser.select_form(selector='form[method="POST"]', nr=3)
+
+        for i, target_url in enumerate(args.urls):
+            button = browser.get_current_page().find('input', value=target_url)
+            form.choose_submit(button)
+            browser.submit_selected()
+
+            page = browser.get_current_page()
+            if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
+                print(f"WARNING: ignored the selection {target_url} as it wasn't found in the page")
+
+            browser.select_form()
+            browser.submit_selected()
+
+            for link in browser.get_current_page().find_all('a'):
+                yield browser.absolute_url(link.get('href'))
+
+
+class UrlNavigator(Navigator):
+    def __init__(self, browser, target_args):
+        super(UrlNavigator, self).__init__(browser, target_args)
+    
+    def get_urls(self):
+        target_args = self._args
+
+        if target_args.form and target_args.root and not target_args.use_templates:
+            for target_url in target_args.urls:
+                yield target_url
+        elif target_args.root and not target_args.use_templates:
+            for target_url in get_urls_from_args(target_args.root, target_args.urls):
+                yield target_url
+        elif target_args.use_templates:
+            page = transfer_page(target_args.root, session, target_args.password)
+
+            for target_url in get_urls_for_templates(page, target_args.urls):
+                yield target_url
+        else:
+            print(f'Bad combination of template {target_args.use_templates} and root {target_args.root}')
+
+
+navigators = {'url': UrlNavigator, 'xplor': XplorNavigator}
 
 if __name__ == '__main__':
 
+    # noinspection PyTypeChecker
     parser = argparse.ArgumentParser(description='calculate hashes from web links.',
                                      formatter_class=RawTextHelpFormatter)
     parser.add_argument('-v', '--verbose', dest='verbose', default=0, action='count',
@@ -243,9 +319,11 @@ if __name__ == '__main__':
                         help='use urls as unix filename templates and scan the root page, --root must also be set...')
     parser.add_argument('-p', '--password', dest='password', nargs=2,  default=(None, None),
                         help='provide a username and password', metavar=('USERNAME', 'PASSWORD'))
-    parser.add_argument('-f', '--form', default=None, dest='form', nargs=3,
+    parser.add_argument('-f', '--form', default=None, dest='form', nargs=4,
                         help='use a form for login use root for the url of the form',
-                        metavar=('USERNAME_FIELD', 'PASSWORD_FIELD', 'SUBMIT_FIELD'))
+                        metavar=('FORM_SELECTOR', 'USERNAME_FIELD', 'PASSWORD_FIELD', 'SUBMIT_FIELD'))
+    parser.add_argument('-n', '--navigator', default='url', dest='navigator',
+                        help='method to navigate to download url, currently (supported: url [default], xplor)')
     parser.add_argument('urls', nargs='*')
     args = parser.parse_args()
 
@@ -253,9 +331,16 @@ if __name__ == '__main__':
 
     session = requests.session()
 
-    args.page = None
-    if args.form:
-        args.page = login_with_form(session, args.password, args.form)
+    if args.navigator not in navigators:
+        print(f'bad navigator {args.navigator} expected one of {", ".join(navigators.keys())}')
+        print('exiting...')
+        sys.exit(1)
+
+    navigator_class = navigators[args.navigator]
+    navigator = navigator_class(session, args)
+
+    if args.form or navigator_class != UrlNavigator:
+        navigator.login_with_form(args.root, args.password, args.form)
     else:
         check_root_exists_or_exit(args.root, session, username_password=args.password)
 
@@ -274,9 +359,10 @@ if __name__ == '__main__':
         try:
             _hash = get_hash_from_url(url, session, args.verbose, digest=args.digest, username_password=args.password)
             display_hash(url, _hash)
+
         except DownloadFailedException as e:
 
-            report_error(e)
+            report_error(url, e)
 
             if args.fail_early:
                 exit_if_asked()

@@ -33,18 +33,34 @@ if not package_root in sys.path:
 from nmrpack.lib.yaml import read_releases
 
 # this triggers
-import   nmrpack.packages.cns.fetchers
+import nmrpack.packages.cns.fetchers as fetchers
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
 
 import llnl.util.tty as tty
+import spack.error as error
 
 CNS_SOLVE_ENV = 'cns_solve_env'
 
 csh = which('csh')
 
+def check_config_file(*args,**kwargs):
+
+    value = args[-1][0]
+    indent = ' '* len('==> Error: ')
+    if value == 'none':
+        msg = 'the configuration flag is required and needs a configuration file ' \
+              'as an argument [configuration=<FILE_NAME>]'
+        raise error.SpecError(msg)
+    else:
+        result = fetchers.CNS_URL_Fetch_Strategy.check_configuration_file(value)
+        if result != fetchers.CNS_URL_Fetch_Strategy.OK:
+            raise error.SpecError(f'Error with configuration {value} {result}')
+
+
+
 class Cns(Package):
-    """CNS The Crystallography & NMR System for structure calculation (1.2 for ARIA) + aria patches"""
+    """CNS The Crystallography & NMR System for structure calculation (1.2 for ARIA + aria patches)"""
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://cns-online.org"
@@ -55,7 +71,7 @@ class Cns(Package):
     # patch to make SETFPEPS (set floating point epsilon work)
     # see https://ask.bioexcel.eu/t/cns-errors-before-after-recompilation/54
     # main patch courtesy of Brian Smith U of Glasgow
-    variant('configuration', default='none', description='where to find the configuration file')
+    variant('configuration', default='none', description='where to find the configuration file', validator=check_config_file)
     variant('fp_epsilon', default=True, description='SETFPEPS required for modern compilers')
     variant('aria', default=True, description='patches required to run aria')
 
