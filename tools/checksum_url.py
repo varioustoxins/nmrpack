@@ -7,9 +7,11 @@ import sys
 from urllib.parse import urlparse
 from os.path import split
 from argparse import RawTextHelpFormatter
+# noinspection PyProtectedMember
 from bs4 import BeautifulSoup, SoupStrainer
 from fnmatch import fnmatch
 from html2text import html2text
+from mechanicalsoup import StatefulBrowser
 
 session = None
 
@@ -83,12 +85,11 @@ def display_response(response, header='response'):
     display_text(text, header)
 
 
-
 def get_hash_from_url(target_url, target_session, verbose, digest='sha256', username_password=(None, None)):
 
     show_progress = verbose > 0
 
-    response = transfer_page(target_session, url, username_password)
+    response = transfer_page(target_session, target_url, username_password)
 
     if verbose > 1:
         display_response(response)
@@ -212,12 +213,15 @@ def check_root_exists_or_exit(root, target_session, username_password=(None, Non
 
 class Navigator:
     def __init__(self, target_session, target_args):
+        self._target_session = target_session
         self._browser = StatefulBrowser(session=target_session)
         self._args = target_args
+        self._target_url = None
+        self._username_password = None
+        self._form = None
 
-    def login_with_form(self, target_url, username_password, form, verbose=0):  # username_password, form, verbose=0):
-
-        browser = self._browser
+    @staticmethod
+    def _do_login(browser, target_url, username_password, form, verbose=0):
         username, password = username_password
         form_selector, user_field, pass_field, selector = form
 
@@ -247,6 +251,24 @@ class Navigator:
 
         return browser
 
+    def login_with_form(self, target_url, username_password, form, verbose=0):
+
+        browser = self._browser
+
+        self._target_url = target_url
+        self._username_password = username_password
+        self._form = form
+
+        self._do_login(browser, target_url, username_password, form, verbose)
+
+    def _re_login_with_form(self):
+
+        browser = StatefulBrowser(session=self._target_session)
+
+        self._do_login(browser, self._target_url, self._username_password, self._form)
+
+        return browser
+
 
 class XplorNavigator(Navigator):
     def __init__(self, browser, target_args):
@@ -259,24 +281,32 @@ class XplorNavigator(Navigator):
         super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
 
     def get_urls(self):
-        browser = self._browser
+        prototype_browser = self._browser
 
-        form = browser.select_form(selector='form[method="POST"]', nr=3)
+        all_buttons = prototype_browser.get_current_page().find_all('input')
+        targets = set()
+        for i, template in enumerate(args.urls):
+            for button in all_buttons:
+                if fnmatch(button['value'], template):
+                    targets.add(button['value'])
 
-        for i, target_url in enumerate(args.urls):
-            button = browser.get_current_page().find('input', value=target_url)
+        for button_value in targets:
+            browser = self._re_login_with_form()
+            form = browser.select_form(selector='form[method="POST"]', nr=3)
+            button = browser.get_current_page().find('input', value=button_value)
+
             form.choose_submit(button)
             browser.submit_selected()
 
             page = browser.get_current_page()
             if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
-                print(f"WARNING: ignored the selection {target_url} as it wasn't found in the page")
+                print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page")
+            else:
+                browser.select_form()
+                browser.submit_selected()
 
-            browser.select_form()
-            browser.submit_selected()
-
-            for link in browser.get_current_page().find_all('a'):
-                yield browser.absolute_url(link.get('href'))
+                for link in browser.get_current_page().find_all('a'):
+                    yield browser.absolute_url(link.get('href'))
 
 
 class UrlNavigator(Navigator):
