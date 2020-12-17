@@ -9,6 +9,7 @@ from os.path import split
 from argparse import RawTextHelpFormatter
 from bs4 import BeautifulSoup, SoupStrainer
 from fnmatch import fnmatch
+from html2text import html2text
 
 session = None
 
@@ -53,9 +54,44 @@ class DownloadFailedException(Exception):
         super(DownloadFailedException, self).__init__(msg)
 
 
-def get_hash_from_url(target_url, target_session, show_progress=False, digest='sha256', username_password=(None, None)):
+def display_text(text, header):
+
+    max_line_length = 0
+    for line in text.split('\n'):
+        line_length = len(line)
+        if line_length > max_line_length:
+            max_line_length = line_length
+
+    under_length = max_line_length - len(header)
+    if under_length <= 6:
+        under_length = 6
+
+    if under_length % 2:
+        under_length += 1
+
+    under_length //= 2
+
+    print('-'*under_length + header + '-'*under_length )
+    print()
+    print(text)
+    print()
+    print('-' * (under_length*2 + len(header)))
+
+
+def display_reponse(response, header='response'):
+    text = html2text(response.text)
+    display_text(text, header)
+
+
+
+def get_hash_from_url(target_url, target_session, verbose, digest='sha256', username_password=(None, None)):
+
+    show_progress = verbose > 0
 
     response = transfer_page(target_session, url, username_password)
+
+    if verbose > 1:
+        display_reponse(response)
 
     total_data_length = response.headers.get('content-length')
 
@@ -182,6 +218,10 @@ def login_with_form(target_session, username_password, form):
     data = {user_field: username, pass_field: password, submit_field: 'y'}
 
     response = target_session.post(args.root, data=data)
+
+    if verbose > 1:
+        display_reponse(response,'login-response')
+
     if response.status_code != 200:
         raise DownloadFailedException(f"couldn't open the password page\n\n{response.text}")
 
@@ -192,8 +232,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='calculate hashes from web links.',
                                      formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-v', '--verbose', dest='verbose', default=False, action='store_true',
-                        help='verbose output with progress bars')
+    parser.add_argument('-v', '--verbose', dest='verbose', default=0, action='count',
+                        help='verbose output (>0  with progress bars, >1 with html responses)')
     parser.add_argument('-e', '--fail-early', dest='fail_early', default=False, action='store_true',
                         help='exit on first error')
     parser.add_argument('-r', '--root', dest='root', default=None, help='root url to add command line arguments to')
@@ -213,10 +253,9 @@ if __name__ == '__main__':
 
     session = requests.session()
 
-    page = None
-    urls = []
+    args.page = None
     if args.form:
-        page = login_with_form(session, args.password, args.form)
+        args.page = login_with_form(session, args.password, args.form)
     else:
         check_root_exists_or_exit(args.root, session, username_password=args.password)
 
