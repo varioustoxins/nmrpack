@@ -274,7 +274,14 @@ class XplorNavigator(Navigator):
 
     def __init__(self, browser, target_args):
         super(XplorNavigator, self).__init__(browser, target_args)
-    # UserName Password
+
+    def show_license(self, page):
+        print()
+        print(html2text(str(page)))
+        agree = [input for input in page.find_all('input') if input['name'] == 'AgreeToLicense'][0]
+        print()
+        print(agree['value'])
+        print()
 
     def login_with_form(self, target_url, username_password, form=None, verbose=0):
         if not form:
@@ -291,7 +298,7 @@ class XplorNavigator(Navigator):
                 if fnmatch(button['value'], template):
                     targets.add(button['value'])
 
-        for button_value in targets:
+        for i, button_value in enumerate(targets):
             browser = self._re_login_with_form()
             form = browser.select_form(selector='form[method="POST"]', nr=3)
             button = browser.get_current_page().find('input', value=button_value)
@@ -300,6 +307,10 @@ class XplorNavigator(Navigator):
             browser.submit_selected()
 
             page = browser.get_current_page()
+
+            if i == 0:
+                self.show_license(page)
+
             if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
                 print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page")
             else:
