@@ -271,6 +271,7 @@ class Navigator:
 
 
 class XplorNavigator(Navigator):
+
     def __init__(self, browser, target_args):
         super(XplorNavigator, self).__init__(browser, target_args)
     # UserName Password
@@ -285,7 +286,7 @@ class XplorNavigator(Navigator):
 
         all_buttons = prototype_browser.get_current_page().find_all('input')
         targets = set()
-        for i, template in enumerate(args.urls):
+        for template in args.urls:
             for button in all_buttons:
                 if fnmatch(button['value'], template):
                     targets.add(button['value'])
