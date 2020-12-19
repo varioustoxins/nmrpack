@@ -270,18 +270,19 @@ class Navigator:
         return browser
 
 
+def show_license(page):
+    print()
+    print(html2text(str(page)))
+    agree = [input_elem for input_elem in page.find_all('input') if input_elem['name'] == 'AgreeToLicense'][0]
+    print()
+    print(agree['value'])
+    print()
+
+
 class XplorNavigator(Navigator):
 
     def __init__(self, browser, target_args):
         super(XplorNavigator, self).__init__(browser, target_args)
-
-    def show_license(self, page):
-        print()
-        print(html2text(str(page)))
-        agree = [input for input in page.find_all('input') if input['name'] == 'AgreeToLicense'][0]
-        print()
-        print(agree['value'])
-        print()
 
     def login_with_form(self, target_url, username_password, form=None, verbose=0):
         if not form:
@@ -309,7 +310,11 @@ class XplorNavigator(Navigator):
             page = browser.get_current_page()
 
             if i == 0:
-                self.show_license(page)
+                show_license(page)
+                if not query_yes_no('Do you accept the license?'):
+                    print('License not accepted!')
+                    print('exiting...')
+                    sys.exit(1)
 
             if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
                 print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page")
@@ -368,7 +373,6 @@ if __name__ == '__main__':
                         help='method to navigate to download url, currently (supported: url [default], xplor)')
     parser.add_argument('urls', nargs='*')
     args = parser.parse_args()
-
     args.password = tuple(args.password)
 
     session = requests.session()
