@@ -277,7 +277,8 @@ def exit_if_asked():
     sys.exit(1)
 
 
-def display_hash(target_url, _hash):
+def display_hash(target_url, _hash, url_field_length):
+    target_url = target_url.ljust(url_field_length)
     sys.stdout.write(f"\r{target_url} {_hash}")
 
 
@@ -419,6 +420,8 @@ class XplorNavigator(Navigator):
         super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
 
     def get_urls(self):
+
+        result = []
         prototype_browser = self._browser
 
         all_buttons = prototype_browser.get_current_page().find_all('input')
@@ -449,12 +452,16 @@ class XplorNavigator(Navigator):
                         print('License not accepted!')
                         print('exiting...')
                         sys.exit(1)
+                    else:
+                        print()
 
             browser.select_form()
             browser.submit_selected()
 
             for link in browser.get_current_page().find_all('a'):
-                yield browser.absolute_url(link.get('href'))
+                result.append(browser.absolute_url(link.get('href')))
+
+        return result
 
 
 class UrlNavigator(Navigator):
@@ -464,19 +471,22 @@ class UrlNavigator(Navigator):
     def get_urls(self):
         target_args = self._args
 
+        result = []
         if target_args.form and target_args.root and not target_args.use_templates:
             for target_url in target_args.urls:
-                yield target_url
+                result.append(target_url)
         elif target_args.root and not target_args.use_templates:
             for target_url in get_urls_from_args(target_args.root, target_args.urls):
-                yield target_url
+                result.append(target_url)
         elif target_args.use_templates:
             page = transfer_page(target_args.root, session, target_args.password)
 
             for target_url in get_urls_for_templates(page, target_args.urls):
-                yield target_url
+                result.append(target_url)
         else:
             print(f'Bad combination of template {target_args.use_templates} and root {target_args.root}')
+
+        return result
 
 
 navigators = {'url': UrlNavigator, 'xplor': XplorNavigator}
@@ -523,6 +533,10 @@ def show_yes_message_cancel_or_wait():
         print()
         print('canceled, exiting...')
         sys.exit(0)
+
+
+def get_max_string_length(in_urls):
+    return max([len(in_url) for in_url in in_urls])
 
 
 if __name__ == '__main__':
@@ -585,7 +599,7 @@ if __name__ == '__main__':
     for url in urls:
         try:
             _hash = get_hash_from_url(url, session, args.verbose, digest=args.digest, username_password=args.password)
-            display_hash(url, _hash)
+            display_hash(url, _hash, max_length_url)
 
         except DownloadFailedException as e:
 
