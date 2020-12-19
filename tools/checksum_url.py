@@ -18,6 +18,9 @@ import os
 
 session = None
 
+COUNT = 'count'
+STORE_TRUE = 'store_true'
+
 # https://gist.github.com/michelbl/efda48b19d3e587685e3441a74457024
 # Windows
 if os.name == 'nt':
@@ -527,14 +530,14 @@ if __name__ == '__main__':
     # noinspection PyTypeChecker
     parser = argparse.ArgumentParser(description='calculate hashes from web links.',
                                      formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-v', '--verbose', dest='verbose', default=0, action='count',
+    parser.add_argument('-v', '--verbose', dest='verbose', default=0, action=COUNT,
                         help='verbose output (>0  with progress bars, >1 with html responses)')
-    parser.add_argument('-e', '--fail-early', dest='fail_early', default=False, action='store_true',
+    parser.add_argument('-e', '--fail-early', dest='fail_early', default=False, action=STORE_TRUE,
                         help='exit on first error')
     parser.add_argument('-r', '--root', dest='root', default=None, help='root url to add command line arguments to')
     parser.add_argument('-d', '--digest', dest='digest', default='sha256',
                         help=f'which digest algorithm to use: \n\n{digests_formatted()}\n')
-    parser.add_argument('-t', '--template', dest='use_templates', default=False, action='store_true',
+    parser.add_argument('-t', '--template', dest='use_templates', default=False, action=STORE_TRUE,
                         help='use urls as unix filename templates and scan the root page, --root must also be set...')
     parser.add_argument('-p', '--password', dest='password', nargs=2,  default=(None, None),
                         help='provide a username and password', metavar=('USERNAME', 'PASSWORD'))
@@ -546,6 +549,7 @@ if __name__ == '__main__':
     parser.add_argument('-y', '--yes', default=False, dest='yes', action=STORE_TRUE,
                         help='answer yes to all questions, including accepting licenses')
     parser.add_argument('urls', nargs='*')
+
     args = parser.parse_args()
     args.password = tuple(args.password)
 
