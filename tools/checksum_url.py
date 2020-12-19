@@ -12,8 +12,134 @@ from bs4 import BeautifulSoup, SoupStrainer
 from fnmatch import fnmatch
 from html2text import html2text
 from mechanicalsoup import StatefulBrowser
+from time import sleep
+from tqdm import tqdm
+import os
 
 session = None
+
+# https://gist.github.com/michelbl/efda48b19d3e587685e3441a74457024
+# Windows
+if os.name == 'nt':
+    import msvcrt
+
+# Posix (Linux, OS X)
+else:
+    import sys
+    import termios
+    import atexit
+    from select import select
+
+
+def keyboard_hit():
+    """ Returns True if keyboard character was hit, False otherwise.
+    """
+    if os.name == 'nt':
+        return msvcrt.keyboard_hit()
+
+    else:
+        dr, dw, de = select([sys.stdin], [], [], 0)
+        return dr != []
+
+
+def get_char():
+    """ Returns a keyboard character after keyboard_hit() has been called.
+        Should not be called in the same program as get_arrow().
+    """
+
+    if os.name == 'nt':
+        return msvcrt.get_char().decode('utf-8')
+
+    else:
+        return sys.stdin.read(1)
+
+
+def get_arrow():
+    """ Returns an arrow-key code after keyboard_hit() has been called. Codes are
+    0 : up
+    1 : right
+    2 : down
+    3 : left
+    Should not be called in the same program as get_char().
+    """
+
+    if os.name == 'nt':
+        msvcrt.get_char()  # skip 0xE0
+        c = msvcrt.get_char()
+        values = [72, 77, 80, 75]
+
+    else:
+        c = sys.stdin.read(3)[2]
+        values = [65, 67, 66, 68]
+
+    return values.index(ord(c.decode('utf-8')))
+
+
+class KBHit:
+
+    def __init__(self):
+        """Creates a KBHit object that you can call to do various keyboard things.
+        """
+
+        if os.name == 'nt':
+            pass
+
+        else:
+
+            # Save the terminal settings
+            self.fd = sys.stdin.fileno()
+            self.new_term = termios.tcgetattr(self.fd)
+            self.old_term = termios.tcgetattr(self.fd)
+
+            # New terminal setting unbuffered
+            self.new_term[3] = (self.new_term[3] & ~termios.ICANON & ~termios.ECHO)
+            termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.new_term)
+
+            # Support normal-terminal reset at exit
+            atexit.register(self.set_normal_term)
+
+    def set_normal_term(self):
+        """ Resets to normal terminal.  On Windows this is a no-op.
+        """
+
+        if os.name == 'nt':
+            pass
+
+        else:
+            termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
+
+
+# https://stackoverflow.com/questions/3041986/apt-command-line-interface-like-yes-no-input
+def query_yes_no(question, default="yes"):
+    """Ask a yes/no question via raw_input() and return their answer.
+
+    "question" is a string that is presented to the user.
+    "default" is the presumed answer if the user just hits <Enter>.
+        It must be "yes" (the default), "no" or None (meaning
+        an answer is required of the user).
+
+    The "answer" return value is True for "yes" or False for "no".
+    """
+    valid = {"yes": True, "y": True, "ye": True,
+             "no": False, "n": False}
+    if default is None:
+        prompt = " [y/n] "
+    elif default == "yes":
+        prompt = " [Y/n] "
+    elif default == "no":
+        prompt = " [y/N] "
+    else:
+        raise ValueError("invalid default answer: '%s'" % default)
+
+    while True:
+        choice = input(question + prompt).lower()
+        if default is not None and choice == '':
+            return valid[default]
+        elif choice in valid:
+            return valid[choice]
+        else:
+            sys.stdout.write("Please respond with 'yes' or 'no' "
+                             "(or 'y' or 'n').\n")
 
 
 def test_hash_length():
@@ -309,21 +435,23 @@ class XplorNavigator(Navigator):
 
             page = browser.get_current_page()
 
-            if i == 0:
-                show_license(page)
-                if not query_yes_no('Do you accept the license?'):
-                    print('License not accepted!')
-                    print('exiting...')
-                    sys.exit(1)
-
             if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
                 print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page")
-            else:
-                browser.select_form()
-                browser.submit_selected()
+                continue
 
-                for link in browser.get_current_page().find_all('a'):
-                    yield browser.absolute_url(link.get('href'))
+            if i == 0:
+                show_license(page)
+                if not self._args.yes:
+                    if not query_yes_no('Do you accept the license?'):
+                        print('License not accepted!')
+                        print('exiting...')
+                        sys.exit(1)
+
+            browser.select_form()
+            browser.submit_selected()
+
+            for link in browser.get_current_page().find_all('a'):
+                yield browser.absolute_url(link.get('href'))
 
 
 class UrlNavigator(Navigator):
@@ -350,6 +478,50 @@ class UrlNavigator(Navigator):
 
 navigators = {'url': UrlNavigator, 'xplor': XplorNavigator}
 
+
+def show_yes_message_cancel_or_wait():
+    print('''
+        --------------------------**NOTE**--------------------------
+        
+            You have used the --yes facility all licenses will 
+            now be displayed and then accepted **automatically**
+            
+            press y or space bar to continue
+            
+            press any other key to exit...
+            
+        ------------------------------------------------------------
+    ''')
+
+    progress_bar = tqdm(total=10, bar_format='        {desc}{bar:45}', file=sys.stdout, leave=False)
+
+    kb = KBHit()
+
+    doit = True
+    for i in range(100):
+        sleep(0.1)
+        progress_bar.update(0.1)
+        progress_bar.set_description(f'{int((100-i)/10)}s remaining ')
+
+        if keyboard_hit():
+            c = get_char()
+            if ord(c) in (ord(' '), ord('y'), ord('Y')):
+                doit = True
+                progress_bar.close()
+                break
+            else:
+                doit = False
+                progress_bar.close()
+                break
+
+    kb.set_normal_term()
+
+    if not doit:
+        print()
+        print('canceled, exiting...')
+        sys.exit(0)
+
+
 if __name__ == '__main__':
 
     # noinspection PyTypeChecker
@@ -371,9 +543,14 @@ if __name__ == '__main__':
                         metavar=('FORM_SELECTOR', 'USERNAME_FIELD', 'PASSWORD_FIELD', 'SUBMIT_FIELD'))
     parser.add_argument('-n', '--navigator', default='url', dest='navigator',
                         help='method to navigate to download url, currently (supported: url [default], xplor)')
+    parser.add_argument('-y', '--yes', default=False, dest='yes', action=STORE_TRUE,
+                        help='answer yes to all questions, including accepting licenses')
     parser.add_argument('urls', nargs='*')
     args = parser.parse_args()
     args.password = tuple(args.password)
+
+    if args.yes:
+        show_yes_message_cancel_or_wait()
 
     session = requests.session()
 
