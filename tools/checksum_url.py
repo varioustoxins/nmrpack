@@ -4,12 +4,10 @@ from re import finditer
 import argparse
 import requests
 import sys
-from urllib.parse import urlparse
-from os.path import split
 from argparse import RawTextHelpFormatter
 # noinspection PyProtectedMember
 from bs4 import BeautifulSoup, SoupStrainer
-from fnmatch import fnmatch
+from fnmatch import fnmatch, filter
 from html2text import html2text
 from mechanicalsoup import StatefulBrowser
 from time import sleep
@@ -145,8 +143,8 @@ def query_yes_no(question, default="yes"):
                              "(or 'y' or 'n').\n")
 
 
-def test_hash_length():
-    m = hashlib.md5()
+def test_hash_length(digester_factory):
+    m = digester_factory()
     m.update(b'flibbertigibbet')
     return len(m.hexdigest())
 
@@ -164,20 +162,6 @@ def write_digest(target_url, digest):
 
 def get_failure_message(target_url, message):
     return f"\r{target_url} download failed [{message}]"
-
-
-def get_bar(display_length, data_length, total_data_length):
-    done = int(display_length * data_length / total_data_length)
-    return '[%s%s]' % ('=' * done, ' ' * (display_length - done))
-
-
-def write_progress(target_url, display_length, data_length, total_data_length):
-
-    bar = get_bar(display_length, data_length, total_data_length)
-    url_components = urlparse(target_url)
-    file = split(url_components.path)[-1]
-    sys.stdout.write(f"\r{file} {bar}")
-    sys.stdout.flush()
 
 
 class DownloadFailedException(Exception):
@@ -214,35 +198,53 @@ def display_response(response, header='response'):
     display_text(text, header)
 
 
-def get_hash_from_url(target_url, target_session, verbose, digest='sha256', username_password=(None, None)):
+suffixes = ['B ', 'KB', 'MB', 'GB', 'TB', 'PB']
+
+
+def human_size(number_bytes):
+    index = 0
+    while number_bytes >= 1024 and index < len(suffixes)-1:
+        number_bytes /= 1024.
+        index += 1
+    f = ('%6.2f' % number_bytes).rstrip('0').rstrip('.')
+    return '%s %s' % (f, suffixes[index])
+
+
+def get_hash_from_url(target_url, target_session, verbose, url_length, count, digest='sha256',
+                      username_password=(None, None)):
 
     show_progress = verbose > 0
 
     response = transfer_page(target_session, target_url, username_password)
 
-    if verbose > 1:
-        display_response(response)
-
     total_data_length = response.headers.get('content-length')
 
-    digester = getattr(hashlib, digest)()
+    digester_factory = getattr(hashlib, digest)
+    digester = digester_factory()
 
-    display_length = test_hash_length()
+    bar_length = 80 - 56
 
+    t = None
     if response.status_code != 200:
         raise DownloadFailedException(f"download failed [response was {response.status_code}]")
     elif total_data_length is None:
         digester.update(response.content)
     else:
         try:
-            data_length = 0
             total_data_length = int(total_data_length)
+
+            human = human_size(total_data_length)
+            if show_progress:
+                bar_format = f'Reading {count} {human} {{l_bar}}{{bar:{bar_length}}} [remaining time: {{remaining}}]'
+                t = tqdm(total=total_data_length, bar_format=bar_format, file=sys.stdout, leave=False)
+
             for data in response.iter_content(chunk_size=4096):
-                data_length += len(data)
+                if show_progress:
+                    t.update(len(data))
                 digester.update(data)
 
-                if show_progress:
-                    write_progress(target_url, display_length, data_length, total_data_length)
+            if show_progress:
+                t.close()
 
         except Exception as exception:
             raise DownloadFailedException(get_failure_message(target_url, exception_to_message(exception)))
@@ -265,9 +267,11 @@ def transfer_page(target_session, target_url, username_password):
     return response
 
 
-def report_error(target_url, error):
+def report_error(target_url, error, url_length, index):
     msg = " ".join(error.args)
-    sys.stdout.write(f"\r{target_url} {msg}")
+    target_url = target_url.ljust(url_length)
+    index_string = f'[{index}]'.ljust(5)
+    sys.stdout.write(f"\rsum {index_string} {target_url} {msg}")
 
 
 def exit_if_asked():
@@ -277,15 +281,16 @@ def exit_if_asked():
     sys.exit(1)
 
 
-def display_hash(target_url, _hash, url_field_length):
+def display_hash(target_url, _hash, url_field_length, index):
     target_url = target_url.ljust(url_field_length)
-    sys.stdout.write(f"\r{target_url} {_hash}")
+    index_string = f'[{index}]'.ljust(5)
+    sys.stdout.write(f"\rsum {index_string} {target_url} {_hash}")
 
 
 def chunks(lst, n):
     """Yield successive n-sized chunks from lst."""
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+    for index in range(0, len(lst), n):
+        yield lst[index:index + n]
 
 
 NEW_LINE = '\n'
@@ -425,13 +430,16 @@ class XplorNavigator(Navigator):
         prototype_browser = self._browser
 
         all_buttons = prototype_browser.get_current_page().find_all('input')
-        targets = set()
-        for template in args.urls:
-            for button in all_buttons:
-                if fnmatch(button['value'], template):
-                    targets.add(button['value'])
+        all_button_names = (button['value'] for button in all_buttons)
 
-        for i, button_value in enumerate(targets):
+        target_names = set()
+        for template in args.urls:
+            target_names.update(filter(all_button_names, template))
+
+        show_progress = self._args.verbose > 1
+
+        t = None
+        for target_index, button_value in enumerate(target_names):
             browser = self._re_login_with_form()
             form = browser.select_form(selector='form[method="POST"]', nr=3)
             button = browser.get_current_page().find('input', value=button_value)
@@ -445,7 +453,7 @@ class XplorNavigator(Navigator):
                 print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page")
                 continue
 
-            if i == 0:
+            if target_index == 0:
                 show_license(page)
                 if not self._args.yes:
                     if not query_yes_no('Do you accept the license?'):
@@ -460,6 +468,17 @@ class XplorNavigator(Navigator):
 
             for link in browser.get_current_page().find_all('a'):
                 result.append(browser.absolute_url(link.get('href')))
+
+            if show_progress:
+                if target_index == 0:
+                    if show_progress:
+                        bar_format = f'Reading urls {{l_bar}}{{bar: 92}} [remaining time: {{remaining}}]'
+                        t = tqdm(total=len(target_names) - 1, bar_format=bar_format, file=sys.stdout, leave=False)
+                else:
+                    t.update()
+
+        if show_progress:
+            t.close()
 
         return result
 
@@ -511,10 +530,10 @@ def show_yes_message_cancel_or_wait():
     kb = KBHit()
 
     doit = True
-    for i in range(100):
+    for index in range(100):
         sleep(0.1)
         progress_bar.update(0.1)
-        progress_bar.set_description(f'{int((100-i)/10)}s remaining ')
+        progress_bar.set_description(f'{int((100-index)/10)}s remaining ')
 
         if keyboard_hit():
             c = get_char()
@@ -536,7 +555,14 @@ def show_yes_message_cancel_or_wait():
 
 
 def get_max_string_length(in_urls):
-    return max([len(in_url) for in_url in in_urls])
+    num_urls = len(in_urls)
+    if num_urls > 1:
+        result = max([len(in_url) for in_url in in_urls])
+    elif num_urls > 0:
+        result = len(in_urls[0])
+    else:
+        result = 0
+    return result
 
 
 if __name__ == '__main__':
@@ -598,13 +624,15 @@ if __name__ == '__main__':
 
     for url in urls:
         try:
-            _hash = get_hash_from_url(url, session, args.verbose, digest=args.digest, username_password=args.password)
-            display_hash(url, _hash, max_length_url)
+            _hash = get_hash_from_url(url, session, args.verbose, max_length_url, x_of_y, digest=args.digest,
+                                      username_password=args.password)
+            display_hash(url, _hash, max_length_url, i+1)
 
         except DownloadFailedException as e:
 
-            report_error(url, e)
+            report_error(url, e, max_length_url, i+1)
 
             if args.fail_early:
                 exit_if_asked()
+
         print()
