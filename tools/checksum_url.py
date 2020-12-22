@@ -1,18 +1,40 @@
 
 import hashlib
+import inspect
+from pathlib import Path
 from re import finditer
 import argparse
 import requests
 import sys
 from argparse import RawTextHelpFormatter
-# noinspection PyProtectedMember
-from bs4 import BeautifulSoup, SoupStrainer
-from fnmatch import fnmatch, filter
 from html2text import html2text
 from mechanicalsoup import StatefulBrowser
 from time import sleep
 from tqdm import tqdm
 import os
+import pluggy
+import importlib
+
+CHECK_SUM_PROJECT = "check_sum_url"
+CHECK_SUM_SPEC = pluggy.HookspecMarker(CHECK_SUM_PROJECT)
+CHECK_SUM_IMPL = pluggy.HookimplMarker(CHECK_SUM_PROJECT)
+
+
+class ChecksumHookspecs:
+
+    @CHECK_SUM_SPEC
+    def create_navigator(self, name, target_browser, target_args):
+        """create a new navigator
+        """
+
+    @CHECK_SUM_SPEC
+    def get_plugin_name(self):
+        """get the name of the navigator
+        """
+
+
+pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
+pm.add_hookspecs(ChecksumHookspecs)
 
 session = None
 
@@ -55,27 +77,6 @@ def get_char():
         return sys.stdin.read(1)
 
 
-def get_arrow():
-    """ Returns an arrow-key code after keyboard_hit() has been called. Codes are
-    0 : up
-    1 : right
-    2 : down
-    3 : left
-    Should not be called in the same program as get_char().
-    """
-
-    if os.name == 'nt':
-        msvcrt.get_char()  # skip 0xE0
-        c = msvcrt.get_char()
-        values = [72, 77, 80, 75]
-
-    else:
-        c = sys.stdin.read(3)[2]
-        values = [65, 67, 66, 68]
-
-    return values.index(ord(c.decode('utf-8')))
-
-
 class KBHit:
 
     def __init__(self):
@@ -108,39 +109,6 @@ class KBHit:
 
         else:
             termios.tcsetattr(self.fd, termios.TCSAFLUSH, self.old_term)
-
-
-# https://stackoverflow.com/questions/3041986/apt-command-line-interface-like-yes-no-input
-def query_yes_no(question, default="yes"):
-    """Ask a yes/no question via raw_input() and return their answer.
-
-    "question" is a string that is presented to the user.
-    "default" is the presumed answer if the user just hits <Enter>.
-        It must be "yes" (the default), "no" or None (meaning
-        an answer is required of the user).
-
-    The "answer" return value is True for "yes" or False for "no".
-    """
-    valid = {"yes": True, "y": True, "ye": True,
-             "no": False, "n": False}
-    if default is None:
-        prompt = " [y/n] "
-    elif default == "yes":
-        prompt = " [Y/n] "
-    elif default == "no":
-        prompt = " [y/N] "
-    else:
-        raise ValueError("invalid default answer: '%s'" % default)
-
-    while True:
-        choice = input(question + prompt).lower()
-        if default is not None and choice == '':
-            return valid[default]
-        elif choice in valid:
-            return valid[choice]
-        else:
-            sys.stdout.write("Please respond with 'yes' or 'no' "
-                             "(or 'y' or 'n').\n")
 
 
 def test_hash_length(digester_factory):
@@ -210,7 +178,23 @@ def human_size(number_bytes):
     return '%s %s' % (f, suffixes[index])
 
 
-def get_hash_from_url(target_url, target_session, verbose, url_length, count, digest='sha256',
+def transfer_page(target_session, target_url, username_password):
+    if username_password != (None, None):
+        username, password = username_password
+
+        auth = requests.auth.HTTPBasicAuth(username, password)
+        response = target_session.get(target_url, allow_redirects=True, timeout=10, stream=True, auth=auth)
+
+        if response.status_code != 200:
+            auth = requests.auth.HTTPDigestAuth(username, password)
+            response = target_session.get(target_url, allow_redirects=True, timeout=10, stream=True, auth=auth)
+
+    else:
+        response = target_session.get(target_url, allow_redirects=True, timeout=10, stream=True)
+    return response
+
+
+def get_hash_from_url(target_url, target_session, verbose, count, digest='sha256',
                       username_password=(None, None)):
 
     show_progress = verbose > 0
@@ -250,21 +234,6 @@ def get_hash_from_url(target_url, target_session, verbose, url_length, count, di
             raise DownloadFailedException(get_failure_message(target_url, exception_to_message(exception)))
     return digester.hexdigest()
 
-
-def transfer_page(target_session, target_url, username_password):
-    if username_password != (None, None):
-        username, password = username_password
-
-        auth = requests.auth.HTTPBasicAuth(username, password)
-        response = target_session.get(target_url, allow_redirects=True, timeout=10, stream=True, auth=auth)
-
-        if response.status_code != 200:
-            auth = requests.auth.HTTPDigestAuth(username, password)
-            response = target_session.get(target_url, allow_redirects=True, timeout=10, stream=True, auth=auth)
-
-    else:
-        response = target_session.get(target_url, allow_redirects=True, timeout=10, stream=True)
-    return response
 
 
 def report_error(target_url, error, url_length, index):
@@ -310,40 +279,8 @@ def check_root_set_or_exit(target_args):
         sys.exit()
 
 
-def get_urls_for_templates(target_page, templates):
-
-    target_urls = []
-    result = []
-    for link in BeautifulSoup(target_page, parse_only=SoupStrainer('a'), features="html.parser"):
-
-        if link.has_attr('href'):
-            target_urls.append(link['href'])
-
-        result = set()
-        for target_url in target_urls:
-            for template in templates:
-                if fnmatch(target_url.rsplit('/', 1)[-1], template):
-                    result.add(target_url)
-
-    return list(result)
 
 
-def get_urls_from_args(root, target_urls):
-
-    if root:
-        target_urls = [f'{root}/{target_url}' for target_url in target_urls]
-    
-    return target_urls
-
-
-def check_root_exists_or_exit(root, target_session, username_password=(None, None)):
-
-    response = transfer_page(target_session, root, username_password)
-
-    if response.status_code != 200:
-        print(f"the web site {root} isn't accessible")
-        print('exiting...')
-        sys.exit()
 
 
 class Navigator:
@@ -405,112 +342,6 @@ class Navigator:
         return browser
 
 
-def show_license(page):
-    print()
-    print(html2text(str(page)))
-    agree = [input_elem for input_elem in page.find_all('input') if input_elem['name'] == 'AgreeToLicense'][0]
-    print()
-    print(agree['value'])
-    print()
-
-
-class XplorNavigator(Navigator):
-
-    def __init__(self, browser, target_args):
-        super(XplorNavigator, self).__init__(browser, target_args)
-
-    def login_with_form(self, target_url, username_password, form=None, verbose=0):
-        if not form:
-            form = (0, 'UserName', 'Password', None)
-        super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
-
-    def get_urls(self):
-
-        result = []
-        prototype_browser = self._browser
-
-        all_buttons = prototype_browser.get_current_page().find_all('input')
-        all_button_names = (button['value'] for button in all_buttons)
-
-        target_names = set()
-        for template in args.urls:
-            target_names.update(filter(all_button_names, template))
-
-        show_progress = self._args.verbose > 1
-
-        t = None
-        for target_index, button_value in enumerate(target_names):
-            browser = self._re_login_with_form()
-            form = browser.select_form(selector='form[method="POST"]', nr=3)
-            button = browser.get_current_page().find('input', value=button_value)
-
-            form.choose_submit(button)
-            browser.submit_selected()
-
-            page = browser.get_current_page()
-
-            if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
-                print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page")
-                continue
-
-            if target_index == 0:
-                show_license(page)
-                if not self._args.yes:
-                    if not query_yes_no('Do you accept the license?'):
-                        print('License not accepted!')
-                        print('exiting...')
-                        sys.exit(1)
-                    else:
-                        print()
-
-            browser.select_form()
-            browser.submit_selected()
-
-            for link in browser.get_current_page().find_all('a'):
-                result.append(browser.absolute_url(link.get('href')))
-
-            if show_progress:
-                if target_index == 0:
-                    if show_progress:
-                        bar_format = f'Reading urls {{l_bar}}{{bar: 92}} [remaining time: {{remaining}}]'
-                        t = tqdm(total=len(target_names) - 1, bar_format=bar_format, file=sys.stdout, leave=False)
-                else:
-                    t.update()
-
-        if show_progress:
-            t.close()
-
-        return result
-
-
-class UrlNavigator(Navigator):
-    def __init__(self, browser, target_args):
-        super(UrlNavigator, self).__init__(browser, target_args)
-    
-    def get_urls(self):
-        target_args = self._args
-
-        result = []
-        if target_args.form and target_args.root and not target_args.use_templates:
-            for target_url in target_args.urls:
-                result.append(target_url)
-        elif target_args.root and not target_args.use_templates:
-            for target_url in get_urls_from_args(target_args.root, target_args.urls):
-                result.append(target_url)
-        elif target_args.use_templates:
-            page = transfer_page(target_args.root, session, target_args.password)
-
-            for target_url in get_urls_for_templates(page, target_args.urls):
-                result.append(target_url)
-        else:
-            print(f'Bad combination of template {target_args.use_templates} and root {target_args.root}')
-
-        return result
-
-
-navigators = {'url': UrlNavigator, 'xplor': XplorNavigator}
-
-
 def show_yes_message_cancel_or_wait():
     print('''
         --------------------------**NOTE**--------------------------
@@ -565,7 +396,50 @@ def get_max_string_length(in_urls):
     return result
 
 
+def get_script_directory():
+    return os.path.dirname(os.path.realpath(__file__))
+
+
+def load_plugins():
+
+    result = []
+
+    plugins_dir = Path(get_script_directory()) / Path('checksum_plugins')
+
+    importlib.import_module('checksum_plugins')
+    for file_name in plugins_dir.iterdir():
+        print(file_name)
+
+        if file_name.suffix == '.py' and file_name.name.endswith('_plugin.py'):
+            module_name = 'checksum_plugins.' + file_name.name[0:-len('.py')]
+            result.append(importlib.import_module(module_name))
+
+    return result
+
+def load_factory_classes(modules):
+
+    result = []
+    for module in modules:
+        for name, cls in inspect.getmembers(module, inspect.isclass):
+            if name.endswith('Factory'):
+                result.append(cls)
+    return result
+
+
+def load_and_register_factory_classes(pm):
+    modules = load_plugins()
+    factories = load_factory_classes(modules)
+
+    for factory in factories:
+        instance = factory()
+        pm.register(instance)
+
+
 if __name__ == '__main__':
+
+    load_and_register_factory_classes(pm)
+
+    navigator_names = ', '.join(pm.hook.get_plugin_name())
 
     # noinspection PyTypeChecker
     parser = argparse.ArgumentParser(description='calculate hashes from web links.',
@@ -585,7 +459,7 @@ if __name__ == '__main__':
                         help='use a form for login use root for the url of the form',
                         metavar=('FORM_SELECTOR', 'USERNAME_FIELD', 'PASSWORD_FIELD', 'SUBMIT_FIELD'))
     parser.add_argument('-n', '--navigator', default='url', dest='navigator',
-                        help='method to navigate to download url, currently (supported: url [default], xplor)')
+                        help=f'method to navigate to download url, currently (supported: {navigator_names})')
     parser.add_argument('-y', '--yes', default=False, dest='yes', action=STORE_TRUE,
                         help='answer yes to all questions, including accepting licenses')
     parser.add_argument('urls', nargs='*')
@@ -598,18 +472,19 @@ if __name__ == '__main__':
 
     session = requests.session()
 
-    if args.navigator not in navigators:
-        print(f'bad navigator {args.navigator} expected one of {", ".join(navigators.keys())}')
+    navigators = pm.hook.create_navigator(name=args.navigator, target_browser=session, target_args=args)
+
+    if len(navigators) == 0:
+        print(f'navigator {args.navigator} not found expected one of {", ".join(navigators.keys())}')
         print('exiting...')
         sys.exit(1)
 
-    navigator_class = navigators[args.navigator]
-    navigator = navigator_class(session, args)
+    if len(navigators) > 1:
+        print(f'WARNING multiple navigators select for  {args.navigator} selecting the first one')
 
-    if args.form or navigator_class != UrlNavigator:
-        navigator.login_with_form(args.root, args.password, args.form)
-    else:
-        check_root_exists_or_exit(args.root, session, username_password=args.password)
+    navigator = navigators[0](session, args)
+
+    navigator.login_with_form(args.root, args.password, args.form)
 
     if args.form and args.root and not args.use_templates:
         urls = args.urls
@@ -624,7 +499,7 @@ if __name__ == '__main__':
 
     for url in urls:
         try:
-            _hash = get_hash_from_url(url, session, args.verbose, max_length_url, x_of_y, digest=args.digest,
+            _hash = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
                                       username_password=args.password)
             display_hash(url, _hash, max_length_url, i+1)
 
