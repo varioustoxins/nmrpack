@@ -32,6 +32,11 @@ class ChecksumHookspecs:
         """get the name of the navigator
         """
 
+    @CHECK_SUM_SPEC
+    def create_output(self, name, additional_args=None):
+        """create an output
+        """
+
 
 pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
 pm.add_hookspecs(ChecksumHookspecs)
@@ -435,6 +440,30 @@ def load_and_register_factory_classes(pm):
         pm.register(instance)
 
 
+class OutputBase:
+    def output(self, url, hash, max_length_url, i):
+        '''output a url and its hash'''
+
+
+class SimpleOutput(OutputBase):
+
+    def display_hash(self, target_url, _hash, url_field_length, index, num_urls):
+
+        target_url = target_url.ljust(url_field_length)
+        index_string = f'[{index}]'.ljust(5)
+        sys.stdout.write(f"\rsum {index_string} {target_url} {_hash}")
+
+
+class SimpleOutputFactory:
+
+    @CHECK_SUM_IMPL
+    def create_output(self, name=None):
+        if name == 'simple' or name is None:
+            return SimpleOutput()
+
+
+pm.register(SimpleOutputFactory())
+
 if __name__ == '__main__':
 
     load_and_register_factory_classes(pm)
@@ -501,7 +530,7 @@ if __name__ == '__main__':
         try:
             _hash = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
                                       username_password=args.password)
-            display_hash(url, _hash, max_length_url, i+1)
+            out.display_hash(url, _hash, max_length_url, i+1, num_urls)
 
         except DownloadFailedException as e:
 
