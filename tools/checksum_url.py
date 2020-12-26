@@ -413,7 +413,6 @@ def load_plugins():
 
     importlib.import_module('checksum_plugins')
     for file_name in plugins_dir.iterdir():
-        print(file_name)
 
         if file_name.suffix == '.py' and file_name.name.endswith('_plugin.py'):
             module_name = 'checksum_plugins.' + file_name.name[0:-len('.py')]
