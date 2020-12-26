@@ -444,24 +444,7 @@ class OutputBase:
         '''output a url and its hash'''
 
 
-class SimpleOutput(OutputBase):
 
-    def display_hash(self, target_url, _hash, url_field_length, index, num_urls):
-
-        target_url = target_url.ljust(url_field_length)
-        index_string = f'[{index}]'.ljust(5)
-        sys.stdout.write(f"\rsum {index_string} {target_url} {_hash}")
-
-
-class SimpleOutputFactory:
-
-    @CHECK_SUM_IMPL
-    def create_output(self, name=None):
-        if name == 'simple' or name is None:
-            return SimpleOutput()
-
-
-pm.register(SimpleOutputFactory())
 
 if __name__ == '__main__':
 
