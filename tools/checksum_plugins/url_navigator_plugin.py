@@ -22,7 +22,7 @@ def check_root_exists_or_exit(root, target_session, username_password=(None, Non
 def get_urls_for_templates(target_page, templates):
     target_urls = []
     result = []
-    for link in BeautifulSoup(target_page, parse_only=SoupStrainer('a'), features="html.parser"):
+    for link in BeautifulSoup(target_page.content, parse_only=SoupStrainer('a'), features="html.parser"):
 
         if link.has_attr('href'):
             target_urls.append(link['href'])
@@ -62,7 +62,7 @@ class UrlNavigator(Navigator):
             for target_url in get_urls_from_args(target_args.root, target_args.urls):
                 result.append(target_url)
         elif target_args.use_templates:
-            page = transfer_page(target_args.root, self._target_session, target_args.password)
+            page = transfer_page(self._target_session, target_args.root, target_args.password)
 
             for target_url in get_urls_for_templates(page, target_args.urls):
                 result.append(target_url)
