@@ -430,6 +430,9 @@ class Navigator:
 
             if match:
                 results[target_url] = match.group(1)
+            else:
+                print(f"WARNING: couldn't match version for url: {target_url}")
+                results[target_url] = '0.0.0'
 
         return results
 
