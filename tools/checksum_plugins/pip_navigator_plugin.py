@@ -11,11 +11,21 @@ class PipNavigator(UrlNavigator):
     def __init__(self, browser, target_args):
         super(PipNavigator, self).__init__(browser, target_args)
 
-    def get_urls(self):
+    @classmethod
+    def _update_dict(cls, targets, sources):
+        return target
+
+    def get_urls(self, sorted_by_version=True):
 
         result = super(PipNavigator, self).get_urls()
 
-        return [arg.split('#')[0] for arg in result]
+        if sorted_by_version:
+            url_versions = [arg.split('#')[0] for arg in result]
+            url_versions = self._urls_to_url_version(url_versions, self._args.version_regex)
+            url_versions = self._sort_url_versions(url_versions)
+            result = list(url_versions.keys())
+
+        return result
 
 
 class PipNavigatorFactory:

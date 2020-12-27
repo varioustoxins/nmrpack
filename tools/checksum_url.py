@@ -1,6 +1,8 @@
 
 import hashlib
 import inspect
+import re
+from collections import OrderedDict
 from pathlib import Path
 from re import finditer
 import argparse
@@ -14,6 +16,7 @@ from tqdm import tqdm
 import os
 import pluggy
 import importlib
+from operator import itemgetter
 
 CHECK_SUM_PROJECT = "check_sum_url"
 CHECK_SUM_SPEC = pluggy.HookspecMarker(CHECK_SUM_PROJECT)
@@ -297,6 +300,12 @@ class Navigator:
         self._username_password = None
         self._form = None
 
+    @classmethod
+    def _sort_url_versions(cls, url_versions):
+        result = cls._split_version_into_list(url_versions)
+        result = cls._sort_by_version(result)
+        return result
+
     @staticmethod
     def _do_login(browser, target_url, username_password, form, verbose=0):
         username, password = username_password
@@ -345,6 +354,80 @@ class Navigator:
         self._do_login(browser, self._target_url, self._username_password, self._form)
 
         return browser
+
+    @classmethod
+    def inverted_sort_dict(cls, dict_to_sort, reverse_sorted=True):
+
+        inverted = [(value, key) for key, value in dict_to_sort.items()]
+        inverted.sort(key=itemgetter(0))
+        if reverse_sorted:
+            inverted.reverse()
+
+        result = OrderedDict()
+
+        for value, key in inverted:
+            result[key] = value
+
+        return result
+
+    @classmethod
+    def _split_version_into_list(cls, url_versions):
+
+        result = {}
+        for url, version in url_versions.items():
+
+            fields = []
+            result[url] = fields
+
+            for field in version.split('.'):
+
+                if field.isnumeric():
+                    fields.append(int(field))
+                elif fields.isalpha():
+                    fields.append(field)
+                else:
+                    composite_field = []
+                    intermediate = ''
+                    for char in field:
+                        if str(char).isnumeric() and intermediate.isnumeric():
+                            intermediate += char
+                        elif str(char).isalpha() and intermediate.isalpha():
+                            intermediate += char
+                        else:
+                            if intermediate.isalpha():
+                                composite_field.append(intermediate)
+                            else:
+                                composite_field.append(int(intermediate))
+                            intermediate = char
+                    if intermediate and intermediate.isnumeric():
+                        composite_field.append(int(intermediate))
+                    else:
+                        composite_field.append(intermediate)
+
+                    result.append(tuple(composite_field))
+
+        return result
+
+    @classmethod
+    def _sort_by_version(cls, url_versions):
+        return cls.inverted_sort_dict(url_versions)
+
+    @classmethod
+    def _urls_to_url_version(cls, target_urls, version_regex=None):
+
+        results = {}
+        for target_url in target_urls:
+            default_template = r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)'
+            if not version_regex:
+                version_regex = default_template
+            regex = re.compile(version_regex)
+            match = regex.search(target_url)
+
+            if match:
+                results[target_url] = match.group(1)
+
+        return results
+
 
 
 def show_yes_message_cancel_or_wait():
@@ -473,6 +556,10 @@ if __name__ == '__main__':
                         help=f'method to navigate to download url, currently (supported: {navigator_names})')
     parser.add_argument('-y', '--yes', default=False, dest='yes', action=STORE_TRUE,
                         help='answer yes to all questions, including accepting licenses')
+    parser.add_argument('--version-format', dest='version_regex', default=None,
+                        help=f'define a regex to select the version of the software typically from its url, '
+                             f'it should create a single match for each url, all others are discarded'
+                             r'default: ([0-9]+\.(?:[0-9]+[A-Za-z0-9_-]*\.[0-9]+[A-Za-z0-9_-]*))+')
     parser.add_argument('urls', nargs='*')
 
     args = parser.parse_args()

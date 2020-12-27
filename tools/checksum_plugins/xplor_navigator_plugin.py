@@ -1,3 +1,5 @@
+from fnmatch import fnmatch
+from functools import partial
 
 import pluggy
 import sys
@@ -61,18 +63,19 @@ class XplorNavigator(Navigator):
             form = (0, 'UserName', 'Password', None)
         super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
 
-    def get_urls(self):
+    def get_urls(self, sorted_by_version=True):
 
         result = []
         prototype_browser = self._browser
 
         all_buttons = prototype_browser.get_current_page().find_all('input')
-        all_button_names = (button['value'] for button in all_buttons)
+        all_button_names = [button['value'] for button in all_buttons]
 
         target_names = set()
         for template in self._args.urls:
             # noinspection PyTypeChecker
-            target_names.update(filter(all_button_names, template))
+            match = partial(fnmatch, pat=template)
+            target_names.update(filter(match, all_button_names))
 
         show_progress = self._args.verbose > 1
 
@@ -117,6 +120,12 @@ class XplorNavigator(Navigator):
 
         if show_progress:
             t.close()
+
+        if sorted_by_version:
+            url_versions = [arg.split('#')[0] for arg in result]
+            url_versions = self._urls_to_url_version(url_versions, r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)-')
+            url_versions = self._sort_url_versions(url_versions)
+            result = list(url_versions.keys())
 
         return result
 
