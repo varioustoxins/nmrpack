@@ -91,7 +91,7 @@ class XplorNavigator(Navigator):
             page = browser.get_current_page()
 
             if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
-                print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page")
+                print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page", file=sys.stderr)
                 continue
 
             if target_index == 0:
