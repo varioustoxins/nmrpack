@@ -584,18 +584,15 @@ if __name__ == '__main__':
 
     navigator.login_with_form(args.root, args.password, args.form)
 
-    if args.form and args.root and not args.use_templates:
-        urls = args.urls
-    elif args.root and not args.use_templates:
-        urls = get_urls_from_args(args.root, args.urls)
-    elif args.use_templates:
-        if not page:
-            page = transfer_page(args.root, session, args.password)
-        urls = get_urls_for_templates(page,  args.urls)
-    else:
-        print(f'Bad combination of template {args.use_templates} and root {args.root}')
+    out = pm.hook.create_output(name=args.output_format)[0]
 
-    for url in urls:
+    urls = navigator.get_urls()
+    max_length_url = get_max_string_length(urls)
+    num_urls = len(urls)
+
+    for i, url in enumerate(urls):
+        x_of_y = '%3i/%-3i' % (i + 1, len(urls))
+
         try:
             _hash = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
                                       username_password=args.password)
