@@ -40,6 +40,11 @@ class ChecksumHookspecs:
         """create an output
         """
 
+    @CHECK_SUM_SPEC
+    def get_output_name(self):
+        """get the name of an output
+        """
+
 
 pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
 pm.add_hookspecs(ChecksumHookspecs)
@@ -524,9 +529,7 @@ def load_and_register_factory_classes(pm):
 
 class OutputBase:
     def output(self, url, hash, max_length_url, i):
-        '''output a url and its hash'''
-
-
+        """output a url and its hash"""
 
 
 if __name__ == '__main__':
@@ -534,6 +537,7 @@ if __name__ == '__main__':
     load_and_register_factory_classes(pm)
 
     navigator_names = ', '.join(pm.hook.get_plugin_name())
+    output_names = ', '.join(pm.hook.get_output_name())
 
     # noinspection PyTypeChecker
     parser = argparse.ArgumentParser(description='calculate hashes from web links.',
@@ -556,6 +560,8 @@ if __name__ == '__main__':
                         help=f'method to navigate to download url, currently (supported: {navigator_names})')
     parser.add_argument('-y', '--yes', default=False, dest='yes', action=STORE_TRUE,
                         help='answer yes to all questions, including accepting licenses')
+    parser.add_argument('-o', '--output', dest='output_format', default='simple',
+                        help=f'define the output methods (supported: {output_names})')
     parser.add_argument('--version-format', dest='version_regex', default=None,
                         help=f'define a regex to select the version of the software typically from its url, '
                              f'it should create a single match for each url, all others are discarded'
@@ -604,5 +610,7 @@ if __name__ == '__main__':
 
             if args.fail_early:
                 exit_if_asked()
+
+        out.finish()
 
         print()

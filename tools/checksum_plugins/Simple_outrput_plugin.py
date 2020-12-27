@@ -14,13 +14,22 @@ class SimpleOutput(OutputBase):
         index_string = f'[{index}]'.ljust(5)
         sys.stdout.write(f"\rsum {index_string} {target_url} {_hash}")
 
+    def finish(self):
+        pass
+
 
 class SimpleOutputFactory:
 
+    NAME = 'simple'
+
     @CHECK_SUM_IMPL
-    def create_output(self, name=None):
-        if name == 'simple' or name is None:
+    def create_output(self, name):
+        if name == self.NAME or name is None:
             return SimpleOutput()
+
+    @CHECK_SUM_IMPL
+    def get_output_name(self):
+        return f'{self.NAME} [default]'
 
 
 pm.register(SimpleOutputFactory())
