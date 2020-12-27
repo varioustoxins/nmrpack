@@ -123,7 +123,7 @@ class XplorNavigator(Navigator):
 
         if sorted_by_version:
             url_versions = [arg.split('#')[0] for arg in result]
-            url_versions = self._urls_to_url_version(url_versions, r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)-')
+            url_versions = self._urls_to_url_version(url_versions, r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)[-.]')
             url_versions = self._sort_url_versions(url_versions)
             result = list(url_versions.keys())
 
