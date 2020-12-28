@@ -295,10 +295,6 @@ def check_root_set_or_exit(target_args):
         sys.exit()
 
 
-
-
-
-
 class Navigator:
 
     DEFAULT_VERSION_REGEX = r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)'
