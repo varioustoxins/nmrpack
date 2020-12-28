@@ -55,6 +55,8 @@ def query_yes_no(question, default="yes"):
 
 class XplorNavigator(Navigator):
 
+    VERSION_REGEX = Navigator.DEFAULT_VERSION_REGEX + '[-]'
+
     def __init__(self, browser, target_args):
         super(XplorNavigator, self).__init__(browser, target_args)
 
@@ -123,7 +125,7 @@ class XplorNavigator(Navigator):
 
         if sorted_by_version:
             url_versions = [arg.split('#')[0] for arg in result]
-            url_versions = self._urls_to_url_version(url_versions, r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)[-.]')
+            url_versions = self._urls_to_url_version(url_versions, self.VERSION_REGEX)
             url_versions = self._sort_url_versions(url_versions)
             result = list(url_versions.keys())
 
