@@ -300,6 +300,9 @@ def check_root_set_or_exit(target_args):
 
 
 class Navigator:
+
+    DEFAULT_VERSION_REGEX = r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)'
+
     def __init__(self, target_session, target_args):
         self._target_session = target_session
         self._browser = StatefulBrowser(session=target_session)
@@ -384,7 +387,7 @@ class Navigator:
 
         results = {}
         for target_url in target_urls:
-            default_template = r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)'
+            default_template = cls.DEFAULT_VERSION_REGEX
             if not version_regex:
                 version_regex = default_template
             regex = re.compile(version_regex)
