@@ -17,6 +17,9 @@ import os
 import pluggy
 import importlib
 from operator import itemgetter
+from cmp_version import VersionString
+
+
 
 CHECK_SUM_PROJECT = "check_sum_url"
 CHECK_SUM_SPEC = pluggy.HookspecMarker(CHECK_SUM_PROJECT)
@@ -307,8 +310,7 @@ class Navigator:
 
     @classmethod
     def _sort_url_versions(cls, url_versions):
-        result = cls._split_version_into_list(url_versions)
-        result = cls._sort_by_version(result)
+        result = cls._sort_by_version(url_versions)
         return result
 
     @staticmethod
@@ -364,52 +366,12 @@ class Navigator:
     def inverted_sort_dict(cls, dict_to_sort, reverse_sorted=True):
 
         inverted = [(value, key) for key, value in dict_to_sort.items()]
-        inverted.sort(key=itemgetter(0))
-        if reverse_sorted:
-            inverted.reverse()
+        inverted.sort(key=lambda x: VersionString(x[0]), reverse=reverse_sorted)
 
         result = OrderedDict()
 
         for value, key in inverted:
             result[key] = value
-
-        return result
-
-    @classmethod
-    def _split_version_into_list(cls, url_versions):
-
-        result = {}
-        for url, version in url_versions.items():
-
-            fields = []
-            result[url] = fields
-
-            for field in version.split('.'):
-
-                if field.isnumeric():
-                    fields.append(int(field))
-                elif fields.isalpha():
-                    fields.append(field)
-                else:
-                    composite_field = []
-                    intermediate = ''
-                    for char in field:
-                        if str(char).isnumeric() and intermediate.isnumeric():
-                            intermediate += char
-                        elif str(char).isalpha() and intermediate.isalpha():
-                            intermediate += char
-                        else:
-                            if intermediate.isalpha():
-                                composite_field.append(intermediate)
-                            else:
-                                composite_field.append(int(intermediate))
-                            intermediate = char
-                    if intermediate and intermediate.isnumeric():
-                        composite_field.append(int(intermediate))
-                    else:
-                        composite_field.append(intermediate)
-
-                    result.append(tuple(composite_field))
 
         return result
 
