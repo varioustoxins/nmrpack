@@ -14,46 +14,16 @@ from mechanicalsoup import StatefulBrowser
 from time import sleep
 from tqdm import tqdm
 import os
-import pluggy
+from plugins import load_and_register_factory_classes, list_navigators, list_outputs, get_navigator, get_output
 import importlib
-from operator import itemgetter
+
+
 from cmp_version import VersionString
-
-
-
-CHECK_SUM_PROJECT = "check_sum_url"
-CHECK_SUM_SPEC = pluggy.HookspecMarker(CHECK_SUM_PROJECT)
-CHECK_SUM_IMPL = pluggy.HookimplMarker(CHECK_SUM_PROJECT)
-
-
-class ChecksumHookspecs:
-
-    @CHECK_SUM_SPEC
-    def create_navigator(self, name, target_browser, target_args):
-        """create a new navigator
-        """
-
-    @CHECK_SUM_SPEC
-    def get_plugin_name(self):
-        """get the name of the navigator
-        """
-
-    @CHECK_SUM_SPEC
-    def create_output(self, name, additional_args=None):
-        """create an output
-        """
-
-    @CHECK_SUM_SPEC
-    def get_output_name(self):
-        """get the name of an output
-        """
-
-
-pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
-pm.add_hookspecs(ChecksumHookspecs)
+import plugins
 
 session = None
 
+UNKNOWN_VERSION = '0.0.0'
 COUNT = 'count'
 STORE_TRUE = 'store_true'
 
@@ -194,7 +164,7 @@ def human_size(number_bytes):
     return '%s %s' % (f, suffixes[index])
 
 
-def transfer_page(target_session, target_url, username_password):
+def transfer_page(target_session, target_url, username_password=(None, None)):
     if username_password != (None, None):
         username, password = username_password
 
@@ -307,6 +277,9 @@ class Navigator:
         self._username_password = None
         self._form = None
 
+    def get_urls(self, sorted_by_version=True):
+        raise Exception('Error: please implement get_urls')
+
     @classmethod
     def _sort_url_versions(cls, url_versions):
         result = cls._sort_by_version(url_versions)
@@ -315,7 +288,8 @@ class Navigator:
     @staticmethod
     def _do_login(browser, target_url, username_password, form, verbose=0):
         username, password = username_password
-        form_selector, user_field, pass_field, selector = form
+        if form:
+            form_selector, user_field, pass_field, selector = form
 
         response = browser.open(target_url)
 
@@ -453,42 +427,11 @@ def get_max_string_length(in_urls):
     return result
 
 
-def get_script_directory():
-    return os.path.dirname(os.path.realpath(__file__))
 
 
-def load_plugins():
-
-    result = []
-
-    plugins_dir = Path(get_script_directory()) / Path('checksum_plugins')
-
-    importlib.import_module('checksum_plugins')
-    for file_name in plugins_dir.iterdir():
-
-        if file_name.suffix == '.py' and file_name.name.endswith('_plugin.py'):
-            module_name = 'checksum_plugins.' + file_name.name[0:-len('.py')]
-            result.append(importlib.import_module(module_name))
-
-    return result
-
-def load_factory_classes(modules):
-
-    result = []
-    for module in modules:
-        for name, cls in inspect.getmembers(module, inspect.isclass):
-            if name.endswith('Factory'):
-                result.append(cls)
-    return result
 
 
-def load_and_register_factory_classes(pm):
-    modules = load_plugins()
-    factories = load_factory_classes(modules)
 
-    for factory in factories:
-        instance = factory()
-        pm.register(instance)
 
 
 class OutputBase:
@@ -498,10 +441,10 @@ class OutputBase:
 
 if __name__ == '__main__':
 
-    load_and_register_factory_classes(pm)
+    load_and_register_factory_classes()
 
-    navigator_names = ', '.join(pm.hook.get_plugin_name())
-    output_names = ', '.join(pm.hook.get_output_name())
+    navigator_names = list_navigators()
+    output_names = list_outputs()
 
     # noinspection PyTypeChecker
     parser = argparse.ArgumentParser(description='calculate hashes from web links.',
@@ -540,7 +483,7 @@ if __name__ == '__main__':
 
     session = requests.session()
 
-    navigators = pm.hook.create_navigator(name=args.navigator, target_browser=session, target_args=args)
+    navigators = get_navigator(name=args.navigator, target_browser=session, target_args=args)
 
     if len(navigators) == 0:
         print(f'navigator {args.navigator} not found expected one of {", ".join(navigators.keys())}')
@@ -554,7 +497,7 @@ if __name__ == '__main__':
 
     navigator.login_with_form(args.root, args.password, args.form)
 
-    out = pm.hook.create_output(name=args.output_format)[0]
+    out = get_output(name=args.output_format)
 
     urls = navigator.get_urls()
     max_length_url = get_max_string_length(urls)

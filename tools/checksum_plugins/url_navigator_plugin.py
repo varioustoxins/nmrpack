@@ -1,12 +1,12 @@
 import pluggy
 import sys
 # noinspection PyUnresolvedReferences
-from checksum_url import CHECK_SUM_PROJECT, CHECK_SUM_IMPL, Navigator, transfer_page
+from checksum_url import  Navigator, transfer_page
+from plugins import register_navigator
 # noinspection PyProtectedMember
 from bs4 import BeautifulSoup, SoupStrainer
 from fnmatch import fnmatch
 
-pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
 
 
 def check_root_exists_or_exit(root, target_session, username_password=(None, None)):
@@ -17,6 +17,8 @@ def check_root_exists_or_exit(root, target_session, username_password=(None, Non
         print(f"the web site {root} isn't accessible")
         print('exiting...')
         sys.exit()
+
+    return response
 
 
 def get_urls_for_templates(target_page, templates):
@@ -42,16 +44,18 @@ def get_urls_from_args(root, target_urls):
 
     return target_urls
 
-
+@register_navigator()
 class UrlNavigator(Navigator):
+
+    NAME = 'url [default]'
 
     def __init__(self, browser, target_args):
         super(UrlNavigator, self).__init__(browser, target_args)
 
-    def login_with_form(self, root, password, _):
-        check_root_exists_or_exit(root, self._target_session, password)
+    def login_with_form(self, root, password, form=None):
+        return check_root_exists_or_exit(root, self._target_session, password)
 
-    def get_urls(self):
+    def get_urls(self, sorted_by_version=True):
         target_args = self._args
 
         result = []
@@ -72,18 +76,3 @@ class UrlNavigator(Navigator):
         return result
 
 
-class UrlNavigatorFactory:
-
-    NAME = 'url'
-
-    @CHECK_SUM_IMPL
-    def get_plugin_name(self):
-        return f'{self.NAME} [default]'
-
-    @CHECK_SUM_IMPL
-    def create_navigator(self, name):
-        if name.lower() == 'url':
-            return UrlNavigator
-
-
-pm.register(UrlNavigatorFactory())

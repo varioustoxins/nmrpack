@@ -1,12 +1,13 @@
 import pluggy
 import sys
 # noinspection PyUnresolvedReferences
-from checksum_url import CHECK_SUM_PROJECT, CHECK_SUM_IMPL, Navigator, transfer_page, OutputBase
+from checksum_url import  Navigator, transfer_page, OutputBase
+from plugins import register_output
 
-pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
-
-
+@register_output()
 class SimpleOutput(OutputBase):
+
+    NAME = 'simple'
 
     def display_hash(self, target_url, _hash, url_field_length, index, num_urls=None):
 
@@ -18,18 +19,3 @@ class SimpleOutput(OutputBase):
         pass
 
 
-class SimpleOutputFactory:
-
-    NAME = 'simple'
-
-    @CHECK_SUM_IMPL
-    def create_output(self, name):
-        if name == self.NAME or name is None:
-            return SimpleOutput()
-
-    @CHECK_SUM_IMPL
-    def get_output_name(self):
-        return f'{self.NAME} [default]'
-
-
-pm.register(SimpleOutputFactory())

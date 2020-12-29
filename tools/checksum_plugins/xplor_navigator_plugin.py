@@ -6,9 +6,9 @@ import sys
 from html2text import html2text
 from tqdm import tqdm
 # noinspection PyUnresolvedReferences
-from checksum_url import CHECK_SUM_PROJECT, CHECK_SUM_IMPL, Navigator
-
-pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
+from checksum_url import Navigator
+from plugins import register_navigator
+# pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
 
 
 def show_license(page):
@@ -52,8 +52,10 @@ def query_yes_no(question, default="yes"):
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
 
-
+@register_navigator()
 class XplorNavigator(Navigator):
+
+    NAME = 'xplor'
 
     VERSION_REGEX = Navigator.DEFAULT_VERSION_REGEX + '[-]'
 
@@ -63,7 +65,7 @@ class XplorNavigator(Navigator):
     def login_with_form(self, target_url, username_password, form=None, verbose=0):
         if not form:
             form = (0, 'UserName', 'Password', None)
-        super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
+        return super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
 
     def get_urls(self, sorted_by_version=True):
 
@@ -132,18 +134,4 @@ class XplorNavigator(Navigator):
         return result
 
 
-class XplorNavigatorFactory:
 
-    NAME = 'xplor'
-
-    @CHECK_SUM_IMPL
-    def get_plugin_name(self):
-        return self.NAME
-
-    @CHECK_SUM_IMPL
-    def create_navigator(self, name):
-        if name.lower() == 'xplor':
-            return XplorNavigator
-
-
-pm.register(XplorNavigatorFactory())
