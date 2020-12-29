@@ -265,7 +265,16 @@ def check_root_set_or_exit(target_args):
         sys.exit()
 
 
-class Navigator:
+class NavigatorABC:
+
+    def get_urls(self, sorted_by_version=True):
+        pass
+
+    def login_with_form(self, target_url, username_password, form, verbose=0):
+        pass
+
+
+class Navigator(NavigatorABC):
 
     DEFAULT_VERSION_REGEX = r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)'
 
@@ -425,13 +434,6 @@ def get_max_string_length(in_urls):
     else:
         result = 0
     return result
-
-
-
-
-
-
-
 
 
 class OutputBase:
