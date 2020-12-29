@@ -298,16 +298,16 @@ class Navigator:
 
         if response.status_code != 200:
             raise DownloadFailedException(f"couldn't open the password page\n\n{response.text}")
+        if form:
+            if not form_selector:
+                form_selector = 'form'
+                browser.select_form(form_selector)
+            else:
+                browser.select_form(form_selector, 0)
 
-        if not form_selector:
-            form_selector = 'form'
-            browser.select_form(form_selector)
-        else:
-            browser.select_form(form_selector, 0)
-
-        browser[user_field] = username
-        browser[pass_field] = password
-        response = browser.submit_selected()
+            browser[user_field] = username
+            browser[pass_field] = password
+            response = browser.submit_selected()
 
         if verbose > 1:
             display_response(response, 'login-response')
@@ -486,7 +486,7 @@ if __name__ == '__main__':
     navigators = get_navigator(name=args.navigator, target_browser=session, target_args=args)
 
     if len(navigators) == 0:
-        print(f'navigator {args.navigator} not found expected one of {", ".join(navigators.keys())}')
+        print(f'navigator {args.navigator} not found expected one of {navigator_names}')
         print('exiting...')
         sys.exit(1)
 
