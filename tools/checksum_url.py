@@ -1,4 +1,4 @@
-
+import abc
 import hashlib
 import inspect
 import re
@@ -265,11 +265,13 @@ def check_root_set_or_exit(target_args):
         sys.exit()
 
 
-class NavigatorABC:
+class NavigatorABC(abc.ABC):
 
+    @abc.abstractmethod
     def get_urls(self, sorted_by_version=True):
         pass
 
+    @abc.abstractmethod
     def login_with_form(self, target_url, username_password, form, verbose=0):
         pass
 
