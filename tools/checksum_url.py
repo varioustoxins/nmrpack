@@ -293,8 +293,7 @@ class Navigator(NavigatorABC):
 
     @classmethod
     def _sort_url_versions(cls, url_versions):
-        result = cls._sort_by_version(url_versions)
-        return result
+        return cls._sort_by_version(url_versions)
 
     @staticmethod
     def _do_login(browser, target_url, username_password, form, verbose=0):
