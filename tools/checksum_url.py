@@ -27,6 +27,17 @@ UNKNOWN_VERSION = '0.0.0'
 COUNT = 'count'
 STORE_TRUE = 'store_true'
 
+TYPE = 'type'
+MAIN_FILE = 'main_file'
+EXTRA_FILE = 'extra_file'
+EXPAND = 'expand'
+VERSION = 'version'
+NAME = 'name'
+INFO = 'info'
+WEBSITE = 'website'
+DEPENDENCIES = 'dependencies'
+DIGESTS = 'digests'
+
 # https://gist.github.com/michelbl/efda48b19d3e587685e3441a74457024
 # Windows
 if os.name == 'nt':
@@ -273,6 +284,14 @@ class NavigatorABC(abc.ABC):
 
     @abc.abstractmethod
     def login_with_form(self, target_url, username_password, form, verbose=0):
+        pass
+
+    # @abc.abstractmethod
+    def get_extra_item_info(self, url):
+        pass
+
+    # @abc.abstractmethod
+    def get_extra_info(self):
         pass
 
 

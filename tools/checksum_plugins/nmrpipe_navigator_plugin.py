@@ -7,6 +7,8 @@ from checksum_url import  Navigator, transfer_page, UNKNOWN_VERSION
 # noinspection PyUnresolvedReferences
 from plugins import register_navigator
 from .url_navigator_plugin import UrlNavigator
+# noinspection PyUnresolvedReferences
+from checksum_url import TYPE, MAIN_FILE, EXTRA_FILE, EXPAND , VERSION, NAME, INFO, WEBSITE, DEPENDENCIES, DIGESTS
 
 
 @register_navigator()
@@ -17,6 +19,7 @@ class NmrPipeNavigator(UrlNavigator):
     def __init__(self, browser, target_args):
         super(NmrPipeNavigator, self).__init__(browser, target_args)
         self._version = UNKNOWN_VERSION
+        self._extra_item_info = {}
 
     def login_with_form(self, target_url, username_password, form=None, verbose=0):
 
@@ -27,7 +30,7 @@ class NmrPipeNavigator(UrlNavigator):
             install_page_response = transfer_page(self._target_session, install_page_url, username_password)
             if install_page_response.status_code == 200:
                 content_soup = BeautifulSoup(install_page_response.content, 'html.parser')
-                self._parse_page(content_soup)
+                self._version = self._parse_page(content_soup)
             else:
                 print(f'WARNING: response from {install_page_url} was {install_page_response.status_code}')
 
@@ -58,22 +61,32 @@ class NmrPipeNavigator(UrlNavigator):
 
         result = super(NmrPipeNavigator, self).get_urls()
 
+        for url in result:
+            if 'NMRPipeX' in url:
+                self._extra_item_info[url] = {
+                    TYPE: MAIN_FILE,
+                    EXPAND: False,
+                    VERSION: self._version,
+                    DIGESTS: {}
+                }
+            else:
+                self._extra_item_info[url] = {
+                    TYPE: EXTRA_FILE,
+                    EXPAND: False,
+                    VERSION: self._version,
+                    DIGESTS: {}
+                }
+
         return result
 
+    def get_extra_item_info(self, url):
+        return self.get_extra_item_info([url])
 
-# class NmrPipeNavigatorFactory:
-#
-#     NAME = 'nmrpipe'
-#
-#     @CHECK_SUM_IMPL
-#     def get_plugin_name(self):
-#         return self.NAME
-#
-#     @CHECK_SUM_IMPL
-#     def create_navigator(self, name):
-#         if name.lower() == self.NAME:
-#             return NmrPipeNavigator
-#
-#
-# pm.register(NmrPipeNavigatorFactory())
+    def get_extra_info(self):
+        return {
+            NAME: 'NMRPipe',
+            INFO: 'NMRPipe is an extensive software system for processing, analyzing, and exploiting '
+                  'multidimensional NMR spectroscopic data. ',
+            WEBSITE: 'https://www.ibbr.umd.edu/nmrpipe/index.html'
+        }
 
