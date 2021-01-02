@@ -51,9 +51,11 @@ class UrlNavigator(Navigator):
 
     def __init__(self, browser, target_args):
         super(UrlNavigator, self).__init__(browser, target_args)
+        self._root = None
 
     def login_with_form(self, root, password, form=None):
-        return check_root_exists_or_exit(root, self._target_session, password)
+        self._root = check_root_exists_or_exit(root, self._target_session, password)
+        return self._root
 
     def get_urls(self, sorted_by_version=True):
         target_args = self._args
