@@ -540,6 +540,6 @@ if __name__ == '__main__':
             if args.fail_early:
                 exit_if_asked()
 
-        out.finish()
+    out.finish()
 
-        print()
+    print()
