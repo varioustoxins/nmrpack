@@ -99,7 +99,7 @@ class PipNavigator(UrlNavigator):
 
         return results
 
-    def get_extra_item_info(self, url):
+    def get_version_info(self, url):
 
         result = {
                     TYPE: MAIN_FILE,
@@ -112,7 +112,7 @@ class PipNavigator(UrlNavigator):
 
         return result
 
-    def get_extra_info(self):
+    def get_package_info(self):
 
         return {
             NAME: self._raw_extra_info['info']['name'],

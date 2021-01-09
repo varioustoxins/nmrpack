@@ -287,11 +287,11 @@ class NavigatorABC(abc.ABC):
         pass
 
     # @abc.abstractmethod
-    def get_extra_item_info(self, url):
+    def get_version_info(self):
         pass
 
     # @abc.abstractmethod
-    def get_extra_info(self):
+    def get_package_info(self):
         pass
 
 
