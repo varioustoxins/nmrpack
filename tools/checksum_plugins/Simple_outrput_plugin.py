@@ -9,6 +9,9 @@ class SimpleOutput(OutputBase):
 
     NAME = 'simple'
 
+    def __init__(self):
+        super(SimpleOutput, self).__init__()
+
     def display_hash(self, target_url, _hash, url_field_length, index, num_urls=None):
 
         target_url = target_url.ljust(url_field_length)
