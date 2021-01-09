@@ -530,6 +530,7 @@ if __name__ == '__main__':
     max_length_url = get_max_string_length(urls)
     num_urls = len(urls)
 
+    version_info = OrderedDict()
     for i, url in enumerate(urls):
         x_of_y = '%3i/%-3i' % (i + 1, len(urls))
 
@@ -537,6 +538,7 @@ if __name__ == '__main__':
             _hash = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
                                       username_password=args.password)
             out.display_hash(url, _hash, max_length_url, i+1, num_urls)
+            version_info[url] = navigator.get_version_info(url)
 
         except DownloadFailedException as e:
 
@@ -545,6 +547,8 @@ if __name__ == '__main__':
             if args.fail_early:
                 exit_if_asked()
 
-    out.finish()
+
+    package_info = navigator.get_package_info()
+    out.finish(package_info, version_info)
 
     print()

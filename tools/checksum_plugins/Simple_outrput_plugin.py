@@ -18,7 +18,8 @@ class SimpleOutput(OutputBase):
         index_string = f'[{index}]'.ljust(5)
         sys.stdout.write(f"\rsum {index_string} {target_url} {_hash}")
 
-    def finish(self):
+
+    def finish(self, extra_package_info, extra_version_info):
         pass
 
 
