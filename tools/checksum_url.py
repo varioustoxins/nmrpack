@@ -1,9 +1,7 @@
 import abc
 import hashlib
-import inspect
 import re
 from collections import OrderedDict
-from pathlib import Path
 from re import finditer
 import argparse
 import requests
@@ -15,11 +13,7 @@ from time import sleep
 from tqdm import tqdm
 import os
 from plugins import load_and_register_factory_classes, list_navigators, list_outputs, get_navigator, get_output
-import importlib
-
-
 from cmp_version import VersionString
-import plugins
 
 session = None
 
