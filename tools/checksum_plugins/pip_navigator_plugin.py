@@ -22,6 +22,25 @@ class PipNavigator(UrlNavigator):
         self._short_url_release = {}
 
     @staticmethod
+    def _get_version(url):
+
+        last = str(url.split('-')[1])
+
+        extensions = ['.tar.gz', '.whl', '.zip']
+
+        version =  None
+        for extension in extensions:
+            len_extension = len(extension)
+            if last[-len_extension:] == extension:
+                version = last[:-len_extension]
+                break
+
+        if not version:
+            raise Exception(f"couldn't recognise version for {url}")
+
+        return version
+
+    @staticmethod
     def _root_url_to_json(root):
         url_components = root.split('/')
 
@@ -104,7 +123,7 @@ class PipNavigator(UrlNavigator):
         result = {
                     TYPE: MAIN_FILE,
                     EXPAND: False,
-                    VERSION: self._short_url_release[url]['version'],
+                    VERSION: self._get_version(url),
                     DEPENDENCIES: self._raw_extra_info['info']['requires_dist'],
                     DIGESTS: self._short_url_release[url]['digests']
 
