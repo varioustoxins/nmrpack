@@ -1,5 +1,6 @@
 import argparse
 import sys
+import tarfile
 import tempfile
 from pathlib import Path
 
@@ -42,15 +43,31 @@ def download(directory, target_url):
     else:
         raise Exception(f'failed to down load {file_name} to {directory}')
 
-    return target_file
+    return file_name
 
 
-def extract(file, directory):
-    pass
+def extract(directory, file_name):
+    file_name = Path(file_name)
+    directory = Path(directory)
+    handled = False
+    for extension in 'tar.gz', 'zip', 'whl':
+        if extension in ''.join(file_name.suffixes):
+            if extension == 'tar.gz':
+                handled = True
+                full_file_name = directory / file_name
+                with tarfile.open(full_file_name, 'r:gz') as tar_file:
+                    tar_file.extractall(directory)
+
+    if not handled:
+        raise Exception(f"couldn't extract file {file_name}")
+
+
+
 
 
 def download_and_extract(directory, target_url):
-    download(directory, target_url)
+    file_name = download(directory, target_url)
+    extract(directory, file_name)
 
 
 def work_with_directory(directory, target_url):
