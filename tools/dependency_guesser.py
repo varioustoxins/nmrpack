@@ -26,20 +26,19 @@ def download(directory, target_url):
     file_name = target_url.split('/')[-1]
     target_file = Path(directory) / file_name
 
+    response = requests.get(target_url, allow_redirects=True, timeout=10, stream=True)
     if response.status_code == 200:
         total_data_length = int(response.headers.get('content-length'))
         human = human_size(total_data_length)
 
         bar_format = f'Reading {human} {{l_bar}}{{bar:150}} [remaining time: {{remaining}}]'
-        t = tqdm(total=total_data_length, bar_format=bar_format, file=sys.stdout, leave=False)
+        progress_bar = tqdm(total=total_data_length, bar_format=bar_format, file=sys.stdout, leave=False)
 
-        with open(target_file, 'wb') as f:
-            for data in response.iter_content(chunk_size=4096):
-                t.update(len(data))
-                f.write(response.content)
-
-        t.close()
-
+        with open(target_file, 'wb') as file_handle:
+            for chunk in response.iter_content(chunk_size=512 * 1024):
+                if chunk:  # filter out keep-alive new chunks
+                    file_handle.write(chunk)
+                    progress_bar.update(len(chunk))
     else:
         raise Exception(f'failed to down load {file_name} to {directory}')
 
