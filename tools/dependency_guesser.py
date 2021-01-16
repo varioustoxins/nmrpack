@@ -1,7 +1,9 @@
 import argparse
+import os
 import sys
 import tarfile
 import tempfile
+import zipfile
 from pathlib import Path
 
 import requests
@@ -52,22 +54,40 @@ def extract(directory, file_name):
     handled = False
     for extension in 'tar.gz', 'zip', 'whl':
         if extension in ''.join(file_name.suffixes):
+            full_file_name = directory / file_name
             if extension == 'tar.gz':
                 handled = True
                 full_file_name = directory / file_name
                 with tarfile.open(full_file_name, 'r:gz') as tar_file:
                     tar_file.extractall(directory)
+            elif extension in ('zip', 'whl'):
+                handled = True
+                with zipfile.ZipFile(full_file_name, 'r') as zip_file:
+                    zip_file.extractall(directory)
 
     if not handled:
         raise Exception(f"couldn't extract file {file_name}")
 
 
 
+def guess_dependencies(directory, target_url):
+    result = []
+    for sub_directory in list_sub_directories(directory):
+        try:
+            result.extend(find_requirements(sub_directory))
+        except RequirementsNotFound:
+            pass
+
+    for elem in result:
+        print('elem', elem)
+        # dependency_to_spack(elem)
+    return result
 
 
 def download_and_extract(directory, target_url):
     file_name = download(directory, target_url)
     extract(directory, file_name)
+    guess_dependencies(directory, target_url)
 
 
 def work_with_directory(directory, target_url):
