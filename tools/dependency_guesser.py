@@ -5,13 +5,29 @@ import tarfile
 import tempfile
 import zipfile
 from pathlib import Path
+from requirements_detector import find_requirements
+from packaging.requirements import Requirement
+from packaging.specifiers import Specifier
+from packaging.utils import canonicalize_version
+from packaging.version import Version
 
 import requests
+from requirements_detector.detect import RequirementsNotFound
 from tqdm import tqdm
+
+import portion as p
 
 STORE_TRUE = 'store_true'
 
 suffixes = ['B ', 'KB', 'MB', 'GB', 'TB', 'PB']
+
+MAX_DIGITS = 4  # allows for year based versions
+MIN_VERSION_COMPONENT = 0
+MAX_VERSION_COMPONENT = int('9' * 4)
+MIN_VERSION_COMPONENT_STR = str(MIN_VERSION_COMPONENT)
+MAX_VERSION_COMPONENT_STR = str(MAX_VERSION_COMPONENT)
+MAX_VERSION = Version(f'{MAX_VERSION_COMPONENT}.{MAX_VERSION_COMPONENT}.{MAX_VERSION_COMPONENT}')
+MIN_VERSION = Version(f'{MIN_VERSION_COMPONENT}.{MIN_VERSION_COMPONENT}.{MIN_VERSION_COMPONENT}')
 
 
 def human_size(number_bytes):
@@ -24,7 +40,6 @@ def human_size(number_bytes):
 
 
 def download(directory, target_url):
-    response = requests.get(target_url, allow_redirects=True, timeout=10, stream=True)
 
     file_name = target_url.split('/')[-1]
     target_file = Path(directory) / file_name
@@ -57,7 +72,6 @@ def extract(directory, file_name):
             full_file_name = directory / file_name
             if extension == 'tar.gz':
                 handled = True
-                full_file_name = directory / file_name
                 with tarfile.open(full_file_name, 'r:gz') as tar_file:
                     tar_file.extractall(directory)
             elif extension in ('zip', 'whl'):
@@ -71,6 +85,34 @@ def extract(directory, file_name):
 
 def list_sub_directories(directory):
     return [elem.path for elem in os.scandir(directory) if elem.is_dir()]
+
+
+
+
+def expand_version(version):
+
+    result = []
+
+    components = version.split('.')
+
+    result_components = []
+    found_star = False
+    for element in components:
+        if element != '*':
+            result_components.append(element)
+        else:
+            found_star = True
+            break
+
+    if found_star:
+        result.append('.'.join([*result_components, MIN_VERSION_COMPONENT_STR]))
+        result.append('.'.join([*result_components, MAX_VERSION_COMPONENT_STR]))
+    else:
+        result.append('.'.join(result_components))
+
+    return result
+
+
 
 
 
