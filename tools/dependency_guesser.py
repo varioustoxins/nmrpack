@@ -113,7 +113,13 @@ def expand_version(version):
     return result
 
 
+def add_star_as_last_component(version):
+    version = canonicalize_version(version)
 
+    components = version.split('.')
+    version = '.'.join([*components[:-1],'*'])
+
+    return version
 
 
 def guess_dependencies(directory, target_url):
