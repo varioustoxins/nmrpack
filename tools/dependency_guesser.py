@@ -69,6 +69,10 @@ def extract(directory, file_name):
         raise Exception(f"couldn't extract file {file_name}")
 
 
+def list_sub_directories(directory):
+    return [elem.path for elem in os.scandir(directory) if elem.is_dir()]
+
+
 
 def guess_dependencies(directory, target_url):
     result = []
