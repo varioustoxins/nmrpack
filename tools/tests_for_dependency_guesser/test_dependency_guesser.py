@@ -1,6 +1,6 @@
 from packaging.version import Version
 from tools.dependency_guesser import expand_version_star, add_star_as_last_component, dependency_to_version_ranges, \
-    MIN_VERSION, MAX_VERSION, extend_version_releases
+    MIN_VERSION, MAX_VERSION, extend_version_releases, increment_version
 import portion as p
 
 
@@ -38,3 +38,12 @@ def test_dependency_to_version_ranges():
                 p.open(Version('2.2.9999'), Version('4.0')),
                 p.openclosed(Version('4.0'), Version('9999.9999.9999'))]
     assert dependency_to_version_ranges('any!=2.2.*, !=4.0') == expected
+
+
+def test_increment_version():
+
+    assert increment_version(Version('1.9999.9999')) == Version('2.0.0')
+    assert increment_version(Version('2.0.0'), -1) == Version('1.9999.9999')
+
+    assert increment_version(Version('0.0.0'), -1) == Version('0.0.0')
+    assert increment_version(Version('9999.9999.9999'), 1) == Version('9999.9999.9999')

@@ -143,6 +143,38 @@ def extend_version_releases(version, length=3):
     return Version('.'.join(components))
 
 
+def increment_version(version, increment=1, max_val=9999):
+    version = extend_version_releases(version)
+    components = list(version.release)
+
+    current_component = -1
+    finished = False
+    while not finished and -current_component <= len(components):
+
+        components[current_component] += increment
+
+        if components[0] > MAX_VERSION_COMPONENT:
+            components = MAX_VERSION_COMPONENT, MAX_VERSION_COMPONENT, MAX_VERSION_COMPONENT
+            break
+        elif components[0] < 0:
+            components = MIN_VERSION_COMPONENT, MIN_VERSION_COMPONENT, MIN_VERSION_COMPONENT
+            break
+
+        if components[current_component] > max_val:
+            components[current_component] = 0
+            current_component -= 1
+        elif components[current_component] < 0:
+            components[current_component] = max_val
+            current_component -= 1
+
+        else:
+            finished = True
+
+    result = Version('.'.join([str(component) for component in components]))
+
+    return result
+
+
 def dependency_to_version_ranges(dependency):
 
     requirement = Requirement(str(dependency))
