@@ -7,9 +7,9 @@ import zipfile
 from pathlib import Path
 from requirements_detector import find_requirements
 from packaging.requirements import Requirement
-from packaging.specifiers import Specifier
-from packaging.utils import canonicalize_version
 from packaging.version import Version
+from operator import and_
+from functools import reduce
 
 import requests
 from requirements_detector.detect import RequirementsNotFound
@@ -87,13 +87,11 @@ def list_sub_directories(directory):
     return [elem.path for elem in os.scandir(directory) if elem.is_dir()]
 
 
-
-
-def expand_version(version):
+def expand_version_star(version):
 
     result = []
 
-    components = version.split('.')
+    components = str(version).split('.')
 
     result_components = []
     found_star = False
@@ -110,14 +108,16 @@ def expand_version(version):
     else:
         result.append('.'.join(result_components))
 
+    result = [Version(version_string) for version_string in result]
     return result
 
 
 def add_star_as_last_component(version):
-    version = canonicalize_version(version)
 
-    components = version.split('.')
-    version = '.'.join([*components[:-1],'*'])
+    components = str(version).split('.')
+    if components[-1] != '*':
+        components = [*components[:-1], '*']
+    version = '.'.join(components)
 
     return version
 
@@ -131,8 +131,52 @@ def guess_dependencies(directory, target_url):
             pass
 
     for elem in result:
-        print('elem', elem)
-        # dependency_to_spack(elem)
+        dependency_to_version_ranges(elem)
+    return result
+
+
+def extend_version_releases(version, length=3):
+    version = Version(str(version))
+    components = list(version.release)
+    components.extend((0,) * (length - len(components)))
+    components = [str(component) for component in components]
+    return Version('.'.join(components))
+
+
+def dependency_to_version_ranges(dependency):
+
+    requirement = Requirement(str(dependency))
+
+    version_ranges = []
+    if not requirement.specifier:
+        version_ranges.append(p.closed(MIN_VERSION, MAX_VERSION))
+    else:
+        for specifier_part in requirement.specifier:
+
+            versions = expand_version_star(specifier_part.version)
+            versions = [extend_version_releases(version) for version in versions]
+
+            if specifier_part.operator == '>=':
+                version_ranges.append(p.closed(versions[-1], MAX_VERSION))
+            elif specifier_part.operator == '<=':
+                version_ranges.append(p.closed(MIN_VERSION, versions[0]))
+            elif specifier_part.operator == '<':
+                version_ranges.append(p.open(MIN_VERSION, versions[0]))
+            elif specifier_part.operator == '>':
+                version_ranges.append(p.open(versions[-1], MAX_VERSION))
+            elif specifier_part.operator == '==':
+                version_ranges.append(p.closed(versions[0], versions[-1]))
+            elif specifier_part.operator == '~=':
+                star_version = add_star_as_last_component(versions[-1])
+                upper_version = expand_version_star(star_version)[1]
+                version_ranges.append(p.closed(versions[0], upper_version))
+            elif specifier_part.operator == '!=':
+                version_ranges.append(p.closedopen(MIN_VERSION, versions[0]) |
+                                      p.openclosed(versions[-1], MAX_VERSION))
+
+    result = list(reduce(and_, version_ranges))
+    if len(result) == 1 and type(result[0]) == list:
+        result = result[0]
     return result
 
 
