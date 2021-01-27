@@ -207,9 +207,87 @@ def dependency_to_version_ranges(dependency):
                                       p.openclosed(versions[-1], MAX_VERSION))
 
     result = list(reduce(and_, version_ranges))
-    if len(result) == 1 and type(result[0]) == list:
-        result = result[0]
     return result
+
+
+def version_to_release_string(version):
+    version = Version(str(version))
+    return '.'.join([str(component) for component in version.release])
+
+
+def trim_version_micros(version):
+    version = Version(str(version))
+    release = version.release
+
+    len_release = len(release)
+    if len_release > 2:
+        for i in range(len_release):
+            if release[-i-1] != 0:
+                break
+
+    to_trim = i
+    max_trim = len_release - 2
+    if to_trim > max_trim:
+        to_trim = max_trim
+
+    if to_trim > 0:
+        release = release[:-to_trim]
+
+    str_release = [str(elem) for elem in release]
+
+    return Version('.'.join(str_release))
+
+
+def trim_spec_version_micros(spec):
+
+    result = []
+    for elem in spec:
+
+        new_elem = []
+        result.append(new_elem)
+
+        for item in elem:
+            new_elem.append(trim_version_micros(item))
+
+    return result
+
+
+def format_version_ranges(ranges):
+
+    result = []
+    for elem in ranges:
+        if elem[-1] == MAX_VERSION:
+            spec_part = '@%s:' % version_to_release_string(elem[0])
+        elif elem[0] == MIN_VERSION:
+            spec_part = '@:%s' % version_to_release_string(elem[1])
+        else:
+            spec_part = '@%s' % ':'.join([version_to_release_string(item) for item in elem])
+        result.append(spec_part)
+    return result
+
+
+def python_spec_to_spack(dependency):
+    version_ranges = dependency_to_version_ranges(dependency)
+
+    ranges = []
+    for version_range in version_ranges:
+        for interval in version_range:
+
+            if (interval.left == p.CLOSED and interval.right == p.CLOSED) and (interval.lower == interval.upper):
+                ranges.append((interval.lower,))
+            else:
+                lower_bound = interval.lower
+                upper_bound = interval.upper
+                if interval.left == p.OPEN and interval.lower != MIN_VERSION:
+                    lower_bound = increment_version(interval.lower, 1)
+                if interval.right == p.OPEN and interval.upper != MAX_VERSION:
+                    upper_bound = increment_version(interval.upper, -1)
+                ranges.append((lower_bound, upper_bound))
+
+    ranges = trim_spec_version_micros(ranges)
+    ranges = format_version_ranges(ranges)
+
+    return ','.join(ranges)
 
 
 def download_and_extract(directory, target_url):

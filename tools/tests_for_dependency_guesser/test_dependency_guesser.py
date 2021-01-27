@@ -1,6 +1,6 @@
 from packaging.version import Version
 from tools.dependency_guesser import expand_version_star, add_star_as_last_component, dependency_to_version_ranges, \
-    MIN_VERSION, MAX_VERSION, extend_version_releases, increment_version
+    MIN_VERSION, MAX_VERSION, extend_version_releases, increment_version, python_spec_to_spack, trim_version_micros
 import portion as p
 
 
@@ -39,6 +39,8 @@ def test_dependency_to_version_ranges():
                 p.openclosed(Version('4.0'), Version('9999.9999.9999'))]
     assert dependency_to_version_ranges('any!=2.2.*, !=4.0') == expected
 
+    assert dependency_to_version_ranges('any >= 0.3, <=0.5') == [p.closed(Version('0.3.0'), Version('0.5.0'))]
+
 
 def test_increment_version():
 
@@ -47,3 +49,23 @@ def test_increment_version():
 
     assert increment_version(Version('0.0.0'), -1) == Version('0.0.0')
     assert increment_version(Version('9999.9999.9999'), 1) == Version('9999.9999.9999')
+
+
+def test_trim_version_micro():
+
+    assert trim_version_micros('1.0.0') == Version('1.0')
+    assert trim_version_micros('1.0.0.0.0') == Version('1.0')
+    assert trim_version_micros('1.2.3.4.5') == Version('1.2.3.4.5')
+
+
+def test_python_version_to_spack():
+
+    assert python_spec_to_spack('any==1.0') == '@1.0'
+    assert python_spec_to_spack('any==1.0.0') == '@1.0'
+    assert python_spec_to_spack('any==1.0.1') == '@1.0.1'
+    assert python_spec_to_spack('any>=1.0') == '@1.0:'
+    assert python_spec_to_spack('any<=1.0') == '@:1.0'
+    assert python_spec_to_spack('any<1.0') == '@:0.9999.9999'
+    assert python_spec_to_spack('any!=1.0') == '@:0.9999.9999,@1.0.1:'
+    assert python_spec_to_spack('any~=1.5') == '@1.5:1.5.9999'
+    assert python_spec_to_spack('any<3.1.0,>=3.0.2') == '@3.0.2:3.0.9999'
