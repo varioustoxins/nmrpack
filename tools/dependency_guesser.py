@@ -148,9 +148,10 @@ def guess_dependencies(directory, target_url):
             result.extend(find_requirements(sub_directory))
         except RequirementsNotFound:
             pass
-
+    _, version, _ = get_url_info(url)
     for elem in result:
-        dependency_to_version_ranges(elem)
+        print("depends on(py-%s%s, type='run' when='%s')" % (elem.name, python_spec_to_spack(elem), version))
+        # dependency_to_version_ranges(elem)
     return result
 
 
