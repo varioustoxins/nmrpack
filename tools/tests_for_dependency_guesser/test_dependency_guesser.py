@@ -60,6 +60,7 @@ def test_trim_version_micro():
 
 def test_python_version_to_spack():
 
+    assert python_spec_to_spack('any') == ''
     assert python_spec_to_spack('any==1.0') == '@1.0'
     assert python_spec_to_spack('any==1.0.0') == '@1.0'
     assert python_spec_to_spack('any==1.0.1') == '@1.0.1'
