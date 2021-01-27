@@ -122,6 +122,25 @@ def add_star_as_last_component(version):
     return version
 
 
+def get_url_info(url):
+    url_parts = url.split('/')
+    package = url_parts[-1]
+    package_parts = package.split('-')
+
+    package_name = package_parts[0]
+
+    extensions = ('tar.gz', 'zip', 'whl')
+
+    package_format = 'unknown'
+    for extension in extensions:
+        full_extension = f'.{extension}'
+        if package_parts[1].endswith(full_extension):
+            package_format = extension
+            version = package_parts[1][:-len(full_extension)]
+
+    return package_name, version, package_format
+
+
 def guess_dependencies(directory, target_url):
     result = []
     for sub_directory in list_sub_directories(directory):
