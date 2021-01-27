@@ -69,3 +69,4 @@ def test_python_version_to_spack():
     assert python_spec_to_spack('any!=1.0') == '@:0.9999.9999,@1.0.1:'
     assert python_spec_to_spack('any~=1.5') == '@1.5:1.5.9999'
     assert python_spec_to_spack('any<3.1.0,>=3.0.2') == '@3.0.2:3.0.9999'
+    assert python_spec_to_spack('any> 1.0, != 1.3.4, < 2.0') == '@1.0.1:1.3.3,@1.3.5:1.9999.9999'
