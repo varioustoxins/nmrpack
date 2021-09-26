@@ -151,7 +151,6 @@ def guess_dependencies(directory, target_url):
     _, version, _ = get_url_info(url)
     for elem in result:
         print("depends on(py-%s%s, type='run' when='%s')" % (elem.name, python_spec_to_spack(elem), version))
-        # dependency_to_version_ranges(elem)
     return result
 
 
@@ -295,6 +294,8 @@ def python_spec_to_spack(dependency):
 
             if (interval.left == p.CLOSED and interval.right == p.CLOSED) and (interval.lower == interval.upper):
                 ranges.append((interval.lower,))
+            elif interval == p.closed(MIN_VERSION, MAX_VERSION):
+                pass
             else:
                 lower_bound = interval.lower
                 upper_bound = interval.upper
