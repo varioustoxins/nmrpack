@@ -13,10 +13,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Get current time
-          uses: srfrnk/current-time@master
-          id: current-time
-          with:
-            format: YYYYMMDD #'YYYY-MM-DDTHH:mm:ssZ'
+        uses: srfrnk/current-time@master
+        id: current-time
+        with:
+          format: YYYYMMDD #'YYYY-MM-DDTHH:mm:ssZ'
 
 #      - name git clone
 #        run: |
