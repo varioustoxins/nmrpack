@@ -11,4 +11,7 @@ jobs:
         python-version: 3.8
         architecture: x64
     - run: git clone -c feature.manyFiles=true https://github.com/spack/spack.git
+    - run: curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o ~/Downloads/master.zip
+    - run: unzip nmrpack-master.zip
+    - run: mv nmrpack-master nmrpack
     - run: spack/bin/spack repo add nmrpack
