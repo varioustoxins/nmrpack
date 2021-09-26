@@ -1,0 +1,23 @@
+# .github/workflows/tests.yml
+name: nmrpipe_grabber
+on:
+#  schedule:
+#    - cron: '0-59 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Runs a set of commands using the runners shell
+        - name: test touch an add
+          run: |
+            touch test
+
+        -uses: EndBug/add-and-commit@v7
+          with:
+            message: test
+            pull_strategy: NO-PULL
