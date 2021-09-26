@@ -21,6 +21,7 @@ jobs:
       - name: git clone
         run: |
           git clone https://github.com/varioustoxins/nmrpipe-tracker.git
+          git branch --set-upstream-to=origin master
 
       # Runs a set of commands using the runners shell
       - name: date stamp
