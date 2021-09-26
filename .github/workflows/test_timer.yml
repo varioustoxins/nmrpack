@@ -22,7 +22,7 @@ jobs:
         run: |
           git clone https://github.com/varioustoxins/nmrpipe-tracker.git
 
-      -name: set upstream
+      - name: set upstream
         working-directory: ./nmrpipe-tracker
         run: |
           git branch --set-upstream-to=origin/master
