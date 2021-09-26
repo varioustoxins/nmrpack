@@ -35,3 +35,4 @@ jobs:
           message: test
           cwd: ./nmrpipe-tracker
           add: DATE-STAMP
+          branch: master
