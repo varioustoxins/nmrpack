@@ -34,4 +34,4 @@ jobs:
         with:
           message: test
           cwd: ./nmrpipe-tracker
-          add: nmrpipe-tracker/DATE-STAMP
+          add: DATE-STAMP
