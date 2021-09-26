@@ -8,7 +8,7 @@ from checksum_url import  Navigator, transfer_page, UNKNOWN_VERSION
 from plugins import register_navigator
 from .url_navigator_plugin import UrlNavigator
 # noinspection PyUnresolvedReferences
-from checksum_url import TYPE, MAIN_FILE, EXTRA_FILE, EXPAND , VERSION, NAME, INFO, WEBSITE, DEPENDENCIES, DIGESTS
+from checksum_url import TYPE, MAIN_FILE, EXTRA_FILE, FORMAT, VERSION, NAME, INFO, WEBSITE, DEPENDENCIES, DIGESTS
 
 
 @register_navigator()
@@ -62,27 +62,28 @@ class NmrPipeNavigator(UrlNavigator):
         result = super(NmrPipeNavigator, self).get_urls()
 
         for url in result:
+            url_extension = url.split('.')[-1]
             if 'NMRPipeX' in url:
                 self._extra_item_info[url] = {
                     TYPE: MAIN_FILE,
-                    EXPAND: False,
+                    FORMAT: url_extension,
                     VERSION: self._version,
                     DIGESTS: {}
                 }
             else:
                 self._extra_item_info[url] = {
                     TYPE: EXTRA_FILE,
-                    EXPAND: False,
+                    FORMAT: url_extension,
                     VERSION: self._version,
                     DIGESTS: {}
                 }
 
         return result
 
-    def get_extra_item_info(self, url):
-        return self.get_extra_item_info([url])
+    def get_version_info(self, url):
+        return self._extra_item_info[url]
 
-    def get_extra_info(self):
+    def get_package_info(self):
         return {
             NAME: 'NMRPipe',
             INFO: 'NMRPipe is an extensive software system for processing, analyzing, and exploiting '
