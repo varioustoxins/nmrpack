@@ -38,6 +38,15 @@ jobs:
           touch nmrpipe-tracker/DATE-STAMP
           echo ${{ steps.current-time.outputs.formattedTime }} > nmrpipe-tracker/DATE-STAMP
 
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.NMRPIPE_PRIVATE_KEY }}
+          name: id_ed25519 # optional
+#          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+#          config: ${{ secrets.CONFIG }} # ssh_config; optional
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+
       - name: commit
         uses: EndBug/add-and-commit@v7
 
