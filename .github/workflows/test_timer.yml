@@ -29,8 +29,8 @@ jobs:
           echo ${{ steps.current-time.outputs.formattedTime }} > nmrpipe-tracker/DATE-STAMP
 
       - name: commit
-        working-directory: nmrpipe-tracker
         uses: EndBug/add-and-commit@v7
+        working-directory: nmrpipe-tracker
         with:
           message: test
           add: nmrpipe-tracker/DATE-STAMP
