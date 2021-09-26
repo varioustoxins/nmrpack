@@ -22,15 +22,15 @@ jobs:
         run: |
           git clone https://github.com/varioustoxins/nmrpipe-tracker.git
 
-      - name: checkout master
-        working-directory: ./nmrpipe-tracker
-        run: |
-          git checkout master
-
-#      - name: set upstream
+#      - name: checkout master
 #        working-directory: ./nmrpipe-tracker
 #        run: |
-#          git branch --set-upstream-to=origin/master
+#          git checkout master
+
+      - name: set upstream
+        working-directory: ./nmrpipe-tracker
+        run: |
+          git branch --set-upstream-to=master
 
       # Runs a set of commands using the runners shell
       - name: date stamp
