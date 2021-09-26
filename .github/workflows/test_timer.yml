@@ -27,11 +27,9 @@ jobs:
         run: |
           touch nmrpipe-tracker/DATE-STAMP
           echo ${{ steps.current-time.outputs.formattedTime }} > nmrpipe-tracker/DATE-STAMP
-#
-#
-#
-#      - name: commit
-#        uses: EndBug/add-and-commit@v7
-#        with:
-#          message: test
-#          add: test
+
+      - name: commit
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: test
+          add: nmrpipe-tracker/DATE-STAMP
