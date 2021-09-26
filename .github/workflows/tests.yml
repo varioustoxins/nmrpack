@@ -15,4 +15,4 @@ jobs:
     - run: unzip nmrpack-master.zip
     - run: mv nmrpack-master nmrpack
     - run: spack/bin/spack repo add nmrpack
-    - run: spack install nmrpipe
+    - run: spack/bin/spack install nmrpipe
