@@ -11,3 +11,4 @@ jobs:
         python-version: 3.8
         architecture: x64
     - run: git clone -c feature.manyFiles=true https://github.com/spack/spack.git
+    - run: spack/bin/spack repo add nmrpack
