@@ -14,8 +14,9 @@ jobs:
     steps:
       - name: Get current time
         uses: srfrnk/current-time@master
+        id: 'current-time'
         with:
-          format: YYYYMMDD #'YYYY-MM-DDTHH:mm:ssZ'
+          format: 'YYYY-MM-DDTHH:mm:ssZ'
 
 #      - name git clone
 #        run: |
