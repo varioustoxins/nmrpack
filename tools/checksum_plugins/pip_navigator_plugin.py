@@ -8,7 +8,9 @@ from checksum_url import TYPE, MAIN_FILE, EXTRA_FILE, EXPAND , VERSION, NAME, IN
 from http import HTTPStatus
 import json
 
+
 OK = HTTPStatus.OK
+
 
 @register_navigator()
 class PipNavigator(UrlNavigator):
@@ -20,6 +22,10 @@ class PipNavigator(UrlNavigator):
         self._raw_extra_info ={}
         self._long_to_short_urls = {}
         self._short_url_release = {}
+
+    @staticmethod
+    def _dump_json(json_data):
+        print(json.dumps(json_data, indent=4, sort_keys=True))
 
     @staticmethod
     def _get_version(url):
