@@ -21,6 +21,10 @@ jobs:
       - name: git clone
         run: |
           git clone https://github.com/varioustoxins/nmrpipe-tracker.git
+
+      - name: checkout master
+        working-directory: ./nmrpipe-tracker
+        run: |
           git checkout master
 
 #      - name: set upstream
