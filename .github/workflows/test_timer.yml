@@ -18,7 +18,7 @@ jobs:
         with:
           format: 'YYYY-MM-DDTHH:mm:ssZ'
 
-      - name git clone
+      - name: git clone
         run: |
           git clone https://github.com/varioustoxins/nmrpipe-tracker.git
 #
