@@ -30,7 +30,7 @@ jobs:
 
       - name: commit
         uses: EndBug/add-and-commit@v7
-        working-directory: nmrpipe-tracker
+        cwd: ./nmrpipe-tracker
         with:
           message: test
           add: nmrpipe-tracker/DATE-STAMP
