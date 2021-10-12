@@ -27,4 +27,5 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo download spack
-          curl -L https://github.com/spack/spack/archive/develop.zip -o ./develop.zip
+          git clone -c feature.manyFiles=true https://github.com/spack/spack.git
+#          curl -L https://github.com/spack/spack/archive/develop.zip -o ./develop.zip
