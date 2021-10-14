@@ -66,7 +66,7 @@ class Cns(Package):
     homepage = "http://cns-online.org"
     url      = "http://cns-online.org/download/v1.21/cns_solve_1.21_all-mp.tar.gz"
 
-    read_releases('cns', version, resource)
+    read_releases('cns')
 
     # patch to make SETFPEPS (set floating point epsilon work)
     # see https://ask.bioexcel.eu/t/cns-errors-before-after-recompilation/54

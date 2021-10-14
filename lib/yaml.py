@@ -3,15 +3,18 @@ import sys
 import pathlib
 from pathlib import Path
 import spack.util.spack_yaml as syaml
+from spack.directives import version
+from spack.directives import resource
 
 
-def read_releases(package,version, resource):
+def read_releases(package):
+
     package_root = str(pathlib.Path(__file__).parents[1])
 
     file_name = package_root / Path('packages') / Path(package) / Path('package.yaml')
 
 
-    releases =  syaml.load(open(file_name))
+    releases = syaml.load(open(file_name))
 
     for release_id, release in releases.items():
         url = f"{release['root_url']}/{release['install_file']}"

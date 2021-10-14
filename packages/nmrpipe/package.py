@@ -53,7 +53,7 @@ class Nmrpipe(Package):
 
     homepage = "https://www.ibbr.umd.edu/nmrpipe/install.html"
 
-    releases = read_releases('nmrpipe', version,resource)
+    releases = read_releases('nmrpipe')
 
     variant('dyn', default=False, description='install the dyn molecular dynamics library')
     variant('talos', default=False, description='install the talos chemical shift based dihedral angle predictor')
