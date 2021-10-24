@@ -42,4 +42,4 @@ def read_releases(package):
                 url = f'{url}/{file_name}'
                 resource(name=file_name, url=url, md5=md5, expand=False, destination='.',
                          placement=f'tmp_{file_name}', when=f'@{version_number}')
-    return releases
+
