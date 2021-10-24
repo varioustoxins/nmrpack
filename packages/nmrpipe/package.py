@@ -47,6 +47,15 @@ def remove_local_files_no_error_but_warn(files):
         except Exception:
             tty.warn(f"couldn't remove installation file {file_name}")
 
+@directive(dicts="variant_files")
+def variant_files(variant, *files):
+    def _execute_variant_files(pkg):
+
+        variant_files = pkg.variant_files.setdefault(variant,[])
+        variant_files.extend(files)
+
+    return _execute_variant_files
+
 class Nmrpipe(Package):
     """NMRPipe an extensive software system for processing, analyzing,
        and exploiting multidimensional NMR spectroscopic data"""
@@ -59,32 +68,48 @@ class Nmrpipe(Package):
     variant('talos', default=False, description='install the talos chemical shift based dihedral angle predictor')
     variant('smile', default=True, description='install the smile nus processing module')
 
+    variant_files('smile','plugin.smile.tZ')
+    variant_files('dyn', 'dyn.tZ')
+    variant_files('talos', 'talos_nmrPipe.tZ')
+
+
+
+    def get_resource_names(self, spec):
+        result = []
+        for resource_spec, resources in self.resources.items():
+            if spec.satisfies(resource_spec):
+                result = [resource.name for resource in resources]
+                break
+
+        return result
+
+
     def install(self, spec, prefix):
 
-        version_key = str(spec.version)
-        installed_release = self.releases[version_key]
-        installed_resources = installed_release['resources']
-        file_name_variants = [(file_name, variant_name) for file_name, (_, _, variant_name)
-                              in installed_resources.items()]
-        file_name_variants = [(file_name, variant_name) for file_name, variant_name in file_name_variants
-                              if not variant_name or f'+{variant_name}' in self.spec]
+        resource_filenames = self.installable_resource_filenames(spec)
+        all_filenames = [Path(self.stage.archive_file).name, *resource_filenames]
 
-        for file_name, variant_name in file_name_variants:
+        for file_name in resource_filenames:
             shutil.move(f'tmp_{file_name}/{file_name}', '.')
 
         items = [f for f in os.listdir('.')]
         for item in items:
-            if not item.startswith('tmp_') or item in installed_resources.keys():
+            if not item.startswith('tmp_') or item in all_filenames:
                 shutil.move(item, prefix)
 
         os.chdir(prefix)
         csh('./install.com')
 
-        install_files = []
-        for file_name, variant_name in file_name_variants:
-            install_files.append(file_name)
-        install_files.append(installed_release['install_file'])
-        remove_local_files_no_error_but_warn(install_files)
+        remove_local_files_no_error_but_warn(all_filenames)
+
+    def installable_resource_filenames(self, spec):
+        resource_filenames = set(self.get_resource_names(spec))
+        print(resource_filenames)
+        for variant_name in self.variants:
+            if not f'+{variant_name}' in self.spec:
+                for variant_file in self.variant_files[variant_name]:
+                    resource_filenames.remove(variant_file)
+        return resource_filenames
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
