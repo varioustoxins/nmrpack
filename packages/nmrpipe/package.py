@@ -105,7 +105,7 @@ class Nmrpipe(Package):
 
     def installable_resource_filenames(self, spec):
         resource_filenames = set(self.get_resource_names(spec))
-        print(resource_filenames)
+
         for variant_name in self.variants:
             if not f'+{variant_name}' in self.spec:
                 for variant_file in self.variant_files[variant_name]:
