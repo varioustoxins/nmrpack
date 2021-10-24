@@ -1,17 +1,34 @@
----
-  '2020.219.15.07':
-    version: 2020.219.15.07
-    install_file: NMRPipeX.tZ
-    md5: cb9ba746854132f88434064a00ffcf17
-    root_url: http://www.ibbr.umd.edu/nmrpipe
-
-    resources:
-        s.tZ: ['http://www.ibbr.umd.edu/nmrpipe', '3db6d675ae37f5160d90e5b4dd71da53', null]
-        install.com: ['http://www.ibbr.umd.edu/nmrpipe','8d9449de19992d8c2de8a646cce27d71', null]
-        binval.com: ['http://www.ibbr.umd.edu/nmrpipe','1b4c0998eeccb917dfa04932ae990dfb', null]
-        dyn.tZ: ['http://www.ibbr.umd.edu/nmrpipe', '91fb6633c6c1e9f632b4676d8162ba30', 'dyn']
-
-        # the urls for these resources must be from the niddk site not the ibbr site
-        # otherwise every download seems to be a different checksum...
-        talos_nmrPipe.tZ: ['https://spin.niddk.nih.gov/bax/software', '19dea8ed8301434ed0c7d9fdaa766670', 'talos']
-        plugin.smile.tZ: ['https://spin.niddk.nih.gov/bax/software/SMILE', '044ce568d90227cc305e0cdf0be68298', 'smile']
+10.9-2021.258.11.26:
+  version: 10.9-2021.258.11.26
+  install_file: NMRPipeX.tZ
+  sha256: 2d95b12a840f6d59844dea63eceb09775c82aedbc4c3e30f53f9847b088bba8d
+  root_url: http://www.ibbr.umd.edu/nmrpipe
+  resources:
+    plugin.smile.tZ:
+      - https://spin.niddk.nih.gov/bax/software/smile
+      - a92b036804ba59e51d44f941f3f71f4fb6d3f5f23547552dac89ea241e338104
+      - smile
+    dyn.tZ:
+      - http://www.ibbr.umd.edu/nmrpipe
+      - d68cbbacaa629c738de9d976b7dd6bb9cab07cdf2686f2a899841c46c169e29e
+      - dyn
+    NMRPipeL.tZ:
+      - http://www.ibbr.umd.edu/nmrpipe
+      - 70ca1593ccb801804720844baf89f0c736297c442422b9c768cc6eb9f8b5c657
+      - null
+    talos_nmrPipe.tZ:
+      - https://spin.niddk.nih.gov/bax/software
+      - a9c85639abd8a126efa753776bfa1530dc1b1b4f02d5a0bc1b473824bb85e4bf
+      - talos
+    s.tZ:
+      - http://www.ibbr.umd.edu/nmrpipe
+      - f7babce9d39d635a4db53ef1e31e894b42b30af7b0899053c9649117a8c06012
+      - null
+    install.com:
+      - http://www.ibbr.umd.edu/nmrpipe
+      - 23a7731464b08375e56700aad49555c3d13e64c0e8a2cf46189dfcb45ed13d32
+      - null
+    binval.com:
+      - http://www.ibbr.umd.edu/nmrpipe
+      - 328d55140d5e23ff650b1df139ae52fd885f303cc317cf69873193e45b8d03b4
+      - null
