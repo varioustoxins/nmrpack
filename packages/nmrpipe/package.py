@@ -26,18 +26,18 @@ if not package_root in sys.path:
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
 from nmrpack.lib.yaml import read_releases
 
-import spack.util.spack_yaml as syaml
 import os
 import shutil
 import llnl.util.tty as tty
-
-
+from spack.directives import directive
+from pathlib import Path
 
 EXAMPLE_FILE = 'example.cshrc'
 
 
 
 csh = which('csh')
+chmod = which('chmod')
 
 
 def remove_local_files_no_error_but_warn(files):
@@ -98,6 +98,7 @@ class Nmrpipe(Package):
                 shutil.move(item, prefix)
 
         os.chdir(prefix)
+        chmod('u+x','./install.com')
         csh('./install.com')
 
         remove_local_files_no_error_but_warn(all_filenames)
