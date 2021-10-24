@@ -20,7 +20,7 @@ def read_releases(package):
         url = f"{release['root_url']}/{release['install_file']}"
         version_number = release['version']
 
-        for check_sum_name in 'md5', 'sha256', 'sha512':
+        for check_sum_name in 'sha256', 'sha512':
             if check_sum_name in release:
                 check_sum = release[check_sum_name]
 
@@ -38,8 +38,8 @@ def read_releases(package):
         # NOTE: we could be downloading resources we don't need because a variant is marked as not required
         # however, how to access variants from the spec at this point...
         if 'resources' in release:
-            for file_name, (url, md5) in release['resources'].items():
+            for file_name, (url, sha256) in release['resources'].items():
                 url = f'{url}/{file_name}'
-                resource(name=file_name, url=url, md5=md5, expand=False, destination='.',
+                resource(name=file_name, url=url, sha256=sha256, expand=False, destination='.',
                          placement=f'tmp_{file_name}', when=f'@{version_number}')
 
