@@ -186,7 +186,7 @@ def transfer_page(target_session, target_url, username_password=(None, None)):
 
 
 def get_hash_from_url(target_url, target_session, verbose, count, digest='sha256',
-                      username_password=(None, None)):
+                      username_password=(None, None), debug=False):
 
     show_progress = verbose > 0
 
@@ -197,33 +197,41 @@ def get_hash_from_url(target_url, target_session, verbose, count, digest='sha256
     digester_factory = getattr(hashlib, digest)
     digester = digester_factory()
 
-    bar_length = 80 - 56
+    if not debug:
+        response = transfer_page(target_session, target_url, username_password)
 
-    t = None
-    if response.status_code != 200:
-        raise DownloadFailedException(f"download failed [response was {response.status_code}]")
-    elif total_data_length is None:
-        digester.update(response.content)
-    else:
-        try:
-            total_data_length = int(total_data_length)
+        total_data_length = response.headers.get('content-length')
 
-            human = human_size(total_data_length)
-            if show_progress:
-                bar_format = f'Reading {count} {human} {{l_bar}}{{bar:{bar_length}}} [remaining time: {{remaining}}]'
-                t = tqdm(total=total_data_length, bar_format=bar_format, file=sys.stdout, leave=False)
+        bar_length = 80 - 56
 
-            for data in response.iter_content(chunk_size=4096):
+        t = None
+        if response.status_code != 200:
+            raise DownloadFailedException(f"download failed [response was {response.status_code}]")
+        elif total_data_length is None:
+            digester.update(response.content)
+        else:
+            try:
+                total_data_length = int(total_data_length)
+
+                human = human_size(total_data_length)
                 if show_progress:
-                    t.update(len(data))
-                digester.update(data)
+                    bar_format = f'Reading {count} {human} {{l_bar}}{{bar:{bar_length}}} [remaining time: {{remaining}}]'
+                    t = tqdm(total=total_data_length, bar_format=bar_format, file=sys.stdout, leave=False)
 
-            if show_progress:
-                t.close()
+                for data in response.iter_content(chunk_size=4096):
+                    if show_progress:
+                        t.update(len(data))
+                    digester.update(data)
 
-        except Exception as exception:
-            raise DownloadFailedException(get_failure_message(target_url, exception_to_message(exception)))
-    return digester.hexdigest()
+                if show_progress:
+                    t.close()
+
+            except Exception as exception:
+                raise DownloadFailedException(get_failure_message(target_url, exception_to_message(exception)))
+    else:
+        digester.update(url.encode('utf8'))
+
+    return digester.hexdigest(), digester.name
 
 
 
@@ -493,6 +501,9 @@ if __name__ == '__main__':
                         help=f'define a regex to select the version of the software typically from its url, '
                              f'it should create a single match for each url, all others are discarded'
                              r'default: ([0-9]+\.(?:[0-9]+[A-Za-z0-9_-]*\.[0-9]+[A-Za-z0-9_-]*))+')
+    parser.add_argument('--debug', dest='debug', default=False, action='store_true',
+                        help=f'debug mode: use hashes of filenames rather than hashes of downloaded files for speed when debugging')
+
     parser.add_argument('urls', nargs='*')
 
     args = parser.parse_args()
