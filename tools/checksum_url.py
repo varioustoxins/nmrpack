@@ -289,7 +289,7 @@ class NavigatorABC(abc.ABC):
         pass
 
     # @abc.abstractmethod
-    def get_version_info(self):
+    def get_version_info(self, url):
         pass
 
     # @abc.abstractmethod
@@ -522,7 +522,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     if len(navigators) > 1:
-        print(f'WARNING multiple navigators select for  {args.navigator} selecting the first one')
+        print(f'Error multiple navigators selected for {args.navigator} selecting the first one {args.navigator[0]}')
 
     navigator = navigators[0](session, args)
 
