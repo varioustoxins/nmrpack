@@ -5,7 +5,7 @@ from checksum_url import Navigator, transfer_page, OutputBase
 # noinspection PyUnresolvedReferences
 from plugins import register_output
 
-from external.jinja2 import Template
+from jinja2 import Template
 
 output_template = '''
 
