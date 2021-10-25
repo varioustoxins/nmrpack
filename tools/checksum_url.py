@@ -536,9 +536,9 @@ if __name__ == '__main__':
         x_of_y = '%3i/%-3i' % (i + 1, len(urls))
 
         try:
-            _hash = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
-                                      username_password=args.password)
-            out.display_hash(url, _hash, max_length_url, i+1, num_urls)
+            _hash, hash_type = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
+                                      username_password=args.password, debug=args.debug)
+            out.display_hash(url, _hash, max_length_url, i+1, num_urls, hash_type=hash_type)
             version_info[url] = navigator.get_version_info(url)
 
         except DownloadFailedException as e:
