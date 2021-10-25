@@ -12,7 +12,7 @@ class SimpleOutput(OutputBase):
     def __init__(self):
         super(SimpleOutput, self).__init__()
 
-    def display_hash(self, target_url, _hash, url_field_length, index, num_urls=None):
+    def display_hash(self, target_url, _hash, url_field_length, index, num_urls=None, hash_type=None):
 
         target_url = target_url.ljust(url_field_length)
         index_string = f'[{index}]'.ljust(5)
