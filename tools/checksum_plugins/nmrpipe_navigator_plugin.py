@@ -26,7 +26,7 @@ class NmrPipeNavigator(UrlNavigator):
         response = super(NmrPipeNavigator, self).login_with_form(target_url, username_password)
 
         if response.status_code == 200:
-            install_page_url = f'{target_url}/install.html'
+            install_page_url = target_url
             install_page_response = transfer_page(self._target_session, install_page_url, username_password)
             if install_page_response.status_code == 200:
                 content_soup = BeautifulSoup(install_page_response.content, 'html.parser')
