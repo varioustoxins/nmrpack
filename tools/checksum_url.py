@@ -190,10 +190,6 @@ def get_hash_from_url(target_url, target_session, verbose, count, digest='sha256
 
     show_progress = verbose > 0
 
-    response = transfer_page(target_session, target_url, username_password)
-
-    total_data_length = response.headers.get('content-length')
-
     digester_factory = getattr(hashlib, digest)
     digester = digester_factory()
 
