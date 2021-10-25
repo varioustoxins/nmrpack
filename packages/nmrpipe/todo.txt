@@ -1,0 +1,44 @@
+1. check installation works on linux
+
+redhat/centos
+fedora
+ubuntu
+
+ubuntu 64
+
+    apt-get install tcsh
+    apt-get install xterm
+    apt-get install lib32z1
+    apt-get install libx11-6:i386
+    apt-get install libxext6:i386
+    apt-get install xfonts-75dpi
+    apt-get install msttcorefonts
+
+centos
+
+
+    yum install -y libgcc
+    yum install -y glibc
+    yum install -y libX11.so.6
+    yum install -y libXext
+    yum install -y libstdc++
+    yum install -y xorg-x11-fonts-75dpi
+    yum install -y xorg-x11-fonts-ISO8859-1-75dpi
+
+ but note must be 32 bit
+
+
+
+osx
+
+    install xquartz see homebrew
+    - needs github sha lister
+      curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/XQuartz/XQuartz/releases
+      set X11 Preferences class="plain"Windows tab, set checkmarks ON beside "Click-Through Inactive Windows" "Focus Follows Mouse" and "Focus on New Windows":  from command line
+    may need +nopost option
+
+
+may need to check csh doesn't produce extra text
+
+csh ~/.cshrc | wc -c == 0
+
