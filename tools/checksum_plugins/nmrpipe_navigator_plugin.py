@@ -45,7 +45,7 @@ class NmrPipeNavigator(UrlNavigator):
                 versions.add('.'.join(match.group(1, 2)))
 
         if not versions:
-            print('WANING: nop version string found setting version to 0.0.0')
+            print('WARNING: nop version string found setting version to 0.0.0')
             versions.append('0.0.0')
         elif versions and len(versions) > 1:
             print(f'WARNING: more than one version string found ({", ".join(versions)}), taking highest!')
