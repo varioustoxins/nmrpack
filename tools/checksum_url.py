@@ -31,6 +31,7 @@ INFO = 'info'
 WEBSITE = 'website'
 DEPENDENCIES = 'dependencies'
 DIGESTS = 'digests'
+EXPAND='expand'
 
 # https://gist.github.com/michelbl/efda48b19d3e587685e3441a74457024
 # Windows
