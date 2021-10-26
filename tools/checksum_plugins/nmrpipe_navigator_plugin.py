@@ -30,7 +30,9 @@ class NmrPipeNavigator(UrlNavigator):
             install_page_response = transfer_page(self._target_session, install_page_url, username_password)
             self._root = install_page_response.content
             if install_page_response.status_code == 200:
-                content_soup = BeautifulSoup(install_page_response.content, 'html.parser')
+                content_soup = BeautifulSoup(self._root, 'html.parser')
+
+                # note there is only one version here as the nmrpipe release page only ever contains one version...
                 self._version = self._parse_page(content_soup)
             else:
                 print(f'WARNING: response from {install_page_url} was {install_page_response.status_code}')
