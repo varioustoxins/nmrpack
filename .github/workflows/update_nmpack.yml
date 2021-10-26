@@ -1,0 +1,26 @@
+
+# This is a basic workflow to help you get started with Actions
+
+name: Update
+
+# Controls when the action will run.
+on:
+
+  push:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: Update nmrpipe
+        run: |
+          ls
