@@ -493,6 +493,8 @@ if __name__ == '__main__':
                         help='answer yes to all questions, including accepting licenses')
     parser.add_argument('-o', '--output', dest='output_format', default='simple',
                         help=f'define the output methods (supported: {output_names})')
+    parser.add_argument('-m', '--main', dest='main_file_template', default=None,
+                        help='template for the the main file [default = plugin chooses]')
     parser.add_argument('--version-format', dest='version_regex', default=None,
                         help=f'define a regex to select the version of the software typically from its url, '
                              f'it should create a single match for each url, all others are discarded'
