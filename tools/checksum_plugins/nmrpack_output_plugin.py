@@ -1,11 +1,10 @@
 import pluggy
-import sys
+
 # noinspection PyUnresolvedReferences
 from checksum_url import  Navigator, transfer_page, OutputBase
 from plugins import register_output
 from cmp_version import VersionString
-from icecream import ic
-from collections import OrderedDict
+
 import yaml
 import os
 from urllib.parse import urlparse, urlunparse
