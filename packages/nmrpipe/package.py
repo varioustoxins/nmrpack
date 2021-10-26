@@ -24,7 +24,7 @@ if not package_root in sys.path:
     sys.path.insert(0, package_root)
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
-from nmrpack.lib.yaml import read_releases
+from nmrpack.lib.yaml_package import read_releases
 
 import os
 import shutil

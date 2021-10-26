@@ -30,7 +30,7 @@ package_root = str(pathlib.Path(__file__).parents[3])
 if not package_root in sys.path:
     sys.path.insert(0, package_root)
 
-from nmrpack.lib.yaml import read_releases
+from nmrpack.lib.yaml_package import read_releases
 
 # this triggers
 import nmrpack.packages.cns.fetchers as fetchers
