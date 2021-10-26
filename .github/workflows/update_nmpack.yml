@@ -23,6 +23,11 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v2
 
+      - name: Install Python packages
+        uses: py-actions/py-dependency-install@v2
+        with:
+          path: .github/workflows/requirements.txt
+
       # Runs a set of commands using the runners shell
       - name: Update nmrpipe
         run: |
