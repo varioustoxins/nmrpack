@@ -1,0 +1,9 @@
+beautifulsoup4
+requests
+cmp_version
+html2text
+PyYAML
+mechanicalsoup
+tqdm
+pluggy
+cmp_version
