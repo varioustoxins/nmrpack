@@ -20,6 +20,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Install Python
+        uses: actions/setup-python@v2
+
       # Runs a set of commands using the runners shell
       - name: Update nmrpipe
         run: |
