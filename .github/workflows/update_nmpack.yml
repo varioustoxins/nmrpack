@@ -28,6 +28,9 @@ jobs:
         with:
           path: .github/workflows/requirements.txt
 
+      - name: setup PYTHONPATH
+        - echo "PYTHONPATH=tools" >> $GITHUB_ENV
+
       # Runs a set of commands using the runners shell
       - name: Update nmrpipe
         run: |
