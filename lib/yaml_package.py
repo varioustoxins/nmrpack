@@ -1,10 +1,12 @@
 
-import sys
+
 import pathlib
 from pathlib import Path
 import spack.util.spack_yaml as syaml
 from spack.directives import version
 from spack.directives import resource
+from icecream import ic
+
 
 
 def read_releases(package):
@@ -20,9 +22,11 @@ def read_releases(package):
         url = f"{release['root_url']}/{release['install_file']}"
         version_number = release['version']
 
-        for check_sum_name in 'sha256', 'sha512':
+        check_sum = None
+        for check_sum_name in 'md5', 'sha256', 'sha512':
             if check_sum_name in release:
                 check_sum = release[check_sum_name]
+                break
 
         if 'url_type' in release:
             url_arg = release['url_type']
