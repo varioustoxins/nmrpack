@@ -51,4 +51,4 @@ jobs:
 
       - name: list files to check cleanup required
         run: |
-          find . -nmin 10
+          find . -mmin 10
