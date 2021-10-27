@@ -10,7 +10,6 @@ from cmp_version import VersionString
 import yaml
 import os
 from urllib.parse import urlparse, urlunparse
-from icecream import ic
 
 class HashableVersionString(VersionString):
 
