@@ -1,3 +1,5 @@
+import sys
+
 import pluggy
 
 # noinspection PyUnresolvedReferences
@@ -8,6 +10,7 @@ from cmp_version import VersionString
 import yaml
 import os
 from urllib.parse import urlparse, urlunparse
+from icecream import ic
 
 class HashableVersionString(VersionString):
 
@@ -69,6 +72,11 @@ class NmrpackOutput(OutputBase):
             result[str(version)] = version_dict
 
             main_url = self.get_main_url(versions_and_urls[version])
+            if not main_url:
+                print('Error: no main url specified', file=sys.stderr)
+                print('Exiting...', file=sys.stderr)
+                sys.exit(1)
+
             version_dict['install_file'] = self.url_to_filename(self.get_main_url(versions_and_urls[version]))
 
             version_dict[self._urls_and_hashes[main_url][0]] = self._urls_and_hashes[main_url][1]
