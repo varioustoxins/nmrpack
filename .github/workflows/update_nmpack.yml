@@ -34,11 +34,11 @@ jobs:
 
       - name: Get nmrpipe package.yml ibbr
         run: |
-          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack  --main install.com *.com > nmrpipe_ibbr_package.yml
+          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack *.com *.tZ > nmrpipe_ibbr_package.yml
 
       - name: Get nmrpipe package.yml github
         run: |
-          python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main install.com *.com  > nmrpipe_github_package.yml
+          python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main NMRPipeX.tZ *.com *.tZ   > nmrpipe_github_package.yml
 
       - name: merge package files
         run: |
@@ -53,4 +53,4 @@ jobs:
         run: |
           rm nmrpipe_package.yml
           rm nmrpipe_ibbr_package.yml
-          rm nmrpipe_github_package
+          rm nmrpipe_github_package.yml
