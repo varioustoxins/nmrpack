@@ -22,7 +22,7 @@ if __name__ == '__main__':
         for elem, datum in data[version].items():
             if elem == 'resources':
                 for resource in RESOURCE_REMOVALS:
-                    print(resource)
+
                     if resource in data[version]['resources']:
                         del data[version]['resources'][resource]
 
