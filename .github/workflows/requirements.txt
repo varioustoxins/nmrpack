@@ -6,5 +6,4 @@ PyYAML
 mechanicalsoup
 tqdm
 pluggy
-cmp_version
 Jinja2
