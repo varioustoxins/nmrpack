@@ -1,4 +1,5 @@
 import sys
+from fnmatch import fnmatch
 
 import pluggy
 
@@ -46,6 +47,16 @@ class NmrpackOutput(OutputBase):
             if extra_info['type'] == 'main_file':
                 result=url
                 break
+
+        if not result and self._target_args and self._target_args.main_file_template:
+            filename_template = self._target_args.main_file_template
+            for url, extra_info in urls_extra_info.items():
+                file_name = self.url_to_filename(url)
+
+                if fnmatch(file_name, filename_template):
+                    result=url
+                    break
+
         return result
 
     @staticmethod
