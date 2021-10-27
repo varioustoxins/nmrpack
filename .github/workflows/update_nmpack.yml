@@ -35,4 +35,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Update nmrpipe
         run: |
-          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  *.com
+          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  *.com  > nmrpipe_site_package.yml
+          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator github_release  *.com  > nmrpipe_github_package.yml
+          cat nmrpipe_site_package.yml
+          cat nmrpipe_github_package.yml
