@@ -34,26 +34,25 @@ jobs:
 
       - name: Get nmrpipe package.yml ibbr
         run: |
-          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack *.com *.tZ > nmrpipe_ibbr_package.yml
+          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack *.com *.tZ > nmrpipe_ibbr_package.yaml
 
       - name: Get nmrpipe package.yml github
         run: |
-          python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main NMRPipeX.tZ *.com *.tZ   > nmrpipe_github_package.yml
+          python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main NMRPipeX.tZ *.com *.tZ   > nmrpipe_github_package.yaml
 
       - name: merge package files
         run: |
-          python3 tools/combine_packages.py --prefer ibbr nmrpipe_ibbr_package.yml nmrpipe_github_package.yml > nmrpipe_package.yml
+          python3 tools/combine_packages.py --prefer ibbr nmrpipe_ibbr_package.yaml nmrpipe_github_package.yaml > nmrpipe_package.yaml
 
       - name: cleanup_package_file
         run: |
-          python3 tools/post_process_nmrpipe.py  nmrpipe_package.yml > packages/nmrpipe/package.yml
-          cat packages/nmrpipe/package.yml
+          python3 tools/post_process_nmrpipe.py  nmrpipe_package.yaml > packages/nmrpipe/package.yaml
 
       - name: cleanup files
         run: |
-          rm nmrpipe_package.yml
-          rm nmrpipe_ibbr_package.yml
-          rm nmrpipe_github_package.yml
+          rm nmrpipe_package.yaml
+          rm nmrpipe_ibbr_package.yaml
+          rm nmrpipe_github_package.yaml
 
       - name: Get current time
         uses: srfrnk/current-time@master
