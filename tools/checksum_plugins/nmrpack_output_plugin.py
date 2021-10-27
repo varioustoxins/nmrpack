@@ -97,7 +97,8 @@ class NmrpackOutput(OutputBase):
 
 
 
-            for url, extra_info in extra_version_info.items():
+            for url in sorted(extra_version_info):
+                extra_info = extra_version_info[url]
                 if extra_info['type'] == 'extra_file':
                     file_name = self.url_to_filename(url)
                     root_url = self.url_to_root(url)
