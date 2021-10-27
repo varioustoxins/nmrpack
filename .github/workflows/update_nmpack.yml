@@ -36,12 +36,15 @@ jobs:
       - name: Get nmrpipe package.yml ibbr
         run: |
           python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack  --main install.com *.com > nmrpipe_ibbr_package.yml
-
+          echo ibbr
+          cat nmrpipe_ibbr_package.yml
 
 
       - name: Get nmrpipe package.yml github
         run: |
           python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main install.com *.com  > nmrpipe_github_package.yml
+          echo github
+          cat nmrpipe_github_package.yml
 
       - name: merge package files
         run: |
