@@ -36,6 +36,6 @@ jobs:
       - name: Update nmrpipe
         run: |
           python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack *.com  > nmrpipe_site_package.yml
-          python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack *.com  > nmrpipe_github_package.yml
+          python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main install.com *.com  > nmrpipe_github_package.yml
           cat nmrpipe_site_package.yml
           cat nmrpipe_github_package.yml
