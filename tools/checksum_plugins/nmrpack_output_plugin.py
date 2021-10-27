@@ -4,7 +4,9 @@ from fnmatch import fnmatch
 import pluggy
 
 # noinspection PyUnresolvedReferences
-from checksum_url import  Navigator, transfer_page, OutputBase
+from icecream import ic
+
+from checksum_url import Navigator, transfer_page, OutputBase, MAIN_FILE
 from plugins import register_output
 from cmp_version import VersionString
 
@@ -86,6 +88,7 @@ class NmrpackOutput(OutputBase):
                 print('Error: no main url specified', file=sys.stderr)
                 print('Exiting...', file=sys.stderr)
                 sys.exit(1)
+            extra_version_info[main_url]['type'] = MAIN_FILE
 
             version_dict['install_file'] = self.url_to_filename(self.get_main_url(versions_and_urls[version]))
 
@@ -97,7 +100,7 @@ class NmrpackOutput(OutputBase):
 
 
             for url, extra_info in extra_version_info.items():
-                if extra_info['type'] ==  'extra_file':
+                if extra_info['type'] == 'extra_file':
                     file_name = self.url_to_filename(url)
                     root_url = self.url_to_root(url)
                     resources[file_name]= [root_url, self._urls_and_hashes[url][1]]
