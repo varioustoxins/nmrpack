@@ -457,7 +457,8 @@ def get_max_string_length(in_urls):
 
 class OutputBase:
 
-    def __init__(self):
+    def __init__(self, target_args):
+        self._target_args = target_args
         self.digest =  'unknown'
 
     def output(self, url, hash, max_length_url, i):
@@ -527,7 +528,7 @@ if __name__ == '__main__':
 
     navigator.login_with_form(args.root, args.password, args.form)
 
-    out = get_output(name=args.output_format)
+    out = get_output(name=args.output_format, target_args=args)
     out.digest = args.digest
 
     urls = navigator.get_urls()

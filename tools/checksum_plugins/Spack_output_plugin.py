@@ -33,8 +33,8 @@ class SpackOutput(OutputBase):
 
     NAME = "spack"
 
-    def __init__(self):
-        super(SpackOutput, self).__init__()
+    def __init__(self, target_args=None):
+        super(SpackOutput, self).__init__(target_args=target_args)
         self._info = []
 
     def display_hash(self, target_url, _hash, url_field_length, index, num_urls=None):

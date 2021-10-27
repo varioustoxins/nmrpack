@@ -22,8 +22,8 @@ class NmrpackOutput(OutputBase):
 
     NAME = 'nmrpack'
 
-    def __init__(self):
-        super(NmrpackOutput, self).__init__()
+    def __init__(self, target_args=None):
+        super(NmrpackOutput, self).__init__(target_args=target_args)
         self._urls_and_hashes = {}
 
     def display_hash(self, target_url, hash, url_field_length, index, num_urls=None, hash_type='unknown'):

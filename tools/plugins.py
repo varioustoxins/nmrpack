@@ -61,14 +61,14 @@ class BaseChecksumHookspecs:
 class NavigatorChecksumHookspecs(BaseChecksumHookspecs):
 
     @CHECK_SUM_SPEC
-    def create_navigator(self, name, target_browser, target_args):
+    def create_navigator(self, name, target_browser, target_args=None):
         """create a new navigator
         """
 
 
 class OutputChecksumHookspecs(BaseChecksumHookspecs):
     @CHECK_SUM_SPEC
-    def create_output(self, name, additional_args=None):
+    def create_output(self, name, target_args=None, additional_args=None):
         """create an output
         """
 
@@ -147,5 +147,5 @@ def get_navigator(name=None, target_browser=None, target_args=None):
     return pm.hook.create_navigator(name=name, target_browser=target_browser, target_args=target_args)
 
 
-def get_output(name=None):
-    return pm.hook.create_output(name=name)[0]()
+def get_output(name=None, target_args=None):
+    return pm.hook.create_output(name=name, target_args=target_args)[0](target_args=target_args)
