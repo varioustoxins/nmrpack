@@ -4,8 +4,6 @@ from fnmatch import fnmatch
 import pluggy
 
 # noinspection PyUnresolvedReferences
-from icecream import ic
-
 from checksum_url import Navigator, transfer_page, OutputBase, MAIN_FILE
 from plugins import register_output
 from cmp_version import VersionString
