@@ -1,7 +1,7 @@
 
 # This is a basic workflow to help you get started with Actions
 
-name: Update
+name: Update NMRPipe
 
 # Controls when the action will run.
 on:
@@ -35,11 +35,15 @@ jobs:
 
       - name: Get nmrpipe package.yml ibbr
         run: |
-          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack  --main install.com *.com > nmrpipe_site_package.yml
-          cat nmrpipe_site_package.yml
+          python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack  --main install.com *.com > nmrpipe_ibbr_package.yml
+
 
 
       - name: Get nmrpipe package.yml github
         run: |
           python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main install.com *.com  > nmrpipe_github_package.yml
-          cat nmrpipe_github_package.yml
+
+      - name: merge package files
+        run: |
+          python3 tools/combine_packages.py --prefer ibbr nmrpipe_ibbr_package.yml nmrpipe_github_package.yml > nmrpipe_package.yml
+          cat nmrpipe_package.yml
