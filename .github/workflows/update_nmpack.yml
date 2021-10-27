@@ -50,5 +50,5 @@ jobs:
           cat packages/nmrpipe/package.yml
 
       - name: list files to check cleanup required
-          run: |
-            ls -ltd *
+        run: |
+          ls -ltd *
