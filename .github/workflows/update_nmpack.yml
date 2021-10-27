@@ -32,21 +32,19 @@ jobs:
         run: |
           echo "PYTHONPATH=tools" >> $GITHUB_ENV
 
-
       - name: Get nmrpipe package.yml ibbr
         run: |
           python3 tools/checksum_url.py --root https://www.ibbr.umd.edu/nmrpipe/install.html --template --navigator nmrpipe  --output  nmrpack  --main install.com *.com > nmrpipe_ibbr_package.yml
-          echo ibbr
-          cat nmrpipe_ibbr_package.yml
-
 
       - name: Get nmrpipe package.yml github
         run: |
           python3 tools/checksum_url.py --root https://github.com/varioustoxins/nmrpipe-tracker --template --navigator github_release  --output nmrpack  --main install.com *.com  > nmrpipe_github_package.yml
-          echo github
-          cat nmrpipe_github_package.yml
 
       - name: merge package files
         run: |
           python3 tools/combine_packages.py --prefer ibbr nmrpipe_ibbr_package.yml nmrpipe_github_package.yml > nmrpipe_package.yml
-          cat nmrpipe_package.yml
+
+      - name: cleanup_package_file
+          run: |
+            python3 tools/post_process_nmrpipe.py  nmrpipe_package.yml > packages/nmrpipe/package.yml
+            cat packages/nmrpipe/package.yml
