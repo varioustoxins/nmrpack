@@ -49,6 +49,8 @@ jobs:
           python3 tools/post_process_nmrpipe.py  nmrpipe_package.yml > packages/nmrpipe/package.yml
           cat packages/nmrpipe/package.yml
 
-      - name: list files to check cleanup required
+      - name: cleanup files
         run: |
-          find . -mmin 10
+          rm nmrpipe_package.yml
+          rm nmrpipe_ibbr_package.yml
+          rm nmrpipe_github_package
