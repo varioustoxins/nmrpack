@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     output = {}
 
-    for i, version in sorted_versions:
+    for version in sorted_versions:
         version = str(version)
         output[version] = result[version]
 
