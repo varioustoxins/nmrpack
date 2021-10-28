@@ -6,8 +6,8 @@ name: Update NMRPipe
 # Controls when the action will run.
 on:
 
-  push:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
 
   workflow_dispatch:
 
