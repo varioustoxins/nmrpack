@@ -1,4 +1,4 @@
-name: Test spack install
+name: Test spack install of nmrpipe
 
 on:
 
@@ -10,8 +10,8 @@ on:
 
 jobs:
 
-  install_gcc:
-    name: gcc with clang
+  install_nmrpipe:
+    name: install nmrpipe with spack
     runs-on: macos-latest
     steps:
     - uses: actions/setup-python@v2
@@ -27,7 +27,7 @@ jobs:
         cd spack
         git checkout releases/v0.16
 
-    - name: install spack
+    - name: install spack and test install of nmrpipe
       run: |
         cd spack
         echo `pwd`
@@ -38,39 +38,9 @@ jobs:
         mv nmrpack-master nmrpack
         spack repo add nmrpack
         spack install nmrpipe
-        spack test nmrpipe
-
-#    - name: spack install
-#      run: |
-#        . .github/workflows/install_spack.sh
-#        # 9.2.0 is the latest version on which we apply homebrew patch
-#        spack install -v --fail-fast py-vermin
-#
-#    - name: spack install
-#      run: |
-#        ls spack
-
-
-#  build:
-#    runs-on: ubuntu-latest #macos-latest
-#
-#
-#    steps:
-#
-#      - name: download spack
-#        run: |
-#          git clone https://github.com/spack/spack spack
-#
-#      - name: checkout latest spack
-#        run: |
-#          cd spack
-#          git checkout releases/v0.16
-#
-#      - name: add spack to path
-#        run: |
-#         . ./spack/.github/workflows/install_spack.sh
+        spack test run nmrpipe
+        spack load nmrpipe
+        nmrpipe
 
 
 
-#          git clone -c feature.manyFiles=true https://github.com/spack/spack.git
-#          curl -L https://github.com/spack/spack/archive/develop.zip -o ./develop.zip
