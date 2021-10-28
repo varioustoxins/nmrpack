@@ -25,6 +25,9 @@ jobs:
         spack install -v --fail-fast py-vermin
 
   do_ls:
+    - name: spack install
+      run: |
+        ls spack
 
 
 #  build:
