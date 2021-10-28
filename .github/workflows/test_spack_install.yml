@@ -14,7 +14,6 @@ jobs:
     name: gcc with clang
     runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
         python-version: 3.9
@@ -28,11 +27,17 @@ jobs:
         cd spack
         git checkout releases/v0.16
 
-    - name: add spack to path
+    - name: install spack
       run: |
         cd spack
         echo `pwd`
         . .github/workflows/install_spack.sh
+        cd ..
+        curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o nmrpack-master.zip
+        unzip nmrpack-master.zip
+        mv nmrpack-master nmrpack
+        spack repo add nmrpack
+        spack install nmrpipe
 
 #    - name: spack install
 #      run: |
