@@ -30,6 +30,7 @@ jobs:
 
     - name: add spack to path
       run: |
+        cd spack
         echo `pwd`
 #       . spack/.github/workflows/install_spack.sh
 
