@@ -10,24 +10,41 @@ on:
 
 jobs:
 
-  build:
-    runs-on: ubuntu-latest #macos-latest
-
-
+  install_gcc:
+    name: gcc with clang
+    runs-on: macos-latest
     steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: spack install
+      run: |
+        . .github/workflows/install_spack.sh
+        # 9.2.0 is the latest version on which we apply homebrew patch
+        spack install -v --fail-fast py-vermin
 
-      - name: download spack
-        run: |
-          git clone https://github.com/spack/spack spack
+  do_ls:
 
-      - name: checkout latest spack
-        run: |
-          cd spack
-          git checkout releases/v0.16
 
-      - name: add spack to path
-        run: |
-         . spack/.github/workflows/install_spack.sh
+#  build:
+#    runs-on: ubuntu-latest #macos-latest
+#
+#
+#    steps:
+#
+#      - name: download spack
+#        run: |
+#          git clone https://github.com/spack/spack spack
+#
+#      - name: checkout latest spack
+#        run: |
+#          cd spack
+#          git checkout releases/v0.16
+#
+#      - name: add spack to path
+#        run: |
+#         . ./spack/.github/workflows/install_spack.sh
 
 
 
