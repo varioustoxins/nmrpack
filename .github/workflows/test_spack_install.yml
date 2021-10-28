@@ -38,6 +38,7 @@ jobs:
         mv nmrpack-master nmrpack
         spack repo add nmrpack
         spack install nmrpipe
+        spack test nmrpipe
 
 #    - name: spack install
 #      run: |
