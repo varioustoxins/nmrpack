@@ -24,7 +24,6 @@ jobs:
         # 9.2.0 is the latest version on which we apply homebrew patch
         spack install -v --fail-fast py-vermin
 
-  do_ls:
     - name: spack install
       run: |
         ls spack
