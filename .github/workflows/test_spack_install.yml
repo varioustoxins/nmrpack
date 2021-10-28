@@ -11,7 +11,7 @@ on:
 jobs:
 
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest #macos-latest
 
 
     steps:
@@ -19,8 +19,17 @@ jobs:
       - name: download spack
         run: |
           git clone https://github.com/spack/spack spack
+
+      - name: checkout latest spack
+        run: |
           cd spack
           git checkout releases/v0.16
+
+      - name: add spack to path
+        run: |
+         . spack/.github/workflows/install_spack.sh
+
+
 
 #          git clone -c feature.manyFiles=true https://github.com/spack/spack.git
 #          curl -L https://github.com/spack/spack/archive/develop.zip -o ./develop.zip
