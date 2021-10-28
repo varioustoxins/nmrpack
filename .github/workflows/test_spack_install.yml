@@ -32,7 +32,7 @@ jobs:
       run: |
         cd spack
         echo `pwd`
-#       . spack/.github/workflows/install_spack.sh
+        . .github/workflows/install_spack.sh
 
 #    - name: spack install
 #      run: |
