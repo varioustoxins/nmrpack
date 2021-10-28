@@ -3,7 +3,7 @@ name: Test spack install
 on:
 
   push:
-    branches: [ main ]
+    branches: [ master ]
 
   workflow_dispatch:
 
