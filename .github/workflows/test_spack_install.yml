@@ -38,9 +38,11 @@ jobs:
         mv nmrpack-master nmrpack
         spack repo add nmrpack
         spack install nmrpipe
-        spack test run nmrpipe
+        #spack test run nmrpipe
         spack load nmrpipe
         nmrpipe
+        exit `spack test results | grep nmrpipe | grep passed`
+
 
 
 
