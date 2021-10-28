@@ -5,7 +5,6 @@ from pathlib import Path
 import spack.util.spack_yaml as syaml
 from spack.directives import version
 from spack.directives import resource
-from icecream import ic
 
 
 
