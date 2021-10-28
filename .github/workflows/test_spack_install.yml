@@ -27,6 +27,7 @@ jobs:
       run: |
         cd spack
         git checkout releases/v0.16
+        cd ..
 
     - name: add spack to path
       run: |
