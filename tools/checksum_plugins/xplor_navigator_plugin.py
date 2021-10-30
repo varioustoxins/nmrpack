@@ -92,7 +92,7 @@ class XplorNavigator(Navigator):
             match = partial(fnmatch, pat=template)
             target_names.update(filter(match, all_button_names))
 
-        show_progress = self._args.verbose > 1
+        show_progress = self._args.verbose >= 1
 
         t = None
         for target_index, button_value in enumerate(target_names):
