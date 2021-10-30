@@ -417,10 +417,16 @@ def show_yes_message_cancel_or_wait():
 
     progress_bar = tqdm(total=10, bar_format='        {desc}{bar:45}', file=sys.stdout, leave=False)
 
-    kb = KBHit()
+    # in a pycharm terminal this doesn't work skip it
+    try:
+        kb = KBHit()
+        wait_time = 100
+    except:
+        kb = None
+        wait_time=0
 
     doit = True
-    for index in range(100):
+    for index in range(wait_time):
         sleep(0.1)
         progress_bar.update(0.1)
         progress_bar.set_description(f'{int((100-index)/10)}s remaining ')
@@ -436,7 +442,8 @@ def show_yes_message_cancel_or_wait():
                 progress_bar.close()
                 break
 
-    kb.set_normal_term()
+    if kb:
+        kb.set_normal_term()
 
     if not doit:
         print()
