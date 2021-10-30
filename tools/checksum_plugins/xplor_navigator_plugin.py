@@ -57,7 +57,7 @@ class XplorNavigator(Navigator):
 
     NAME = 'xplor'
 
-    VERSION_REGEX = Navigator.DEFAULT_VERSION_REGEX + '[-]'
+    VERSION_REGEX_GZ = Navigator.DEFAULT_VERSION_REGEX + '[-]'
 
     def __init__(self, browser, target_args):
         super(XplorNavigator, self).__init__(browser, target_args)
@@ -66,6 +66,17 @@ class XplorNavigator(Navigator):
         if not form:
             form = (0, 'UserName', 'Password', None)
         return super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
+
+
+    def version_matcher(self, url):
+
+        result = None
+        if url.endswith('.gz'):
+            result = self._urls_to_url_version([url,], self.VERSION_REGEX_GZ)[url]
+        else:
+            result = self._urls_to_url_version([url,], self.DEFAULT_VERSION_REGEX)[url]
+
+        return result
 
     def get_urls(self, sorted_by_version=True):
 
@@ -127,7 +138,7 @@ class XplorNavigator(Navigator):
 
         if sorted_by_version:
             url_versions = [arg.split('#')[0] for arg in result]
-            url_versions = self._urls_to_url_version(url_versions, self.VERSION_REGEX)
+            url_versions = self._urls_to_url_version(url_versions, self.version_matcher)
             url_versions = self._sort_url_versions(url_versions)
             result = list(url_versions.keys())
 
