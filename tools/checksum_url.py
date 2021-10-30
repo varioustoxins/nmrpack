@@ -381,21 +381,29 @@ class Navigator(NavigatorABC):
         return cls.inverted_sort_dict(url_versions)
 
     @classmethod
-    def _urls_to_url_version(cls, target_urls, version_regex=None):
+    def _urls_to_url_version(cls, target_urls, version_matcher=None):
 
         results = {}
         for target_url in target_urls:
             default_template = cls.DEFAULT_VERSION_REGEX
-            if not version_regex:
-                version_regex = default_template
-            regex = re.compile(version_regex)
-            match = regex.search(target_url)
+            if not version_matcher:
+                version_matcher = default_template
 
-            if match:
-                results[target_url] = match.group(1)
-            else:
+            result = None
+            if isinstance(version_matcher, str):
+                regex = re.compile(version_matcher)
+                match = regex.search(target_url)
+                if match:
+                    result = match.group(1)
+            elif callable(version_matcher):
+                 result = version_matcher(target_url)
+
+
+            if not result:
                 print(f"WARNING: couldn't match version for url: {target_url}")
-                results[target_url] = '0.0.0'
+                result = '0.0.0'
+
+            results[target_url] = result
 
         return results
 
