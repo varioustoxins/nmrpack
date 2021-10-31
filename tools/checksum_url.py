@@ -577,6 +577,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     args.password = tuple(args.password)
 
+    verbose = args.verbose >= 1
+
     if args.yes:
         show_yes_message_cancel_or_wait()
 
