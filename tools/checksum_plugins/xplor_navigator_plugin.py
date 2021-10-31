@@ -67,6 +67,7 @@ class XplorNavigator(Navigator):
             form = (0, 'UserName', 'Password', None)
         return super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
 
+    def get_version(self, url):
 
     def version_matcher(self, url):
 

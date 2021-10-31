@@ -480,6 +480,45 @@ class OutputBase:
         """output a url and its hash"""
 
 
+def cache_file_exists(file_name):
+    return Path(file_name).is_file()
+
+
+def load_cache_file(file_name):
+    try:
+        with open(file_name) as file_h:
+            result = yaml.safe_load(file_h)
+    except IOError as err:
+        print(f'WARNING: cache file {file_name} can be opened {err} ignored!', file=sys.stderr)
+        result = None
+    return result
+
+
+def get_cache(cache_file_name):
+
+    if args.cache_file:
+        if cache_file_exists(cache_file_name):
+            result = load_cache_file(cache_file_name)
+            if verbose:
+                print(f"NOTE: using cache file {cache_file_name}", file=sys.stderr)
+        else:
+            print(f"NOTE: cache file {cache_file_name} doesn't exists creating a new one...", file=sys.stderr)
+            result = {}
+    else:
+        result = None
+
+    return result
+
+def get_package_from_cache(cache, navigator):
+
+    if cache != None and 'package' in cache:
+        package_info = cache['package']
+    elif cache != None:
+        package_info = navigator.get_package_info()
+        cache['package'] = package_info
+    return package_info
+
+
 if __name__ == '__main__':
 
     load_and_register_factory_classes()
@@ -516,6 +555,8 @@ if __name__ == '__main__':
                         help=f'define a regex to select the version of the software typically from its url, '
                              f'it should create a single match for each url, all others are discarded'
                              r'default: ([0-9]+\.(?:[0-9]+[A-Za-z0-9_-]*\.[0-9]+[A-Za-z0-9_-]*))+')
+    parser.add_argument('-c', '--cache', dest='cache_file',type=str, metavar='CACHE-FILE', default=None,
+                        help='use a cached values from a  file if available to limit bandwidth used')
     parser.add_argument('--debug', dest='debug', default=False, action='store_true',
                         help=f'debug mode: use hashes of filenames rather than hashes of downloaded files for speed when debugging')
 
@@ -526,6 +567,11 @@ if __name__ == '__main__':
 
     if args.yes:
         show_yes_message_cancel_or_wait()
+
+    cache = get_cache(args.cache_file)
+
+    if cache != None:
+        original_cache = copy.deepcopy(cache)
 
     session = requests.session()
 
@@ -550,13 +596,40 @@ if __name__ == '__main__':
     max_length_url = get_max_string_length(urls)
     num_urls = len(urls)
 
+    package_info = get_package_from_cache(cache, navigator)
+
     version_info = OrderedDict()
     for i, url in enumerate(urls):
         x_of_y = '%3i/%-3i' % (i + 1, len(urls))
 
+        version = navigator.get_version(url)
+
+
+        if cache != None and version in cache:
+            have_cache = url in cache[version] and args.digest in cache[version][url]['digests']
+        else:
+            have_cache = False
+
         try:
-            _hash, hash_type = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
-                                      username_password=args.password, debug=args.debug)
+            if have_cache:
+                if verbose:
+                    print(f"NOTE: using cached data for {url} [version: {version}]", file=sys.stderr)
+                _hash = cache[version][url]['digests'][args.digest]
+                hash_type = args.digest
+
+                url_version_info = {key : value for key, value in cache[version][url].items()}
+            else:
+                if verbose:
+                    print(f"NOTE: creating cached data for {url} [version: {version}]", file=sys.stderr)
+                _hash, hash_type = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
+                                                    username_password=args.password, debug=args.debug)
+                cache_line = cache.setdefault(version, {}).setdefault(url, {})
+                cache_line.setdefault('digests', {})[hash_type] = _hash
+                url_version_info = navigator.get_version_info(url)
+                if url_version_info != None:
+                    url_version_info['version']
+                    cache[version][url].update(url_version_info)
+
             out.display_hash(url, _hash, max_length_url, i+1, num_urls, hash_type=hash_type)
             version_info[url] = navigator.get_version_info(url)
 
@@ -571,4 +644,11 @@ if __name__ == '__main__':
     package_info = navigator.get_package_info()
     out.finish(package_info, version_info)
 
-    print()
+    if cache != None and original_cache != cache:
+        if verbose:
+            print('NOTE: cache changed updating...')
+        try:
+            with open(args.cache_file, 'w') as cache_file:
+                cache_file.write(json.dumps(cache,indent=4))
+        except IOError as err:
+            print(f'Error: failed to write cache to {args.cache_file} because {err}', file=sys.stderr)

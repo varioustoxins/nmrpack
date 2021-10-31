@@ -83,6 +83,9 @@ class NmrPipeNavigator(UrlNavigator):
 
         return result
 
+    def get_version(self, url):
+        return self._version
+
     def get_version_info(self, url):
         return self._extra_item_info[url]
 
