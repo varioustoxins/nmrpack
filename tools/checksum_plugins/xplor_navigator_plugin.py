@@ -19,12 +19,12 @@ class TooManyUrlsException(Exception):
     ...
 
 def show_license(page):
-    print()
-    print(html2text(str(page)))
+    print(file=sys.stderr)
+    print(html2text(str(page)),file=sys.stderr)
     agree = [input_elem for input_elem in page.find_all('input') if input_elem['name'] == 'AgreeToLicense'][0]
-    print()
-    print(agree['value'])
-    print()
+    print(file=sys.stderr)
+    print(agree['value'], file=sys.stderr)
+    print(file=sys.stderr)
 
 
 # https://stackoverflow.com/questions/3041986/apt-command-line-interface-like-yes-no-input
@@ -133,10 +133,15 @@ class XplorNavigator(Navigator):
                     else:
                         t.update()
 
-
-                if 'Linux' in single_result or 'linux' in single_result:
-                    print(f'NOTE: linux currently not supported ignoring url {single_result}', file=sys.stderr)
-                    continue
+                ignored_names = [
+                    'linux',
+                    'irix',
+                    'ppc'
+                ]
+                for ignored_name in ignored_names:
+                    if ignored_name.upper() in single_result.upper():
+                        print(f'NOTE: {ignored_name} currently not supported ignoring url {single_result}', file=sys.stderr)
+                        continue
 
                 if single_result:
                     should_show_license = False
