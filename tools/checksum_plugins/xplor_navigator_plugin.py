@@ -190,4 +190,15 @@ class XplorNavigator(Navigator):
         return result
 
 
+    def get_package_info(self):
+            return {
+                NAME: 'Xplor-NIH',
+                INFO: '''XPLOR-NIH a structure determination program which builds on the X-PLOR program, 
+                         including additional tools developed at the NIH''',
+                WEBSITE: 'https://nmr.cit.nih.gov/xplor-nih/'
+            }
 
+
+
+    def get_extra_info(self, url):
+        return self._url_extra_info[url]
