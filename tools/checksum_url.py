@@ -44,7 +44,7 @@ ANY='any' # can be used for ARCH as well
 ARCH='arch'
 X86_64='x86_64'
 X86_32='x86_32'
-M1='m1'
+MX='mx'
 
 
 
