@@ -125,6 +125,15 @@ class XplorNavigator(Navigator):
                 else:
                     single_result = self.get_single_url(button_value, should_show_license)
 
+                if show_progress:
+                    if target_index == 0:
+                        if show_progress:
+                            bar_format = f'Reading urls {{l_bar}}{{bar: 92}} [remaining time: {{remaining}}]'
+                            t = tqdm(total=len(target_names) - 1, bar_format=bar_format, file=sys.stdout, leave=False)
+                    else:
+                        t.update()
+
+
                 if 'Linux' in single_result or 'linux' in single_result:
                     print(f'NOTE: linux currently not supported ignoring url {single_result}', file=sys.stderr)
                     continue
@@ -135,13 +144,7 @@ class XplorNavigator(Navigator):
                     if self._optimise:
                         root_url = urlparse(single_result)
 
-                if show_progress:
-                    if target_index == 0:
-                        if show_progress:
-                            bar_format = f'Reading urls {{l_bar}}{{bar: 92}} [remaining time: {{remaining}}]'
-                            t = tqdm(total=len(target_names) - 1, bar_format=bar_format, file=sys.stdout, leave=False)
-                    else:
-                        t.update()
+
 
             if show_progress:
                 t.close()
