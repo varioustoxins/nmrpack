@@ -1,0 +1,61 @@
+
+# This is a basic workflow to help you get started with Actions
+
+name: Update Xplor
+
+# Controls when the action will run.
+on:
+
+#  push:
+#    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+
+      - name: Install Python packages
+        uses: py-actions/py-dependency-install@v2
+        with:
+          path: .github/workflows/requirements.txt
+
+      - name: setup PYTHONPATH
+        run: |
+          echo "PYTHONPATH=tools" >> $GITHUB_ENV
+
+      - name: Get nmrpipe package.yml ibbr
+        run: |
+          python3 tools/checksum_url.py --password garyt {{ $secrets.XPLOR_PASSWORD }} --template --root https://nmr.cit.nih.gov/xplor-nih/download.cgi  --cache checksum_caches/xplor_cache.yml --navigator xplor -y --verbose *3.2*.sh *3.2*.tar.gz > xplor_package.yml
+
+      - name: Install xplor package.xml
+        run: |
+          mv xplor_package.yml packages/xplor/package.yaml
+
+      - name: cleanup files
+        run: |
+          rm xplor_package.yaml
+
+
+      - name: Get current time
+        uses: srfrnk/current-time@master
+        id: 'current-time'
+        with:
+          format: 'YYYY-MM-DDTHH:mm:ssZ'
+
+      - name: Commit
+        uses: EndBug/add-and-commit@v7
+
+        with:
+          message: updated nmrpipe on ${{ steps.current-time.outputs.formattedTime }}
+          branch: master
+          add: packages/xplor/package.yaml
+
