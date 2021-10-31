@@ -643,11 +643,15 @@ if __name__ == '__main__':
                 hash_type = args.digest
 
                 url_version_info = {key : value for key, value in cache[version][url].items()}
+                version_info[url] = url_version_info
             else:
                 _hash, hash_type = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
-                                                username_password=args.password, debug=args.debug)
+                                                     username_password=args.password, debug=args.debug)
+
 
                 url_version_info = navigator.get_extra_info(url)
+                version_info[url]= url_version_info
+
                 if cache != None:
                     print(f"NOTE: creating cached data for {url} [version: {version}]", file=sys.stderr)
                     cache_line = cache.setdefault(version, {}).setdefault(url, {})
