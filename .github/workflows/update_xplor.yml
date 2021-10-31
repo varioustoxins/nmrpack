@@ -15,6 +15,15 @@ jobs:
 
 
     steps:
+      - name: ls
+        run: |
+          echo '----'
+          ls /home/runner/work/nmrpack/nmrpack
+          echo '----'
+          ls /home/runner/work/nmrpack
+          echo '----'
+          ls /home/runner/work
+          echo '----'
       - name: Checkout repo
         uses: actions/checkout@v2
 
