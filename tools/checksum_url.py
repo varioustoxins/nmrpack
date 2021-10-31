@@ -275,6 +275,18 @@ def check_root_set_or_exit(target_args):
         sys.exit()
 
 
+def check_for_bad_navigators_and_exit(navigators, navigator_name, possible_navigators):
+
+    if len(navigators) == 0:
+        print(f'navigator {navigator_name} not found expected one of {possible_navigators}')
+        print('exiting...')
+        sys.exit(1)
+
+    if len(navigators) > 1:
+        print(f'Error: multiple navigators selected for {navigator_name}...')
+        print('exiting...')
+        sys.exit(1)
+
 class NavigatorABC(abc.ABC):
 
     @abc.abstractmethod
@@ -577,13 +589,7 @@ if __name__ == '__main__':
 
     navigators = get_navigator(name=args.navigator, target_browser=session, target_args=args)
 
-    if len(navigators) == 0:
-        print(f'navigator {args.navigator} not found expected one of {navigator_names}')
-        print('exiting...')
-        sys.exit(1)
-
-    if len(navigators) > 1:
-        print(f'Error multiple navigators selected for {args.navigator} selecting the first one {args.navigator[0]}')
+    check_for_bad_navigators_and_exit(navigators, args.navigator, navigator_names)
 
     navigator = navigators[0](session, args)
 
