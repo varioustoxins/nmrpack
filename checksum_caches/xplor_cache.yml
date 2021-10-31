@@ -1,0 +1,33 @@
+{
+    "package": {
+        "name": "Xplor-NIH",
+        "info": "XPLOR-NIH a structure determination program which builds on the X-PLOR program, \n                         including additional tools developed at the NIH",
+        "website": "https://nmr.cit.nih.gov/xplor-nih/"
+    },
+    "3.2": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-db.tar.gz": {
+            "digests": {
+                "sha256": "9f6cb6ceb07ac3440628bde79a7697615ba4d2f1e16164711456c061f12bafc8"
+            },
+            "version": "3.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/installer-mac-3.2.sh": {
+            "digests": {
+                "sha256": "44f0b720bb22e25163b6d9e200ee94c041ec00e91af1399bead392b97f74c826"
+            },
+            "version": "3.2",
+            "format": "sh",
+            "type": "main_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-Darwin.tar.gz": {
+            "digests": {
+                "sha256": "45a3e86f4bbe0a1bcf381e9dcd3a23d69e12a117d4a490e64d987bb3241210d4"
+            },
+            "version": "3.2",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    }
+}
