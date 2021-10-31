@@ -1,0 +1,68 @@
+
+        --------------------------**NOTE**--------------------------
+        
+            You have used the --yes facility all licenses will 
+            now be displayed and then accepted **automatically**
+            
+            press y or space bar to continue
+            
+            press any other key to exit...
+            
+        ------------------------------------------------------------
+    
+                                                                                                          
+# License Agreement
+
+  
+**To download this software you must agree to abide by the terms of the
+following license:**
+
+    
+    
+    	 LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH
+    
+                             Terms of Agreement
+    
+    By downloading or using the Xplor-NIH software you agree to the
+    following terms:  
+    
+    - You shall not use the software for any purpose (research or
+      otherwise) that is supported by a "for profit" organization without
+      prior written authorization.
+    
+    - You agree that the software is furnished on an "as is" basis and
+      that the authors in no way warrant the software or any of its
+      results and is in no way liable for any use you make of the software.
+    
+    - Ownership of software and documentation is retained by the
+      appropriate, respective organizations.
+    
+    - You shall not disclose in any form either the delivered software or
+      documentation to third parties without prior written authorization. 
+    
+    
+    In addition, we request that you adhere to the following practices:
+    
+    - Please report modifications and additions to the software back to
+      the Xplor-NIH authors. We would like the modified source code and a
+      test script, such that we can include the modifications in future
+      versions of the software.
+    
+    - In reports or publication of results obtained using Xplor-NIH,
+      please acknowledge use of the software by citing the article:
+    
+    
+        C.D. Schwieters, J.J. Kuszewski, N. Tjandra, G.M. Clore, ``The
+        Xplor-NIH NMR Molecular Structure Determination Package,'' 
+        J. Magn. Res., 160, 66-74 (2003).
+    
+
+  
+
+
+
+I am gary thompson and I agree to the terms of this License
+
+Reading urls   0%|                                                                                             [remaining time: ?]                                                                                                                                  Reading   1/3    88.54 MB   0%|                         [remaining time: ?]Reading   1/3    88.54 MB   2%|▌                        [remaining time: 00:04]Reading   1/3    88.54 MB   9%|██                       [remaining time: 00:01]Reading   1/3    88.54 MB  18%|████▎                    [remaining time: 00:01]Reading   1/3    88.54 MB  28%|██████▋                  [remaining time: 00:00]Reading   1/3    88.54 MB  36%|████████▋                [remaining time: 00:00]Reading   1/3    88.54 MB  47%|███████████▏             [remaining time: 00:00]Reading   1/3    88.54 MB  56%|█████████████▎           [remaining time: 00:00]Reading   1/3    88.54 MB  65%|███████████████▋         [remaining time: 00:00]Reading   1/3    88.54 MB  75%|█████████████████▉       [remaining time: 00:00]Reading   1/3    88.54 MB  84%|████████████████████▎    [remaining time: 00:00]Reading   1/3    88.54 MB  94%|██████████████████████▍  [remaining time: 00:00]                                                                               sha256 [1]   https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-db.tar.gz     9f6cb6ceb07ac3440628bde79a7697615ba4d2f1e16164711456c061f12bafc8
+Reading   2/3     1.76 KB   0%|                         [remaining time: ?]                                                                           sha256 [2]   https://nmr.cit.nih.gov/xplor-nih/packages/installer-mac-3.2.sh        44f0b720bb22e25163b6d9e200ee94c041ec00e91af1399bead392b97f74c826
+Reading   3/3    69.64 MB   0%|                         [remaining time: ?]Reading   3/3    69.64 MB  13%|███                      [remaining time: 00:00]Reading   3/3    69.64 MB  25%|██████                   [remaining time: 00:00]Reading   3/3    69.64 MB  38%|█████████▏               [remaining time: 00:00]Reading   3/3    69.64 MB  51%|████████████▏            [remaining time: 00:00]Reading   3/3    69.64 MB  63%|███████████████          [remaining time: 00:00]Reading   3/3    69.64 MB  76%|██████████████████▏      [remaining time: 00:00]Reading   3/3    69.64 MB  88%|█████████████████████    [remaining time: 00:00]                                                                               sha256 [3]   https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-Darwin.tar.gz 45a3e86f4bbe0a1bcf381e9dcd3a23d69e12a117d4a490e64d987bb3241210d4
