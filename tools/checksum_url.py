@@ -649,7 +649,8 @@ if __name__ == '__main__':
                 exit_if_asked()
 
 
-    package_info = navigator.get_package_info()
+
+
     out.finish(package_info, version_info)
 
     if cache != None and original_cache != cache:
