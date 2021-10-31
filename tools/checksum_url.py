@@ -528,9 +528,10 @@ def get_cache(cache_file_name):
             result = load_cache_file(cache_file_name)
             if verbose:
                 print(f"NOTE: using cache file {cache_file_name}", file=sys.stderr)
-                print(os.getcwd(), file=sys.stderr)
+
         else:
             print(f"NOTE: cache file {cache_file_name} doesn't exists creating a new one...", file=sys.stderr)
+            print(f'NOTE: path is relative to {os.getcwd()}', file=sys.stderr)
             result = {}
     else:
         result = None
