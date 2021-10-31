@@ -2,8 +2,8 @@ name: Test spack install of nmrpipe
 
 on:
 
-  push:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
 
   workflow_dispatch:
 
