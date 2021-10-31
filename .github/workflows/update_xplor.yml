@@ -19,16 +19,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - name: ls
-        run: |
-          echo '----'
-          ls /home/runner/work/nmrpack/nmrpack
-          echo '----'
-          ls /home/runner/work/nmrpack
-          echo '----'
-          ls /home/runner/work
-          echo '----'
-
       - name: Install Python
         uses: actions/setup-python@v2
 
@@ -43,7 +33,7 @@ jobs:
 
       - name: Build xplor package.yml
         run: |
-          python3 tools/checksum_url.py --password ${{ secrets.XPLOR_USERNAME }} ${{ secrets.XPLOR_PASSWORD }} --template --root https://nmr.cit.nih.gov/xplor-nih/download.cgi  --cache checksum_caches/xplor_cache.yml --navigator xplor -y *.tar.gz *.sh* > xplor_package.yml
+          python3 tools/checksum_url.py --password ${{ secrets.XPLOR_USERNAME }} ${{ secrets.XPLOR_PASSWORD }} --template --root https://nmr.cit.nih.gov/xplor-nih/download.cgi  --cache checksum_caches/xplor_cache.yml --navigator xplor -y  --output nmrpack *.tar.gz *.sh* > xplor_package.yml
 
       - name: Install xplor package.xml
         run: |
