@@ -1,5 +1,7 @@
 from fnmatch import fnmatch
 from functools import partial
+from pathlib import Path
+from urllib.parse import urlparse, urlunparse
 
 import pluggy
 import sys
@@ -10,6 +12,11 @@ from checksum_url import Navigator
 from plugins import register_navigator
 # pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
 
+class LicenseNotAcceptedException(Exception):
+    ...
+
+class TooManyUrlsException(Exception):
+    ...
 
 def show_license(page):
     print()
@@ -52,6 +59,14 @@ def query_yes_no(question, default="yes"):
             sys.stdout.write("Please respond with 'yes' or 'no' "
                              "(or 'y' or 'n').\n")
 
+
+def get_interpolated_url(root_url, button_value):
+    path = Path(root_url.path)
+    path = path.parent
+    path = path / button_value
+    return urlunparse(root_url._replace(path=str(path)))
+
+
 @register_navigator()
 class XplorNavigator(Navigator):
 
@@ -61,6 +76,11 @@ class XplorNavigator(Navigator):
 
     def __init__(self, browser, target_args):
         super(XplorNavigator, self).__init__(browser, target_args)
+        # TODO: move to input args?
+        # if optimise is set to true read the url for the firdt button and extract the complete path and
+        # extrapolate the rest
+        self._optimise=True
+
 
     def login_with_form(self, target_url, username_password, form=None, verbose=0):
         if not form:
@@ -69,9 +89,6 @@ class XplorNavigator(Navigator):
 
     def get_version(self, url):
 
-    def version_matcher(self, url):
-
-        result = None
         if url.endswith('.gz'):
             result = self._urls_to_url_version([url,], self.VERSION_REGEX_GZ)[url]
         else:
@@ -96,35 +113,22 @@ class XplorNavigator(Navigator):
         show_progress = self._args.verbose >= 1
 
         t = None
+        should_show_license = True
+        root_url = None
         for target_index, button_value in enumerate(target_names):
-            browser = self._re_login_with_form()
-            form = browser.select_form(selector='form[method="POST"]', nr=3)
-            button = browser.get_current_page().find('input', value=button_value)
 
-            form.choose_submit(button)
-            browser.submit_selected()
+            if root_url:
+                single_result = get_interpolated_url(root_url,button_value)
+            else:
+                single_result = self.get_single_url(button_value, should_show_license)
 
-            page = browser.get_current_page()
+            if single_result:
+                should_show_license = False
+                result.append(single_result)
+                if self._optimise:
+                    root_url = urlparse(single_result)
 
-            if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
-                print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page", file=sys.stderr)
-                continue
 
-            if target_index == 0:
-                show_license(page)
-                if not self._args.yes:
-                    if not query_yes_no('Do you accept the license?'):
-                        print('License not accepted!')
-                        print('exiting...')
-                        sys.exit(1)
-                    else:
-                        print()
-
-            browser.select_form()
-            browser.submit_selected()
-
-            for link in browser.get_current_page().find_all('a'):
-                result.append(browser.absolute_url(link.get('href')))
 
             if show_progress:
                 if target_index == 0:
@@ -139,9 +143,49 @@ class XplorNavigator(Navigator):
 
         if sorted_by_version:
             url_versions = [arg.split('#')[0] for arg in result]
-            url_versions = self._urls_to_url_version(url_versions, self.version_matcher)
+            url_versions = self._urls_to_url_version(url_versions, self.get_version)
             url_versions = self._sort_url_versions(url_versions)
             result = list(url_versions.keys())
+
+        return result
+
+    def get_single_url(self, button_value, should_show_license):
+
+        results = []
+
+        browser = self._re_login_with_form()
+        form = browser.select_form(selector='form[method="POST"]', nr=3)
+        button = browser.get_current_page().find('input', value=button_value)
+        form.choose_submit(button)
+        browser.submit_selected()
+        page = browser.get_current_page()
+        if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
+            print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page", file=sys.stderr)
+        else:
+            if should_show_license:
+                show_license(page)
+                if not self._args.yes:
+                    if not query_yes_no('Do you accept the license?'):
+                        msg = 'License not accepted!'
+                        raise LicenseNotAcceptedException(msg)
+                    else:
+                        print()
+            browser.select_form()
+            browser.submit_selected()
+
+            for link in browser.get_current_page().find_all('a'):
+                results.append(browser.absolute_url(link.get('href')))
+
+        newline = '\n'
+        if len(results) == 0:
+            result = None
+        elif len(results) > 1:
+            msg = f'''Error: there should be one download link per link per url I got {len(results)}...
+                      {newline.join(results)}
+            '''
+            raise TooManyUrlsException(msg)
+        else:
+            result = results[0]
 
         return result
 
