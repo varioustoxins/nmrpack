@@ -77,9 +77,9 @@ class NmrpackOutput(OutputBase):
         versions_and_urls = self.get_versions_and_urls(extra_version_info)
 
         result = {}
-        for version in sorted(versions_and_urls):
-            version_dict = {'version': str(version)}
-            result[str(version)] = version_dict
+        for version in reversed(sorted(versions_and_urls)):
+
+
 
             main_url = self.get_main_url(versions_and_urls[version])
             if not main_url:
