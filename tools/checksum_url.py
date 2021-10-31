@@ -533,6 +533,8 @@ def get_package_from_cache(cache, navigator):
     elif cache != None:
         package_info = navigator.get_package_info()
         cache['package'] = package_info
+    else:
+        package_info = None
     return package_info
 
 
