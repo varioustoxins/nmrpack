@@ -37,6 +37,16 @@ WEBSITE = 'website'
 DEPENDENCIES = 'dependencies'
 DIGESTS = 'digests'
 EXPAND='expand'
+PLATFORM='platform'
+OSX='osx'
+LINUX='linux'
+ANY='any' # can be used for ARCH as well
+ARCH='arch'
+X86_64='x86_64'
+X86_32='x86_32'
+M1='m1'
+
+
 
 # https://gist.github.com/michelbl/efda48b19d3e587685e3441a74457024
 # Windows
