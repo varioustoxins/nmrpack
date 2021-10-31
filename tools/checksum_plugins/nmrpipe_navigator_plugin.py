@@ -58,7 +58,7 @@ class NmrPipeNavigator(UrlNavigator):
 
         result = versions[-1]
 
-        return result
+        return str(result)
 
     def get_urls(self, sorted_by_version=True):
 
