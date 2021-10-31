@@ -302,11 +302,11 @@ class NavigatorABC(abc.ABC):
     def login_with_form(self, target_url, username_password, form, verbose=0):
         pass
 
-    # @abc.abstractmethod
+    @abc.abstractmethod
     def get_extra_info(self, url):
         pass
 
-    # @abc.abstractmethod
+    @abc.abstractmethod
     def get_package_info(self):
         pass
 
