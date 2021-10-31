@@ -634,16 +634,16 @@ if __name__ == '__main__':
 
                 url_version_info = {key : value for key, value in cache[version][url].items()}
             else:
-                if verbose:
-                    print(f"NOTE: creating cached data for {url} [version: {version}]", file=sys.stderr)
                 _hash, hash_type = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
-                                                    username_password=args.password, debug=args.debug)
-                cache_line = cache.setdefault(version, {}).setdefault(url, {})
-                cache_line.setdefault('digests', {})[hash_type] = _hash
+                                                username_password=args.password, debug=args.debug)
+
                 url_version_info = navigator.get_version_info(url)
-                if url_version_info != None:
-                    url_version_info['version']
-                    cache[version][url].update(url_version_info)
+                if cache != None:
+                    print(f"NOTE: creating cached data for {url} [version: {version}]", file=sys.stderr)
+                    cache_line = cache.setdefault(version, {}).setdefault(url, {})
+                    cache_line.setdefault('digests', {})[hash_type] = _hash
+                    if url_version_info != None:
+                        cache[version][url].update(url_version_info)
 
             out.display_hash(url, _hash, max_length_url, i+1, num_urls, hash_type=hash_type)
 
