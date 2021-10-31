@@ -665,7 +665,7 @@ if __name__ == '__main__':
 
     if cache != None and original_cache != cache:
         if verbose:
-            print('NOTE: cache changed updating...')
+            print('NOTE: cache changed, updating...', file=sys.stderr)
         try:
             with open(args.cache_file, 'w') as cache_file:
                 cache_file.write(json.dumps(cache,indent=4))
