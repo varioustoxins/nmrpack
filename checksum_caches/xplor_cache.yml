@@ -29,5 +29,1731 @@
             "format": "gz",
             "type": "extra_file"
         }
+    },
+    "3.3": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/installer-mac-3.3.sh": {
+            "digests": {
+                "sha256": "f0711bd1c428fafeacc3381ceffc1f45838663181520944ef4069e0a1b1cf7da"
+            },
+            "version": "3.3",
+            "format": "sh",
+            "type": "main_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.3-db.tar.gz": {
+            "digests": {
+                "sha256": "2865dd592f9ab02a6d7dedd7bfc0b9e812d7accb2122db512cefe13ba6a78726"
+            },
+            "version": "3.3",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.3-Darwin.tar.gz": {
+            "digests": {
+                "sha256": "ba0f7af9a0a5ba7bbb9d7a4b55a82dfe100337b3cc884050f0b16cbb64a3431c"
+            },
+            "version": "3.3",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "3.1": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/installer-mac-3.1.sh": {
+            "digests": {
+                "sha256": "836803e0d9620faea54f817b4698ee02520ef52f19f0c268eacc9751529474b3"
+            },
+            "version": "3.1",
+            "format": "sh",
+            "type": "main_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.1-Darwin.tar.gz": {
+            "digests": {
+                "sha256": "1ef2a6a3bd451f60bd6a3da3a3aa4f4787d380a0c55b171e75118b1f84c132cd"
+            },
+            "version": "3.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.1-db.tar.gz": {
+            "digests": {
+                "sha256": "9dfe6da8de7e7365d00a686efb18ab28cf9d2c70e6f76efdffa56cde0574c643"
+            },
+            "version": "3.1",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "3.0.3": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0.3-db.tar.gz": {
+            "digests": {
+                "sha256": "fd61e890b462b968afee6d7c15da790de627ba55213567230bd62219845bacc1"
+            },
+            "version": "3.0.3",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0.3-Darwin.tar.gz": {
+            "digests": {
+                "sha256": "11110663008a4a58b74a6df80ff6da7c322b75eb001fb454be3c6cb997d470fd"
+            },
+            "version": "3.0.3",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/macINSTALL-3.0.3.sh": {
+            "digests": {
+                "sha256": "c9f3e190226a0f7b4e18129ac4d64c1b1db05adf431d06297bdb0596e72dd0c8"
+            },
+            "version": "3.0.3",
+            "format": "sh",
+            "type": "main_file"
+        }
+    },
+    "3.0": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0-Darwin.tar.gz": {
+            "digests": {
+                "sha256": "8b423fa46cf8a10d6b8f57fb6c1450f8dcf2c236877805878842c6b7cfed31e1"
+            },
+            "version": "3.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0-db.tar.gz": {
+            "digests": {
+                "sha256": "031e1e348c6d9a2fd272edcddab608f4cb8ca8ff1f0034b2e93fd87fe636a4d4"
+            },
+            "version": "3.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/macINSTALL-3.0.sh": {
+            "digests": {
+                "sha256": "ba3572e3d2abaa7132e34f49224ebb976827b22ebe57e9c7c27d669f96608cf9"
+            },
+            "version": "3.0",
+            "format": "sh",
+            "type": "main_file"
+        }
+    },
+    "2.53": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.53-Darwin.tar.gz": {
+            "digests": {
+                "sha256": "3ad708fd5a3cb9623c60d0fcd9d02b27f4c6d5b39a2be3c18f316db0fe800690"
+            },
+            "version": "2.53",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.53-db.tar.gz": {
+            "digests": {
+                "sha256": "0118408547920a96b40bf6a09b4afdef5e73e2a6443884231d6fcfb48a21c152"
+            },
+            "version": "2.53",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.52": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.52-db.tar.gz": {
+            "digests": {
+                "sha256": "b17fee5a5db46bdf3e9c7f92a2cc824c9deaea9f9bc0f5f0e1ff0ee6c3aae372"
+            },
+            "version": "2.52",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.52-Darwin_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "b71327d3f966cf7e835fef37ffdbf449ee3f07d5088ed90be958e5686e4a621b"
+            },
+            "version": "2.52",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.51": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.51-Darwin_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "f5f7b4c22b929d7609ed155010855e32c5de4d79e4969b386b90d2e5ffb4be56"
+            },
+            "version": "2.51",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.51-db.tar.gz": {
+            "digests": {
+                "sha256": "7ce9f7ec53115c0db4ff4ee24aa0853ef2fa0e230f3853629d8040660e4d37db"
+            },
+            "version": "2.51",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.50": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.50-Darwin_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "5b66b21ab659aaf48a3580066087cb5a57ac249cf880a0ac2d566134edece9a9"
+            },
+            "version": "2.50",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.50-db.tar.gz": {
+            "digests": {
+                "sha256": "449c6bfae1ed356f9638136475b0aa9b01d36fb1cc77f0e99994cdcd87bf253d"
+            },
+            "version": "2.50",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.49": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.49-Darwin_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "815c70ae77e8a62bc0abb01ed4113926680db6fd29472ad19e6c342cacc792a8"
+            },
+            "version": "2.49",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.49-db.tar.gz": {
+            "digests": {
+                "sha256": "ad6d822535d6ff3a88bd37f9aea39ee4d0bbe237a1c32db04821c07bb60ea1d0"
+            },
+            "version": "2.49",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.48": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.48-Darwin_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "c597d05f3109015b61feecb26b6caf373db71ba9c55dd8d862b6f66e1451e502"
+            },
+            "version": "2.48",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.48-db.tar.gz": {
+            "digests": {
+                "sha256": "45a25d9948d96969c9f1925a9ee35aed1d8a6dbbac3cc8ce238208c3baefd7d6"
+            },
+            "version": "2.48",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.47": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.47-db.tar.gz": {
+            "digests": {
+                "sha256": "4c239b0a91fc56363c0f7fd4681c0703578ffd975d7af6e61e13f0da81aac1e4"
+            },
+            "version": "2.47",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.47-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "06c5e8a964147ac40573c74658f0d09c541277eed23aee57ac09ba77b8fb843a"
+            },
+            "version": "2.47",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.47-Darwin_12_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "07002d0ac6992d5188385ba02d731c142f81b6d197724eb8f896d36f7ff0550e"
+            },
+            "version": "2.47",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.46": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.46-db.tar.gz": {
+            "digests": {
+                "sha256": "24e45cdc5b4e0bde648d9e1ae7bc2a601ec68b16d7481ae40acdc9200e3a0af6"
+            },
+            "version": "2.46",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.46-Darwin_12_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "e5303631dd61b65bd095e9002ba7e7244cb7145347a4b4c4f644493a1c0aaf97"
+            },
+            "version": "2.46",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.45": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.45-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "21919fc5cfec55fe3ea47ee992d227e4454898af148484c47e4668ccb5b3113e"
+            },
+            "version": "2.45",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.45-Darwin_12_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "c8bac5cd90b60883131613bf64737e2d1aa80881e8dbcd5ccebe7776d4d27a7d"
+            },
+            "version": "2.45",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.45-db.tar.gz": {
+            "digests": {
+                "sha256": "af271e2ca5a230ff38e9467771916dad8b9d6c529facbc903d5056a512e44f61"
+            },
+            "version": "2.45",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.44.6": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.44.6-db.tar.gz": {
+            "digests": {
+                "sha256": "dd543298f82ec729de13c388de5878222452059f696fa40b520154a96afeae7d"
+            },
+            "version": "2.44.6",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.44.6-Darwin_12_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "fbe2223220881d85c0d8a759b00a8afc204b02f951bf776267f1301e5e53305a"
+            },
+            "version": "2.44.6",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.44": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.44-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "8b2ac6123886e25500158495aee27cb384edd5db7e3a1b5d76505de062bd4ba3"
+            },
+            "version": "2.44",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.44-db.tar.gz": {
+            "digests": {
+                "sha256": "a22e973c749bf88dd0b30778080e79661cb62502cd6763d92538a60a04fb18a9"
+            },
+            "version": "2.44",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.44-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "c5c35214889145f8e40f0b7b424284ade7c55e52f65bb07ad526cd30f399dd09"
+            },
+            "version": "2.44",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.43": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.43-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "f840ee15d9864eb7e74840b0f7327888e298c01ee8fa55fb647a737f7a9999e8"
+            },
+            "version": "2.43",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.43-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "e87509e14228581b0bed79ace577f4ab12218872820ba9891c06b71ce232817c"
+            },
+            "version": "2.43",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.43-db.tar.gz": {
+            "digests": {
+                "sha256": "576c6418549df8dfc22cf715a983c12e58e4733154231fe93810e5dba4ad036e"
+            },
+            "version": "2.43",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.42": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.42-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "1e78859d8db89fcbca0649178e208c3a33a3c48dce7b9a9577c98e62f3a7a852"
+            },
+            "version": "2.42",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.42-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "75f08c0b23c3a8d8fa797e2603920322d1595edd90e1ee905ff1212f0817fda0"
+            },
+            "version": "2.42",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.42-db.tar.gz": {
+            "digests": {
+                "sha256": "45bb5d2e328400a463d2f71068602478d2374611f4eb6379542ffb76112b66d1"
+            },
+            "version": "2.42",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.41.1": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.41.1-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "5d3d7478002c950c50d55ea56d1d54deb6a4da853d4a0189925b7e2436779702"
+            },
+            "version": "2.41.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.41.1-db.tar.gz": {
+            "digests": {
+                "sha256": "f4df6087cb7949f33d2e7402f79dcfad0c8d295928e9c346a1407cfad7768aaf"
+            },
+            "version": "2.41.1",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.41": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.41-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "15ed59591b0606e60d220bc6b7ea65c24a03cdfcd4cc2bd99e476d0e9ff171bb"
+            },
+            "version": "2.41",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.41-db.tar.gz": {
+            "digests": {
+                "sha256": "e8ac8c9bb7f9f90e07fc15a7da71e0ef71eca9ce5846ab0155ee5ccbebc5af43"
+            },
+            "version": "2.41",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.41-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "aaff7911c267769139efeb90ca0fe6a0d8318d7500f19da79e1c9cb7816adcf6"
+            },
+            "version": "2.41",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.40": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.40-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "993eb8102d14d09e230de124c4c8f163446c65e0ff949a36f74de2436cdc2f39"
+            },
+            "version": "2.40",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.40-db.tar.gz": {
+            "digests": {
+                "sha256": "e03ebee8ee2531967b82183bc5f46cf06e027aeee41fbc9f052d50e40a06c7b0"
+            },
+            "version": "2.40",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.40-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "63c1166033e118d0d0eb66f397b5c5daf2de9d8609f690446dd73d17b628679a"
+            },
+            "version": "2.40",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.39": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.39-db.tar.gz": {
+            "digests": {
+                "sha256": "744de0e4c4352a867debc2b18d2ab2c16bf154cd3f71bfa5065d7fd65e04eb0a"
+            },
+            "version": "2.39",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.39-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "3d44d8fe2e749638e51d9798ad199f108d48d34f41d00e48081585effa4ca2db"
+            },
+            "version": "2.39",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.39-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "938dce32df285233c5712441db989a5aab0f4ae404b2e709da9773c2a54d3657"
+            },
+            "version": "2.39",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.38": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.38-db.tar.gz": {
+            "digests": {
+                "sha256": "80bb2dcf3aac14ef71d212202872c9502cda7e39f135409923e7df11b7c02cc4"
+            },
+            "version": "2.38",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.38-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "fd0fe1871a2a7ba608cc95700776432566591d42d24d6641f0a860b7d31bf0d2"
+            },
+            "version": "2.38",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.38-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "901764a71c9d7e718992545843e0688e018a6c919bf135ba25ddf9c9bfb3efc5"
+            },
+            "version": "2.38",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.37": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.37-db.tar.gz": {
+            "digests": {
+                "sha256": "5d0dabf2d6bc352ba896206ce0d4aad0349b9e653d27ea73db90cbb7aba222b3"
+            },
+            "version": "2.37",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.37-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "9a00486dbe874ba25ad44d8416e87bda0bd94ccd29e577e51b38b789f2c6cab6"
+            },
+            "version": "2.37",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.37-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "62b36325cbe38327d6b8421cce2784254429a02f6374edfa2e21bb57457a206b"
+            },
+            "version": "2.37",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.36": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.36-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "3bfde612577e5e9a265925145a65a91903852018a2af36605ab6b8bbcdf45232"
+            },
+            "version": "2.36",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.36-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "dfbd55772f524e4559a2650bb0592365a9c43626da569bb9084b1fa419e9cd91"
+            },
+            "version": "2.36",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.36-db.tar.gz": {
+            "digests": {
+                "sha256": "ffb7c63f687beb205e9881fe39a78c3b2d7014b880c6d18220757d5b7e53f72f"
+            },
+            "version": "2.36",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.35": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.35-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "78acff7cba0e9f7c0c1534cd973e781090f613e04c965f3458bba85ace9f292f"
+            },
+            "version": "2.35",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.35-db.tar.gz": {
+            "digests": {
+                "sha256": "8b38ddeea7b055a461c284178b35016fd365bca1bf48481634295128e6450ac0"
+            },
+            "version": "2.35",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.35-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "c8a7d174680cd2d6ec0cfc11c2af3b0bb8ca1b4041527c730172cbfbf776af97"
+            },
+            "version": "2.35",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.34": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.34-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "3a4225aa338d804a959c0926951f8f95a76caa0477cc20018ab1997d25ed2456"
+            },
+            "version": "2.34",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.34-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "47a636d0b4ee0352833d6ee32a29e5bbd0d3e817eaf29f88d5e680797cdd89eb"
+            },
+            "version": "2.34",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.34-db.tar.gz": {
+            "digests": {
+                "sha256": "994fcaa8190115e1d059f15e07b76a80ea8763c1ec76902c64492f2f5c9cc174"
+            },
+            "version": "2.34",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.33": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.33-db.tar.gz": {
+            "digests": {
+                "sha256": "1d45823577a8ab915e01bc37f39bc4abd7793056958a4b8fdef81d475d80ad6f"
+            },
+            "version": "2.33",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.33-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "cae3e784663e42f97dde6eb3c8c377be046eb00c621d8951475daf07c65c5476"
+            },
+            "version": "2.33",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.33-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "135fd2ed60373d32f2432e3b4b5fe500fa514ff02c4c6cda049b7543b309e6f9"
+            },
+            "version": "2.33",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.32": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.32-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "5d2bd5a4628cbc9ae46ef69e2ff0890f1f3e4bc9431b155a3db0a2740f9da197"
+            },
+            "version": "2.32",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.32-db.tar.gz": {
+            "digests": {
+                "sha256": "c90099f58c205b0dbe9a6d4dadc6e2370d79d9528b5918d6402439adc822eebb"
+            },
+            "version": "2.32",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.32-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "530edf78a7ff3cc8c6637d6a31590d81b3c6d28ba93ac23637f844a812835945"
+            },
+            "version": "2.32",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.31": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.31-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "0776a7709f52808f6d84ca38980ad499f65eaaeec83c16e1155731090202ea7b"
+            },
+            "version": "2.31",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.31-db.tar.gz": {
+            "digests": {
+                "sha256": "08a5e55819d7df01d9476addb3b582d6ccd624b071c2d4038325465a613c228a"
+            },
+            "version": "2.31",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.31-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "15d75ef0c8c329e8db1b4ac70a7d7910b6c18e4746b648fb2b28dba449766ccf"
+            },
+            "version": "2.31",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.30": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.30-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "7b5878a6c9dc87c1c703203d71636a5cfa647a37b8b5bfe590b2e0c08d52aa64"
+            },
+            "version": "2.30",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.30-db.tar.gz": {
+            "digests": {
+                "sha256": "c51396a8f4ca29d1cfcc20e2c6189e14bac3c4b3c6ae8a93ee0c2ee201829e45"
+            },
+            "version": "2.30",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.30-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "144af59684d20de8baa07a01789293958e63b572486cfc21694369a42801b865"
+            },
+            "version": "2.30",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.29": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.29-db.tar.gz": {
+            "digests": {
+                "sha256": "e1f72cbda50c120402984165a6c8a14986cb34cb34d0398b3e50cb5ba775e1dc"
+            },
+            "version": "2.29",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.29-Darwin_10_x86_64.tar.gz": {
+            "digests": {
+                "sha256": "3e3f59c2d1614dbfe8c2d4f150d6e88f3c68c83430603bd51157195043b83bf6"
+            },
+            "version": "2.29",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.29-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "0896deb07533d81eb589d4b9addf8ee53f4855059a573ce197bf104a43ca5ee2"
+            },
+            "version": "2.29",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.28": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.28-db.tar.gz": {
+            "digests": {
+                "sha256": "4e9fe8eb1c4c88a916acabfdcb3f9fa3e32c74d5757337646df120d838cb80ed"
+            },
+            "version": "2.28",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.28-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "e2df19f8e5784b8cb9983f25fb307c6a076016d6aeb8a75e73b0d926c88a29ac"
+            },
+            "version": "2.28",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.27": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.27-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "19a86e751f5020b0e9cd640f1a7cb08f1d4c0a7399ba53850362d57cbd0ab92a"
+            },
+            "version": "2.27",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.27-db.tar.gz": {
+            "digests": {
+                "sha256": "5e039d1e10b610064e766e705f59fddb9f093bb1eb4c18a14c43ea6d816cd2f1"
+            },
+            "version": "2.27",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.26": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.26-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "2ce28097b9e5c4ffdfd53e7fb24b091a5af380772a69fd72bf02511d0fd61df9"
+            },
+            "version": "2.26",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.26-db.tar.gz": {
+            "digests": {
+                "sha256": "8dd338b89b189c191971a7c29d5995b24527aa2f559b7fababe3740d2d4f97d1"
+            },
+            "version": "2.26",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.25": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.25-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "cc33640c6e8f92624c12b92199e9ddd1c820781035b00f0065fa6e6aa8edccab"
+            },
+            "version": "2.25",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.25-db.tar.gz": {
+            "digests": {
+                "sha256": "bc0cb6acc35607f8a62007bb847d8c728be6799c550a4ddc6eaa86f5c7a50ac6"
+            },
+            "version": "2.25",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.25-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "8e96a0d93679898db89678300924c4c0820597b4da2a4c17153a2d02df3c0159"
+            },
+            "version": "2.25",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.24": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.24-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "3611f1d6f5acfcffea770cab955cfdaf6bda44e5cad6940d61dcb170e535bed7"
+            },
+            "version": "2.24",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.24-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "68e9c031e31d9ddb29691f128fdecbbad2c2f96adb4e07109c911e3c152eeb9e"
+            },
+            "version": "2.24",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.24-db.tar.gz": {
+            "digests": {
+                "sha256": "97b7318fe531fa5eb9464d48298abbc401a4538a34ecfa5d6d27d3df614b1162"
+            },
+            "version": "2.24",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.23": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.23-db.tar.gz": {
+            "digests": {
+                "sha256": "18a22cb117254f2e6bb8ea0b4560bccf38459f8a83e11d4106b234a3673be02c"
+            },
+            "version": "2.23",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.23-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "0c0257f0288dc8ba0d6d2661387d27b9723f11fbaf44a03b865a6f90ad14af10"
+            },
+            "version": "2.23",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.23-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "1e9818c495457f463c9adf19b9434cbe2364f9896844edc07e14cb2ca005bdd9"
+            },
+            "version": "2.23",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.22": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.22-db.tar.gz": {
+            "digests": {
+                "sha256": "a78abe8c2a593bd3f4e0a782fe0aea7bdcf6cf38d60c16a8ca75689d5d3fe2a0"
+            },
+            "version": "2.22",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.22-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "b68114f1125d56062eb9ad6ad53b439a8595f19b6dd7f8ff7dd5090b17dec1f1"
+            },
+            "version": "2.22",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.22-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "0a1731f730a4e2c1f0f220bebf8e8144e4c51a7ba57856af3e956e4ef68527ac"
+            },
+            "version": "2.22",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.21": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.21-db.tar.gz": {
+            "digests": {
+                "sha256": "8641811fec5fb19fd8858996b6cdba2c2d9d4d1daa995a51290867ef1db8b6ce"
+            },
+            "version": "2.21",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.21-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "da49aaa9be3a66afa18f3661d0ce9b32775c26b41854b8fd6132ea4178cd7bfa"
+            },
+            "version": "2.21",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.21-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "3d73abb80943f7a0353fa29e53c0da075bb42863308921a71117894ea40fd1ec"
+            },
+            "version": "2.21",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.20": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.20-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "088940039e237c592f448aaa18b6de2737eb262369c3bfa41a83247c5de5675f"
+            },
+            "version": "2.20",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.20-db.tar.gz": {
+            "digests": {
+                "sha256": "33d486462f95550b85e08bba95b4ac664e06990ed314b6b102e238dd7e074f36"
+            },
+            "version": "2.20",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.20-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "c9758c49b1da5e497227d0fa062e67cefdd42b5e3ffccb9b0a17cb85779b3ca2"
+            },
+            "version": "2.20",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.19": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.19-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "822b1d79695ae6f2446f0275d475daf1783fbddf1a593846de17f44daf9a4338"
+            },
+            "version": "2.19",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.19-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "5f12d98ebb93e815c8069afe69815ce1864e71143c64612cc4b1c9c022fe66e2"
+            },
+            "version": "2.19",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.19-db.tar.gz": {
+            "digests": {
+                "sha256": "bfae67416a358f65eb4d3cd979e9c07e18c1da41cf699847185f7bad3ef68d62"
+            },
+            "version": "2.19",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.18": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.18-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "04a2edc3555fe303c5fde21096725258d554d725b7025ac9084012714c490e6c"
+            },
+            "version": "2.18",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.18-db.tar.gz": {
+            "digests": {
+                "sha256": "89b44509a7cd9f5326c2ba9b57af83f33eabd58b5cfaa9c72aa91a4abf1761b5"
+            },
+            "version": "2.18",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.18-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "a7cc1036e62e030ead2d6340a434146c7b5b90d16e9f191168f98de8c9e6e410"
+            },
+            "version": "2.18",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.17.0": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.17.0-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "597f710b44cf51d468a325f9a38aa5513937ea7965e4b472b16fbd86486e017c"
+            },
+            "version": "2.17.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.17.0-db.tar.gz": {
+            "digests": {
+                "sha256": "041e9fefe7e2ef6dcfe719af2b90045f8e564ec45a3de45bd3847dfbda01c224"
+            },
+            "version": "2.17.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.17.0-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "3879010b2ae96533764c649c4b2b60e8625d801e7444a22a048fd78e27155e39"
+            },
+            "version": "2.17.0",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.16.0": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.16.0-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "3e3a5b298d30398aec27bc2a59cd216f6800ac8e61b9f626447bdb260a56c9af"
+            },
+            "version": "2.16.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.16.0-db.tar.gz": {
+            "digests": {
+                "sha256": "61ffdd85307274a6948b8db9b5b4a4cb641ed637abb82634c7b11ecf2e5d5e14"
+            },
+            "version": "2.16.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.16.0-Darwin_8_x86.tar.gz": {
+            "digests": {
+                "sha256": "4f18c629043943a8c51adff56081b0df5c00c1a92b67db69648bc8c0525ec762"
+            },
+            "version": "2.16.0",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.15.0": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.15.0-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "e4bfc4fd95f2787ba6adeb1196a7d5c96500224150846c7ccb44bfa41678bf90"
+            },
+            "version": "2.15.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.15.0-db.tar.gz": {
+            "digests": {
+                "sha256": "d18d4f7fff1111433292f100badf1c628e612fa7b1febc401de1c17f9e7124b8"
+            },
+            "version": "2.15.0",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.14": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.14-db.tar.gz": {
+            "digests": {
+                "sha256": "18ceb9076b217140026b9e8cdbe6a0dd8de6b115c992ac72467b54d6a7b00eae"
+            },
+            "version": "2.14",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.14-Darwin_8.tar.gz": {
+            "digests": {
+                "sha256": "35ebe0eaa2aa0c1c06b4f07778d0e9db5455f0456622c1741fea2dd0735339c4"
+            },
+            "version": "2.14",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.13": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.13-SunOS_5.10.tar.gz": {
+            "digests": {
+                "sha256": "186f280d7f7adf4add904e920e693b4c77d7518fff59a245d2231baef28ee430"
+            },
+            "version": "2.13",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.13-Darwin_7.tar.gz": {
+            "digests": {
+                "sha256": "ad05780c72d4abc8df8b1c64d285486dbc908802c5c57b5395af0bba742143ea"
+            },
+            "version": "2.13",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.13-db.tar.gz": {
+            "digests": {
+                "sha256": "fe6f286d94a802b4b0f71596eb6503d8007c83b2b448110ace6cc09e33baf9b5"
+            },
+            "version": "2.13",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.13-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "92c495e3a1a625833278b259491a1208417a5df6bd5e16b4726ca573d9c78463"
+            },
+            "version": "2.13",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.12": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.12-db.tar.gz": {
+            "digests": {
+                "sha256": "b69d30fc502dd5d5b9eda54cc3dc21412137158337a95263c20b9d5c42aff2b4"
+            },
+            "version": "2.12",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.12-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "3004495ea5660692dfea174fe1038e3a9b82736151dcb52bb8ef520261ba5e72"
+            },
+            "version": "2.12",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.12-Darwin_7.tar.gz": {
+            "digests": {
+                "sha256": "3ac94f36560856189375faabe8a4658a9a6b943b88b351078a35498cb4642d9a"
+            },
+            "version": "2.12",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.12-SunOS_5.10.tar.gz": {
+            "digests": {
+                "sha256": "7878cb2f6df158bd05c31409d6614487c182aedb35e4ded46524a19e08fa3b16"
+            },
+            "version": "2.12",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.11.2": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.2-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "61d68ee386838b18b8bdd873c0117511146390ffc4754049b5e9f164a6f40c65"
+            },
+            "version": "2.11.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.2-db.tar.gz": {
+            "digests": {
+                "sha256": "f95a79e80d41ddfe7851d6cf04969ad66e80084a2f20061e9eb5ee9bfe6b98d8"
+            },
+            "version": "2.11.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.2-SunOS_5.10.tar.gz": {
+            "digests": {
+                "sha256": "73444ffadd3744ff1b7984520d68878f54200073dd13af29a217258bcc4ddcdd"
+            },
+            "version": "2.11.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.2-Darwin_7.tar.gz": {
+            "digests": {
+                "sha256": "8d2b51c1309e67a2bfdac82fa0adcf7976f98761fa414e2cd3aa4ab2af45b0e7"
+            },
+            "version": "2.11.2",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.11.0": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.0-SunOS_5.10.tar.gz": {
+            "digests": {
+                "sha256": "3706ab8336356b0b5f4abe319f7259884b440b9dd03e17003e01ed5065632d10"
+            },
+            "version": "2.11.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.0-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "09f1efd2d3b2d52d433aa98ec87f809aee106e681adddfaca93052fb9b1f727e"
+            },
+            "version": "2.11.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.0-Darwin_7.tar.gz": {
+            "digests": {
+                "sha256": "5a22fa3238c181b4242240d6fd40ba018301d607980edd3f4f733d173e534f79"
+            },
+            "version": "2.11.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.0-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "625cc98029ae4a0e9798084fe6a62c4915f0f84b2eaeb0aae5cf4770a7d7b49a"
+            },
+            "version": "2.11.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.11.0-db.tar.gz": {
+            "digests": {
+                "sha256": "b2e8a446d9fb7e691332a13c31738693604aaf8c60fd3d72b8f05d07f2163f81"
+            },
+            "version": "2.11.0",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.10": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.10-Darwin_7.tar.gz": {
+            "digests": {
+                "sha256": "b12d9ea22c644a12db24f75b6447e9940004e7dd1b0b9a6c0f3168958cfb9707"
+            },
+            "version": "2.10",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.10-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "f6544d9e9cb16b89900b1c1ec816ca7894d041a0eb1eac0edd3ea7bf0bb3ce7a"
+            },
+            "version": "2.10",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.10-db.tar.gz": {
+            "digests": {
+                "sha256": "3a44dd5b1ce6c831a1f60dff19bbceab9e4b5dd591618de939beb1e8a7c668bc"
+            },
+            "version": "2.10",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.10-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "a01c7385525f80c530c28687a490e6cd000fb6f5ce0399083e983d21ea3de786"
+            },
+            "version": "2.10",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.9": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.9-db.tar.gz": {
+            "digests": {
+                "sha256": "734763a893f3a5258e97230b25e5c41a3a04cc35c91ba15437590a1381930892"
+            },
+            "version": "2.9.9",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.9-Darwin_7.5.0.tar.gz": {
+            "digests": {
+                "sha256": "a0a606f3b8b024df5f7a9615c828ecc9a6dea15ac2a2ff20d11647ba1ab8796d"
+            },
+            "version": "2.9.9",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.9-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "5a45903d2c44596147a4972c9751bba8b382628f5cf8a3f5b140c1e2d2a0a713"
+            },
+            "version": "2.9.9",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.9-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "206c35b345f65d18b83c4605451a7d12ef70a01743a42a2d7f5bb9138ffd54f5"
+            },
+            "version": "2.9.9",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.7": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.7-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "a0e5fbbc59d27b66eea83535fe316f0199c77590c52a46aa43f03f3721e7d77c"
+            },
+            "version": "2.9.7",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.7-db.tar.gz": {
+            "digests": {
+                "sha256": "362b59beda4d8cf98139b7d8152345621139058879f84fec5dc84e726961f278"
+            },
+            "version": "2.9.7",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.7-Darwin_7.5.0.tar.gz": {
+            "digests": {
+                "sha256": "25dad7336d77705147063e9abbb3694042e2e9b18ed3cc80adf8acf330721520"
+            },
+            "version": "2.9.7",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.7-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "d7ea293a990e11ace022762f6e40d4e4d9509c47b511f76304f43e5253945f7f"
+            },
+            "version": "2.9.7",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.6": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.6-db.tar.gz": {
+            "digests": {
+                "sha256": "307df9ad516fb1ab52ea5cf9ab299e1d7032b47002441268601da9d2e2bc67c1"
+            },
+            "version": "2.9.6",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.6-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "8e20e3a29ffc1ba99adbff24ba42fab78ccbbdd6e42100e4ff4c85aa91f206e4"
+            },
+            "version": "2.9.6",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.6-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "6fcebef08eab74c3165a3a9e6ffe7739be24c096bae1cae5c55385c7e684adc4"
+            },
+            "version": "2.9.6",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.6-Darwin_7.4.0.tar.gz": {
+            "digests": {
+                "sha256": "4227685680b77867957fcdd56cd7f795063bc516a522f40e7fbe61428b97704c"
+            },
+            "version": "2.9.6",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.5": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.5-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "c5a9efdcc073b31c854519105019dd60fc37e6bf45a8b4db901dcb0fc8745080"
+            },
+            "version": "2.9.5",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.5-db.tar.gz": {
+            "digests": {
+                "sha256": "7c10adbd37b0d0272f9f610679c8c21924c251c88729a303b7b675fa5a5ecb67"
+            },
+            "version": "2.9.5",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.5-Darwin_7.3.0.tar.gz": {
+            "digests": {
+                "sha256": "5f74a6d2e6dab2a5364c9d4cf5418b73569809b32776657afeaa68fa3d49389e"
+            },
+            "version": "2.9.5",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.4a": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.4a-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "53045069dc0815d62c0cacbf8e7a9fc42d5a60597b8f608b40196130d5035647"
+            },
+            "version": "2.9.4a",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.4a-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "ca6feb4127248324232d49c82b91bb00b2057e8b0b7d160daf4c312f6fdec39a"
+            },
+            "version": "2.9.4a",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.4a-db.tar.gz": {
+            "digests": {
+                "sha256": "05ac62f56f885790df79edbcf34906ef6b4c56a9413621506693fd6496f2710c"
+            },
+            "version": "2.9.4a",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.4a-Darwin_7.2.0.tar.gz": {
+            "digests": {
+                "sha256": "65b5f4031fe81fd0c54a6f6af05bc8514504ae0d75c94bef66de064df90e1b87"
+            },
+            "version": "2.9.4a",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.3b": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.3b-Darwin_6.8.tar.gz": {
+            "digests": {
+                "sha256": "f2db12547e3c4fa9a270ff7dc7c109bce31ae2947a60acfaa3cea8cf2ccff62a"
+            },
+            "version": "2.9.3b",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.3a": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.3a-db.tar.gz": {
+            "digests": {
+                "sha256": "bdf2e693a822ad1e883cde9cdc23a20d3bdefae28a837ea2b9ed510840603691"
+            },
+            "version": "2.9.3a",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.3": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.3-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "9554f1c2a93a594b5538d4dab3da96bf403d60ba141bc4e2398d65f649aa657d"
+            },
+            "version": "2.9.3",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.3-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "96f566e2eb634b9ab99e0c091710ca86e3af54773bc9d344659febba550ea525"
+            },
+            "version": "2.9.3",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.2": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.2-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "914c6c3f1f78e20b78a785317daff5dd9b10fdeae15d81f40cd4eac7e39af197"
+            },
+            "version": "2.9.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.2-db.tar.gz": {
+            "digests": {
+                "sha256": "a995a194d1ca870b50128a8e380796d395286a5e3200d3c128cefa05ad7dec64"
+            },
+            "version": "2.9.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.2-Darwin_6.8.tar.gz": {
+            "digests": {
+                "sha256": "f0c88d748c72d7f6e2bed8909fa0f7f213ea524d15c4130a6dbc99461ca795c9"
+            },
+            "version": "2.9.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.2-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "42226ea8dcf54e49d76223ab7994be2b39b18a3bd81215b54e67ddb534444a13"
+            },
+            "version": "2.9.2",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.1": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.1-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "517d7cd0180800d29b8da17ccc25f9cab05037c0f08f879b04161773e59933d3"
+            },
+            "version": "2.9.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.1-Darwin_6.6.tar.gz": {
+            "digests": {
+                "sha256": "54140880e5c1f5b8b78db6c450c6c4c27003d3b24096994d79478265b113c22a"
+            },
+            "version": "2.9.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.1-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "bd1bb17ed01de45e4bfc979cd5ead6645b23802f4e1b59064d0e54c068b87dd9"
+            },
+            "version": "2.9.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.1-db.tar.gz": {
+            "digests": {
+                "sha256": "734e6553256910bcf214acf24c9a7968e328d642bef38e80acbc16ba67c1e0c9"
+            },
+            "version": "2.9.1",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.9.0": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.0-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "7bc884208d9edc3b266341270ce725a42cc0904e20631fd1170756f4671d7135"
+            },
+            "version": "2.9.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.0-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "86a04e243501a5fc204e1129b331ea761937b70fce7c4879394add6f992a711a"
+            },
+            "version": "2.9.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.0-db.tar.gz": {
+            "digests": {
+                "sha256": "f975d2633e3fe5d332f012745410d5437872b9f300642fc71ecc080de069e056"
+            },
+            "version": "2.9.0",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.9.0-Darwin_6.6.tar.gz": {
+            "digests": {
+                "sha256": "d0d029f1359224cd82176575f2cc2cc91d3af235b00a65fcfd16d05cbd98957e"
+            },
+            "version": "2.9.0",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.0.6": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.6-db.tar.gz": {
+            "digests": {
+                "sha256": "ddf94234944ca26cd9fbb384ec7d7d2d88ca2325f777b431e4be82509db908a3"
+            },
+            "version": "2.0.6",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.6-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "68184756e6cf3677d4676f2aa5a4923e718a73d633af52d17cc226138c16a41f"
+            },
+            "version": "2.0.6",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.6-Darwin_6.3.tar.gz": {
+            "digests": {
+                "sha256": "93c7d2be7fc2c73c7be1910164e00ca4cef8eed83e8acaf3bfd98b61b7e3f831"
+            },
+            "version": "2.0.6",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.6-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "3fdbe012aea34df75b416f665ad9abb53f094668c211d08a1c432e5d6e708275"
+            },
+            "version": "2.0.6",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.0.5": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.5-Darwin_6.2.tar.gz": {
+            "digests": {
+                "sha256": "adb33f5e3b17463fc6b2022c026e904617db8ecd22f32d0ffb59fea1f118558e"
+            },
+            "version": "2.0.5",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.5-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "fd776e0c4c18b405ca5051aefaa926d2794c22425e8fe1a2c6306723956c5115"
+            },
+            "version": "2.0.5",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.5-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "20b149b215b9e63c7862b83152ee8002a627158fe4bb0916237b8fbcf585634e"
+            },
+            "version": "2.0.5",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.5-db.tar.gz": {
+            "digests": {
+                "sha256": "3648eb7f6a2d2d2aca22bdc6fd60f91b339ef33c999f03da75e3fb625e7a5b5f"
+            },
+            "version": "2.0.5",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "2.0.4": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.4-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "a9c92e5fcd59adc96a70268ca64fd360cfa079ade80826b9ad30f3da8ce0f401"
+            },
+            "version": "2.0.4",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.4-db.tar.gz": {
+            "digests": {
+                "sha256": "07c3f6e07a1a7cb7648880c7912cdcb51fca5116db35b317090e3291d87f153d"
+            },
+            "version": "2.0.4",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.4-Darwin_6.1.tar.gz": {
+            "digests": {
+                "sha256": "0e66f3e27fa6520e23b065e2a14550b702a44c0311f67f92108e83ddbb7f9f63"
+            },
+            "version": "2.0.4",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-2.0.4-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "b6a3020b4a5db0f4105149cec121ac0e560f4e8a914ce4daa442dfaec138fde4"
+            },
+            "version": "2.0.4",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "1.2.1": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-1.2.1-db.tar.gz": {
+            "digests": {
+                "sha256": "413e0b2d2c9fbfe465db98f8bb5816b09323ec342f049626013bfc1953345fbf"
+            },
+            "version": "1.2.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-1.2.1-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "bbdb6b7a110943bcbacdc63421153a5c33ef00a47a8c3d73ee788aebb9bd0556"
+            },
+            "version": "1.2.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-1.2.1-Darwin_5.4.tar.gz": {
+            "digests": {
+                "sha256": "b5c2a34f64a75eb0c602667cb99e15254a3106923bedd02eddbd1a7e1c92a9c1"
+            },
+            "version": "1.2.1",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-1.2.1-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "75b85f27483e0b55ab3b631fcbf6464798e31370a9901190ed8085e33a89f469"
+            },
+            "version": "1.2.1",
+            "format": "gz",
+            "type": "extra_file"
+        }
+    },
+    "1.1.2": {
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-1.1.2-SunOS_5.8.tar.gz": {
+            "digests": {
+                "sha256": "111ab0cb40b4d529a640ad4fab3a0906648ff04f05556a8a51a6aa57cb0c7528"
+            },
+            "version": "1.1.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-1.1.2-db.tar.gz": {
+            "digests": {
+                "sha256": "3b686fc9152085a2b8657714abdab64459d92b4cfc69862c241005803994b651"
+            },
+            "version": "1.1.2",
+            "format": "gz",
+            "type": "extra_file"
+        },
+        "https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-1.1.2-OSF1_V4.0.tar.gz": {
+            "digests": {
+                "sha256": "4099dd07e355e354fa3d3a69391d93e923abfb7eedeb5a53ac4a26f116144a6b"
+            },
+            "version": "1.1.2",
+            "format": "gz",
+            "type": "extra_file"
+        }
     }
 }
