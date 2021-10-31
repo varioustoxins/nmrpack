@@ -8,7 +8,7 @@ import sys
 from html2text import html2text
 from tqdm import tqdm
 # noinspection PyUnresolvedReferences
-from checksum_url import Navigator, VERSION, FORMAT, TYPE, EXTRA_FILE, MAIN_FILE, NAME, INFO, WEBSITE
+from checksum_url import Navigator, VERSION, FORMAT, TYPE, EXTRA_FILE, MAIN_FILE, NAME, INFO, WEBSITE, UNUSED_FILE
 from plugins import register_navigator
 # pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
 
@@ -178,12 +178,13 @@ class XplorNavigator(Navigator):
 
     def process_extra_info(self, url_versions):
 
-        version_url = {}
+        done_versions = set()
         for url, version in url_versions.items():
             url_extension = url.split('.')[-1]
 
             if url.endswith('.sh'):
                 type = MAIN_FILE
+                done_versions.add(version)
             else:
                 type = EXTRA_FILE
 
@@ -193,7 +194,43 @@ class XplorNavigator(Navigator):
                 TYPE: type
             }
 
-            version_url.setdefault(version,[]).append(url)
+        url_extra_info_by_version = {}
+
+        for url,version in url_versions.items():
+            url_extra_info_by_version.setdefault(version, {})[url] = self._url_extra_info[url]
+
+        for version, urls_extrainfo in url_extra_info_by_version.items():
+
+            if len(urls_extrainfo) == 2 and version not in done_versions:
+                for url, extra_info in urls_extrainfo.items():
+                    if '-db' not in url:
+                        extra_info[TYPE] = MAIN_FILE
+                done_versions.add(version)
+
+            # TODO: I use a priority to get it working but really we ought to have one result and url for each db version pair
+            # but this needs the idea of os architecture varian etc
+            priorities = '-Darwin_12_x86_64.', '-Darwin_10_x86_64.', '-Darwin_8_x86.', '-Darwin_8.'
+
+
+            if len(urls_extrainfo) >= 3 and version not in done_versions:
+
+                by_priority = []
+                for url, extra_info in urls_extrainfo.items():
+                    if '-db' in url:
+                        extra_info[TYPE] = EXTRA_FILE
+                    else:
+                        for priority, tag in enumerate(priorities):
+                            if tag in url:
+                                by_priority.append((priority, url))
+                by_priority.sort()
+
+
+                urls_extrainfo[by_priority[0][1]][TYPE] = MAIN_FILE
+                for priority, url in by_priority[1:]:
+                    urls_extrainfo[url][TYPE] = UNUSED_FILE
+
+
+
 
 
     def get_single_url(self, button_value, should_show_license):
