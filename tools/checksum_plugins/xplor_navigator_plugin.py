@@ -134,9 +134,11 @@ class XplorNavigator(Navigator):
                         t.update()
 
                 ignored_names = [
-                    'linux',
-                    'irix',
-                    'ppc'
+                    'Linux',
+                    'Irix',
+                    'Ppc',
+                    'SunOs',
+                    'OSF1'
                 ]
                 ignore_url = False
                 for ignored_name in ignored_names:
