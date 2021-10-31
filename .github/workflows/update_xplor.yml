@@ -52,5 +52,5 @@ jobs:
         with:
           message: updated nmrpipe on ${{ steps.current-time.outputs.formattedTime }}
           branch: master
-          add: packages/xplor/package.yaml, checksum_caches/*
+          add: '["packages/xplor/package.yaml", "checksum_caches/*"]'
 
