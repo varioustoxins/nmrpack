@@ -138,7 +138,9 @@ class XplorNavigator(Navigator):
                     'Irix',
                     'Ppc',
                     'SunOs',
-                    'OSF1'
+                    'OSF1',
+                    'Darwin_7.3.0',
+                    'Darwin_6.3'
                 ]
                 ignore_url = False
                 for ignored_name in ignored_names:
