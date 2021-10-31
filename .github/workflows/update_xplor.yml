@@ -34,7 +34,7 @@ jobs:
 
       - name: Get nmrpipe package.yml ibbr
         run: |
-          python3 tools/checksum_url.py --password garyt {{ $secrets.XPLOR_PASSWORD }} --template --root https://nmr.cit.nih.gov/xplor-nih/download.cgi  --cache checksum_caches/xplor_cache.yml --navigator xplor -y --verbose *3.2*.sh *3.2*.tar.gz > xplor_package.yml
+          python3 tools/checksum_url.py --password garyt ${{ secrets.XPLOR_PASSWORD }} --template --root https://nmr.cit.nih.gov/xplor-nih/download.cgi  --cache checksum_caches/xplor_cache.yml --navigator xplor -y --verbose *3.2*.sh *3.2*.tar.gz > xplor_package.yml
 
       - name: Install xplor package.xml
         run: |
@@ -57,5 +57,5 @@ jobs:
         with:
           message: updated nmrpipe on ${{ steps.current-time.outputs.formattedTime }}
           branch: master
-          add: packages/xplor/package.yaml
+          add: packages/xplor/package.yaml, checksum_caches/*
 
