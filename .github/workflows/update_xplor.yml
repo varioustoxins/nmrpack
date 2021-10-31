@@ -32,7 +32,7 @@ jobs:
 
       - name: Build xplor package.yml
         run: |
-          python3 tools/checksum_url.py --password garyt ${{ secrets.XPLOR_PASSWORD }} --template --root https://nmr.cit.nih.gov/xplor-nih/download.cgi  --cache checksum_caches/xplor_cache.yml --navigator xplor -y --verbose *.sh *.tar.gz > xplor_package.yml
+          python3 tools/checksum_url.py --password ${{ secrets.XPLOR_USERNAME }} ${{ secrets.XPLOR_PASSWORD }} --template --root https://nmr.cit.nih.gov/xplor-nih/download.cgi  --cache checksum_caches/xplor_cache.yml --navigator xplor -y *.tar.gz > xplor_package.yml
 
       - name: Install xplor package.xml
         run: |
