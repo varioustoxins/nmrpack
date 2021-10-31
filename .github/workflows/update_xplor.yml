@@ -15,6 +15,10 @@ jobs:
 
 
     steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
       - name: ls
         run: |
           echo '----'
@@ -24,8 +28,6 @@ jobs:
           echo '----'
           ls /home/runner/work
           echo '----'
-      - name: Checkout repo
-        uses: actions/checkout@v2
 
       - name: Install Python
         uses: actions/setup-python@v2
