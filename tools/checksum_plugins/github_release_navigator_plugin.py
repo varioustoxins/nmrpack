@@ -115,7 +115,7 @@ class GithubReleaseNavigator(UrlNavigator):
     def get_version(self, url):
         return self._extra_item_info[url]['version']
 
-    def get_version_info(self, url):
+    def get_extra_info(self, url):
         return self._extra_item_info[url]
 
     #TODO: is package info needed
