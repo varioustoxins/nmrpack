@@ -645,6 +645,9 @@ if __name__ == '__main__':
                     if url_version_info != None:
                         cache[version][url].update(url_version_info)
 
+            if args.debug:
+                _hash = f'!DEBUG!-{_hash}-!FAKE!'
+
             out.display_hash(url, _hash, max_length_url, i+1, num_urls, hash_type=hash_type)
 
 

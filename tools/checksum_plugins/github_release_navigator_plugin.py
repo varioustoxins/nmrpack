@@ -105,13 +105,15 @@ class GithubReleaseNavigator(UrlNavigator):
                             self._extra_item_info[download_url] = {
                                 TYPE: main_file,
                                 FORMAT: file_format,
-                                VERSION: version,
-                                DIGESTS: {}
+                                VERSION: str(version),
                             }
         else:
             print(f'Bad combination of template {target_args.use_templates} and root {target_args.root}')
 
         return result
+
+    def get_version(self, url):
+        return self._extra_item_info[url]['version']
 
     def get_version_info(self, url):
         return self._extra_item_info[url]
