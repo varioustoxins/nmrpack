@@ -639,7 +639,7 @@ if __name__ == '__main__':
                     cache[version][url].update(url_version_info)
 
             out.display_hash(url, _hash, max_length_url, i+1, num_urls, hash_type=hash_type)
-            version_info[url] = navigator.get_version_info(url)
+
 
         except DownloadFailedException as e:
 
