@@ -138,10 +138,13 @@ class XplorNavigator(Navigator):
                     'irix',
                     'ppc'
                 ]
+                ignore_url = False
                 for ignored_name in ignored_names:
                     if ignored_name.upper() in single_result.upper():
                         print(f'NOTE: {ignored_name} currently not supported ignoring url {single_result}', file=sys.stderr)
-                        continue
+                        ignore_url = True
+                if ignore_url:
+                    continue
 
                 if single_result:
                     should_show_license = False
