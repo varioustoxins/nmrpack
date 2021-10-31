@@ -83,9 +83,13 @@ class NmrpackOutput(OutputBase):
 
             main_url = self.get_main_url(versions_and_urls[version])
             if not main_url:
-                print('Error: no main url specified', file=sys.stderr)
-                print('Exiting...', file=sys.stderr)
-                sys.exit(1)
+                print(f'Warning: no main url specified for version {version}', file=sys.stderr)
+                print('          continuing..', file=sys.stderr)
+                continue
+
+            version_dict = {'version': str(version)}
+            result[str(version)] = version_dict
+
             extra_version_info[main_url]['type'] = MAIN_FILE
 
             version_dict['install_file'] = self.url_to_filename(self.get_main_url(versions_and_urls[version]))
