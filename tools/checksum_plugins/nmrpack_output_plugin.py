@@ -102,7 +102,7 @@ class NmrpackOutput(OutputBase):
                 if extra_info['type'] == 'extra_file' and extra_info['version'] == version:
                     file_name = self.url_to_filename(url)
                     root_url = self.url_to_root(url)
-                    resources[file_name]= [root_url, self._urls_and_hashes[url][1]]
+                    resources[file_name] = [root_url, self._urls_and_hashes[url][1]]
 
 
         print(yaml.dump(result, default_flow_style=False, sort_keys=False))
