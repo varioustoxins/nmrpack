@@ -8,7 +8,7 @@ import sys
 from html2text import html2text
 from tqdm import tqdm
 # noinspection PyUnresolvedReferences
-from checksum_url import Navigator
+from checksum_url import Navigator, VERSION, FORMAT, TYPE, EXTRA_FILE, MAIN_FILE, NAME, INFO, WEBSITE
 from plugins import register_navigator
 # pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
 
@@ -80,6 +80,8 @@ class XplorNavigator(Navigator):
         # if optimise is set to true read the url for the firdt button and extract the complete path and
         # extrapolate the rest
         self._optimise=True
+        self._cached_urls = None
+        self._url_extra_info = {}
 
 
     def login_with_form(self, target_url, username_password, form=None, verbose=0):
@@ -98,56 +100,86 @@ class XplorNavigator(Navigator):
 
     def get_urls(self, sorted_by_version=True):
 
-        result = []
-        prototype_browser = self._browser
+        if self._cached_urls == None:
+            result = []
+            prototype_browser = self._browser
 
-        all_buttons = prototype_browser.get_current_page().find_all('input')
-        all_button_names = [button['value'] for button in all_buttons]
+            all_buttons = prototype_browser.get_current_page().find_all('input')
+            all_button_names = [button['value'] for button in all_buttons]
 
-        target_names = set()
-        for template in self._args.urls:
-            # noinspection PyTypeChecker
-            match = partial(fnmatch, pat=template)
-            target_names.update(filter(match, all_button_names))
+            target_names = set()
+            for template in self._args.urls:
+                # noinspection PyTypeChecker
+                match = partial(fnmatch, pat=template)
+                target_names.update(filter(match, all_button_names))
 
-        show_progress = self._args.verbose >= 1
+            show_progress = self._args.verbose >= 1
 
-        t = None
-        should_show_license = True
-        root_url = None
-        for target_index, button_value in enumerate(target_names):
+            t = None
+            should_show_license = True
+            root_url = None
+            for target_index, button_value in enumerate(target_names):
 
-            if root_url:
-                single_result = get_interpolated_url(root_url,button_value)
-            else:
-                single_result = self.get_single_url(button_value, should_show_license)
+                if root_url:
+                    single_result = get_interpolated_url(root_url,button_value)
+                else:
+                    single_result = self.get_single_url(button_value, should_show_license)
 
-            if single_result:
-                should_show_license = False
-                result.append(single_result)
-                if self._optimise:
-                    root_url = urlparse(single_result)
+                if 'Linux' in single_result or 'linux' in single_result:
+                    print(f'NOTE: linux currently not supported ignoring url {single_result}', file=sys.stderr)
+                    continue
 
+                if single_result:
+                    should_show_license = False
+                    result.append(single_result)
+                    if self._optimise:
+                        root_url = urlparse(single_result)
 
+                if show_progress:
+                    if target_index == 0:
+                        if show_progress:
+                            bar_format = f'Reading urls {{l_bar}}{{bar: 92}} [remaining time: {{remaining}}]'
+                            t = tqdm(total=len(target_names) - 1, bar_format=bar_format, file=sys.stdout, leave=False)
+                    else:
+                        t.update()
 
             if show_progress:
-                if target_index == 0:
-                    if show_progress:
-                        bar_format = f'Reading urls {{l_bar}}{{bar: 92}} [remaining time: {{remaining}}]'
-                        t = tqdm(total=len(target_names) - 1, bar_format=bar_format, file=sys.stdout, leave=False)
-                else:
-                    t.update()
+                t.close()
 
-        if show_progress:
-            t.close()
 
-        if sorted_by_version:
             url_versions = [arg.split('#')[0] for arg in result]
             url_versions = self._urls_to_url_version(url_versions, self.get_version)
             url_versions = self._sort_url_versions(url_versions)
-            result = list(url_versions.keys())
 
+            if sorted_by_version:
+                result = list(url_versions.keys())
+
+            self.process_extra_info(url_versions)
+
+            self._cached_urls = tuple(result)
+        else:
+            result = self._cached_urls
         return result
+
+    def process_extra_info(self, url_versions):
+
+        version_url = {}
+        for url, version in url_versions.items():
+            url_extension = url.split('.')[-1]
+
+            if url.endswith('.sh'):
+                type = MAIN_FILE
+            else:
+                type = EXTRA_FILE
+
+            self._url_extra_info[url] = {
+                VERSION: version,
+                FORMAT: url_extension,
+                TYPE: type
+            }
+
+            version_url.setdefault(version,[]).append(url)
+
 
     def get_single_url(self, button_value, should_show_license):
 
