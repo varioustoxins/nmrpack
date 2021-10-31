@@ -303,7 +303,7 @@ class NavigatorABC(abc.ABC):
         pass
 
     # @abc.abstractmethod
-    def get_version_info(self, url):
+    def get_extra_info(self, url):
         pass
 
     # @abc.abstractmethod
@@ -637,7 +637,7 @@ if __name__ == '__main__':
                 _hash, hash_type = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
                                                 username_password=args.password, debug=args.debug)
 
-                url_version_info = navigator.get_version_info(url)
+                url_version_info = navigator.get_extra_info(url)
                 if cache != None:
                     print(f"NOTE: creating cached data for {url} [version: {version}]", file=sys.stderr)
                     cache_line = cache.setdefault(version, {}).setdefault(url, {})
