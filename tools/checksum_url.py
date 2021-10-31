@@ -257,7 +257,7 @@ def report_error(target_url, error, url_length, index):
 def exit_if_asked():
 
     print()
-    print('exiting...')
+    print('exiting...', file=sys.stder)
     sys.exit(1)
 
 
@@ -285,21 +285,21 @@ def digests_formatted():
 
 def check_root_set_or_exit(target_args):
     if not target_args.root:
-        print('argument --template requires matching root_argument')
-        print('exiting...')
+        print('argument --template requires matching root_argument', file=sys.stderr)
+        print('exiting...',file=sys.stderr)
         sys.exit()
 
 
 def check_for_bad_navigators_and_exit(navigators, navigator_name, possible_navigators):
 
     if len(navigators) == 0:
-        print(f'navigator {navigator_name} not found expected one of {possible_navigators}')
-        print('exiting...')
+        print(f'navigator {navigator_name} not found expected one of {possible_navigators}',file=sys.stderr)
+        print('exiting...',file=sys.stderr)
         sys.exit(1)
 
     if len(navigators) > 1:
-        print(f'Error: multiple navigators selected for {navigator_name}...')
-        print('exiting...')
+        print(f'Error: multiple navigators selected for {navigator_name}...',file=sys.stderr)
+        print('exiting...',file=sys.stderr)
         sys.exit(1)
 
 class NavigatorABC(abc.ABC):
@@ -427,7 +427,7 @@ class Navigator(NavigatorABC):
 
 
             if not result:
-                print(f"WARNING: couldn't match version for url: {target_url}")
+                print(f"WARNING: couldn't match version for url: {target_url}", file=sys.stderr)
                 result = '0.0.0'
 
             results[target_url] = result
@@ -448,9 +448,9 @@ def show_yes_message_cancel_or_wait():
             press any other key to exit...
             
         ------------------------------------------------------------
-    ''')
+    ''', file=sys.stderr)
 
-    progress_bar = tqdm(total=10, bar_format='        {desc}{bar:45}', file=sys.stdout, leave=False)
+    progress_bar = tqdm(total=10, bar_format='        {desc}{bar:45}', file=sys.stderr, leave=False)
 
     # in a pycharm terminal this doesn't work skip it
     try:
@@ -481,8 +481,8 @@ def show_yes_message_cancel_or_wait():
         kb.set_normal_term()
 
     if not doit:
-        print()
-        print('canceled, exiting...')
+        print(file=sys.stderr)
+        print('canceled, exiting...', file=sys.stderr)
         sys.exit(0)
 
 
@@ -528,6 +528,7 @@ def get_cache(cache_file_name):
             result = load_cache_file(cache_file_name)
             if verbose:
                 print(f"NOTE: using cache file {cache_file_name}", file=sys.stderr)
+                print(os.getcwd(), file=sys.stderr)
         else:
             print(f"NOTE: cache file {cache_file_name} doesn't exists creating a new one...", file=sys.stderr)
             result = {}
