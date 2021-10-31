@@ -71,14 +71,12 @@ class NmrPipeNavigator(UrlNavigator):
                     TYPE: MAIN_FILE,
                     FORMAT: url_extension,
                     VERSION: self._version,
-                    DIGESTS: {}
                 }
             else:
                 self._extra_item_info[url] = {
                     TYPE: EXTRA_FILE,
                     FORMAT: url_extension,
                     VERSION: self._version,
-                    DIGESTS: {}
                 }
 
         return result
