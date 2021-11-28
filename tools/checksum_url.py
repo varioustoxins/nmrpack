@@ -308,7 +308,7 @@ def check_for_bad_navigators_and_exit(navigators, navigator_name, possible_navig
 class NavigatorABC(abc.ABC):
 
     @abc.abstractmethod
-    def get_urls(self, sorted_by_version=True):
+    def get_urls(self):
         pass
 
     @abc.abstractmethod
