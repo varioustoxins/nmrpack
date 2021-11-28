@@ -103,7 +103,7 @@ class NmrpackOutput(OutputBase):
                 print('          continuing..', file=sys.stderr)
                 continue
 
-            version_dict = {'version': str(version)}
+            version_dict = {}
             result[str(version)] = version_dict
 
             extra_version_info[main_url]['type'] = MAIN_FILE
