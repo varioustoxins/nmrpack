@@ -2,11 +2,26 @@
 
 import pathlib
 from pathlib import Path
+from urllib.parse import urlparse
+
 import spack.util.spack_yaml as syaml
 from spack.directives import version
 from spack.directives import resource
 
 
+def url_to_extension(url):
+    url_parts = urlparse(url)
+    return ''.join(Path(url_parts.path).suffixes)
+
+EXPANDABLE = '.tar.gz','.gz', '.gz', '.tgz'
+
+def expandable(release, url):
+    expand = False
+    if 'expand' in release:
+        expand = release['expand']
+    elif url_to_extension(url) in EXPANDABLE:
+        expand = True
+    return expand
 
 def read_releases(package):
 
@@ -32,9 +47,8 @@ def read_releases(package):
             url_arg = 'url'
         params = {url_arg : url,  check_sum_name : check_sum}
 
-        expand=False
-        if 'expand' in release:
-            expand= release['expand']
+        expand = expandable(release, url)
+
         version(version_number, **params, expand=expand)
 
         # NOTE: we could be downloading resources we don't need because a variant is marked as not required
