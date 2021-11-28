@@ -620,7 +620,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
     args.password = tuple(args.password)
 
-    verbose = args.verbose >= 1
+    verbose = args.verbose
 
     if args.yes:
         show_yes_message_cancel_or_wait()
@@ -638,7 +638,7 @@ if __name__ == '__main__':
 
     navigator = navigators[0](session, args)
 
-    navigator.login_with_form(args.root, args.password, args.form)
+    navigator.login_with_form(args.root, args.password, args.form, verbose=args.verbose)
 
     out = get_output(name=args.output_format, target_args=args)
     out.digest = args.digest
@@ -685,15 +685,12 @@ if __name__ == '__main__':
                                                      username_password=args.password, debug=args.debug)
                 hashes[url] = _hash
 
-                url_version_info = navigator.get_extra_info(url)
-                version_info[url]= url_version_info
-
-                if cache != None:
-                    print(f"NOTE: creating cached data for {url} [version: {version}]", file=sys.stderr)
-                    cache_line = cache.setdefault(version, {}).setdefault(url, {})
-                    cache_line.setdefault('digests', {})[hash_type] = _hash
-                    if url_version_info != None:
-                        cache[version][url].update(url_version_info)
+                if cache != None  and navigator.have_cache():
+                    if verbose>=1:
+                        notes.append(f"NOTE: creating cached data for {url} [version: {version}]")
+                    cache_digests = cache.setdefault(url, {}).setdefault(DIGESTS, {})
+                    cache[url][DIGESTS][hash_type] = _hash
+                    cache[url][CACHE_DATA] = navigator.get_cache_data(url)
 
             if args.debug:
                 _hash = f'!DEBUG!-{_hash}-!FAKE!'
