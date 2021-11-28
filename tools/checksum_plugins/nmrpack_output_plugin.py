@@ -1,5 +1,6 @@
 import sys
 from fnmatch import fnmatch
+from pathlib import Path
 
 import pluggy
 
@@ -61,7 +62,10 @@ class NmrpackOutput(OutputBase):
 
     @staticmethod
     def url_to_filename(url):
-        return os.path.basename(urlparse(url).path)
+
+        file_name = Path(urlparse(url).path).parts[-1]
+
+        return file_name
 
     @staticmethod
     def url_to_root(url):
@@ -71,6 +75,18 @@ class NmrpackOutput(OutputBase):
 
         return urlunparse(parts)
 
+    def get_when(self, extra_info, parts=False):
+
+        when_parts=[]
+        if 'os' in extra_info and extra_info['os'] != 'any':
+            when_parts.append(f'os={extra_info["os"]}')
+        if 'platform' in extra_info and extra_info['platform'] != '':
+            when_parts.append(f'platform={extra_info["platform"]}')
+        if 'target' in extra_info and extra_info['target'] != '':
+            when_parts.append(f'target={extra_info["target"]}')
+
+
+        return' '.join(when_parts)
 
     def finish(self, extra_package_info, extra_version_info):
 
@@ -92,21 +108,28 @@ class NmrpackOutput(OutputBase):
 
             extra_version_info[main_url]['type'] = MAIN_FILE
 
-            version_dict['install_file'] = self.url_to_filename(self.get_main_url(versions_and_urls[version]))
+            main_url = self.get_main_url(versions_and_urls[version])
 
             version_dict[self._urls_and_hashes[main_url][0]] = self._urls_and_hashes[main_url][1]
-            version_dict['root_url'] = self.url_to_root(self.get_main_url(versions_and_urls[version]))
+            version_dict['root_url'] = main_url
             resources = {}
             version_dict['resources'] = resources
-
-
 
             for url in sorted(extra_version_info):
                 extra_info = extra_version_info[url]
                 if extra_info['type'] == 'extra_file' and extra_info['version'] == version:
+                    when = self.get_when(extra_info)
+
                     file_name = self.url_to_filename(url)
-                    root_url = self.url_to_root(url)
-                    resources[file_name] = [root_url, self._urls_and_hashes[url][1]]
+
+
+                    resources[file_name] = {'url': url,
+                                            'hash': self._urls_and_hashes[url][1],
+                                            'when': when
+                                            }
+                    if 'when' == '':
+                        del resources[file_name]['when']
+
 
 
         print(yaml.dump(result, default_flow_style=False, sort_keys=False))
