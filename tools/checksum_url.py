@@ -230,7 +230,7 @@ def get_hash_from_url(target_url, target_session, verbose, count, digest='sha256
                 human = human_size(total_data_length)
                 if show_progress:
                     bar_format = f'Reading {count} {human} {{l_bar}}{{bar:{bar_length}}} [remaining time: {{remaining}}]'
-                    t = tqdm(total=total_data_length, bar_format=bar_format, file=sys.stdout, leave=False)
+                    t = tqdm(total=total_data_length, bar_format=bar_format, file=sys.stderr, leave=False)
 
                 for data in response.iter_content(chunk_size=4096):
                     if show_progress:
@@ -239,6 +239,7 @@ def get_hash_from_url(target_url, target_session, verbose, count, digest='sha256
 
                 if show_progress:
                     t.close()
+                    print(f'Reading {count} {human} done!', file=sys.stderr, end='')
 
             except Exception as exception:
                 raise DownloadFailedException(get_failure_message(target_url, exception_to_message(exception)))
