@@ -20,6 +20,8 @@ import os
 from plugins import load_and_register_factory_classes, list_navigators, list_outputs, get_navigator, get_output
 from cmp_version import VersionString
 
+CACHE_DATA = 'cache_data'
+
 session = None
 
 UNKNOWN_VERSION = '0.0.0'
@@ -37,17 +39,16 @@ INFO = 'info'
 WEBSITE = 'website'
 DEPENDENCIES = 'dependencies'
 DIGESTS = 'digests'
-EXPAND='expand'
-PLATFORM='platform'
-OSX='osx'
-LINUX='linux'
-ANY='any' # can be used for ARCH as well
-ARCH='arch'
-X86_64='x86_64'
-X86_32='x86_32'
-MX='mx'
-
-
+EXPAND = 'expand'
+PLATFORM = 'platform'
+DARWIN = 'darwin'
+LINUX = 'linux'
+ANY = 'any'  # can be used for ARCH as well
+TARGET = 'target'
+X86_64 = 'x86_64'
+X86 = 'x86'
+MX = 'mx'
+OS = 'os'
 
 # https://gist.github.com/michelbl/efda48b19d3e587685e3441a74457024
 # Windows
@@ -162,11 +163,11 @@ def display_text(text, header):
 
     under_length //= 2
 
-    print('-'*under_length + header + '-'*under_length)
+    print('-' * under_length + header + '-' * under_length)
     print()
     print(text)
     print()
-    print('-' * (under_length*2 + len(header)))
+    print('-' * (under_length * 2 + len(header)))
 
 
 def display_response(response, header='response'):
@@ -179,7 +180,7 @@ suffixes = ['B ', 'KB', 'MB', 'GB', 'TB', 'PB']
 
 def human_size(number_bytes):
     index = 0
-    while number_bytes >= 1024 and index < len(suffixes)-1:
+    while number_bytes >= 1024 and index < len(suffixes) - 1:
         number_bytes /= 1024.
         index += 1
     f = ('%6.2f' % number_bytes).rstrip('0').rstrip('.')
@@ -287,20 +288,20 @@ def digests_formatted():
 def check_root_set_or_exit(target_args):
     if not target_args.root:
         print('argument --template requires matching root_argument', file=sys.stderr)
-        print('exiting...',file=sys.stderr)
+        print('exiting...', file=sys.stderr)
         sys.exit()
 
 
 def check_for_bad_navigators_and_exit(navigators, navigator_name, possible_navigators):
 
     if len(navigators) == 0:
-        print(f'navigator {navigator_name} not found expected one of {possible_navigators}',file=sys.stderr)
-        print('exiting...',file=sys.stderr)
+        print(f'navigator {navigator_name} not found expected one of {possible_navigators}', file=sys.stderr)
+        print('exiting...', file=sys.stderr)
         sys.exit(1)
 
     if len(navigators) > 1:
-        print(f'Error: multiple navigators selected for {navigator_name}...',file=sys.stderr)
-        print('exiting...',file=sys.stderr)
+        print(f'Error: multiple navigators selected for {navigator_name}...', file=sys.stderr)
+        print('exiting...', file=sys.stderr)
         sys.exit(1)
 
 class NavigatorABC(abc.ABC):
@@ -424,8 +425,7 @@ class Navigator(NavigatorABC):
                 if match:
                     result = match.group(1)
             elif callable(version_matcher):
-                 result = version_matcher(target_url)
-
+                result = version_matcher(target_url)
 
             if not result:
                 print(f"WARNING: couldn't match version for url: {target_url}", file=sys.stderr)
@@ -436,18 +436,17 @@ class Navigator(NavigatorABC):
         return results
 
 
-
 def show_yes_message_cancel_or_wait():
     print('''
         --------------------------**NOTE**--------------------------
-        
+
             You have used the --yes facility all licenses will 
             now be displayed and then accepted **automatically**
-            
+
             press y or space bar to continue
-            
+
             press any other key to exit...
-            
+
         ------------------------------------------------------------
     ''', file=sys.stderr)
 
@@ -459,13 +458,13 @@ def show_yes_message_cancel_or_wait():
         wait_time = 100
     except:
         kb = None
-        wait_time=0
+        wait_time = 0
 
     doit = True
     for index in range(wait_time):
         sleep(0.1)
         progress_bar.update(0.1)
-        progress_bar.set_description(f'{int((100-index)/10)}s remaining ')
+        progress_bar.set_description(f'{int((100 - index) / 10)}s remaining ')
 
         if keyboard_hit():
             c = get_char()
@@ -502,7 +501,7 @@ class OutputBase:
 
     def __init__(self, target_args):
         self._target_args = target_args
-        self.digest =  'unknown'
+        self.digest = 'unknown'
 
     def output(self, url, hash, max_length_url, i):
         """output a url and its hash"""
@@ -568,7 +567,7 @@ if __name__ == '__main__':
                         help=f'which digest algorithm to use: \n\n{digests_formatted()}\n')
     parser.add_argument('-t', '--template', dest='use_templates', default=False, action=STORE_TRUE,
                         help='use urls as unix filename templates and scan the root page, --root must also be set...')
-    parser.add_argument('-p', '--password', dest='password', nargs=2,  default=(None, None),
+    parser.add_argument('-p', '--password', dest='password', nargs=2, default=(None, None),
                         help='provide a username and password', metavar=('USERNAME', 'PASSWORD'))
     parser.add_argument('-f', '--form', default=None, dest='form', nargs=4,
                         help='use a form for login use root for the url of the form',
@@ -585,7 +584,7 @@ if __name__ == '__main__':
                         help=f'define a regex to select the version of the software typically from its url, '
                              f'it should create a single match for each url, all others are discarded'
                              r'default: ([0-9]+\.(?:[0-9]+[A-Za-z0-9_-]*\.[0-9]+[A-Za-z0-9_-]*))+')
-    parser.add_argument('-c', '--cache', dest='cache_file',type=str, metavar='CACHE-FILE', default=None,
+    parser.add_argument('-c', '--cache', dest='cache_file', type=str, metavar='CACHE-FILE', default=None,
                         help='use a cached values from a  file if available to limit bandwidth used')
     parser.add_argument('--debug', dest='debug', default=False, action='store_true',
                         help=f'debug mode: use hashes of filenames rather than hashes of downloaded files for speed when debugging')
