@@ -1,16 +1,33 @@
 from fnmatch import fnmatch
 from functools import partial
 from pathlib import Path
-from urllib.parse import urlparse, urlunparse
-
-import pluggy
+from urllib.parse import urlunparse, urlparse
 import sys
 from html2text import html2text
-from tqdm import tqdm
+
 # noinspection PyUnresolvedReferences
-from checksum_url import Navigator, VERSION, FORMAT, TYPE, EXTRA_FILE, MAIN_FILE, NAME, INFO, WEBSITE, UNUSED_FILE
+from checksum_url import Navigator, VERSION, FORMAT, TYPE, EXTRA_FILE, MAIN_FILE, NAME, INFO, WEBSITE, UNUSED_FILE, \
+    PLATFORM, OS, TARGET
 from plugins import register_navigator
-# pm = pluggy.PluginManager(CHECK_SUM_PROJECT)
+
+
+PLATFORMS = ['darwin', 'linux', 'Irix', 'Ppc', 'SunOs', 'OSF1', ]
+DARWIN_VERSIONS = darwin_versions = {
+            "Darwin_12":  "Mountain Lion",
+            "Darwin_10":  "Snow Leopard",
+            "Dawin_8":    "Tiger",
+            "Darwin_7":   "Panther",
+            "Darwin_6":   "Jaguar",
+            "Darwin_5":   "Puma"
+}
+
+IGNORED_PLATFORMS = [
+    'Irix',
+    'Ppc',
+    'SunOs',
+    'OSF1',
+]
+IGNORED_PLATFORMS_LOWER = [platform.lower() for platform in IGNORED_PLATFORMS]
 
 class LicenseNotAcceptedException(Exception):
     ...
@@ -67,6 +84,10 @@ def get_interpolated_url(root_url, button_value):
     return urlunparse(root_url._replace(path=str(path)))
 
 
+
+BUTTONS = 'buttons'
+EXTRA = 'extra'
+
 @register_navigator()
 class XplorNavigator(Navigator):
 
@@ -74,17 +95,22 @@ class XplorNavigator(Navigator):
 
     VERSION_REGEX_GZ = Navigator.DEFAULT_VERSION_REGEX + '[-]'
 
+
+
     def __init__(self, browser, target_args):
         super(XplorNavigator, self).__init__(browser, target_args)
         # TODO: move to input args?
         # if optimise is set to true read the url for the firdt button and extract the complete path and
         # extrapolate the rest
         self._optimise=True
-        self._cached_urls = None
-        self._url_extra_info = {}
+        self._cache_data = {BUTTONS: {}, EXTRA: {}}
+        self._urls = None
+        self._target_url = None
+        self._license_shown = False
 
 
     def login_with_form(self, target_url, username_password, form=None, verbose=0):
+        self._target_url = target_url
         if not form:
             form = (0, 'UserName', 'Password', None)
         return super(XplorNavigator, self).login_with_form(target_url, username_password, form, verbose=verbose)
@@ -98,142 +124,86 @@ class XplorNavigator(Navigator):
 
         return result
 
-    def get_urls(self, sorted_by_version=True):
+    def have_cache(self):
+        return True
 
-        if self._cached_urls == None:
+    def get_cache_data(self, data):
+        return self._cache_data
+
+    def set_cache_data(self, data):
+        self._cache_data = data
+
+    def get_urls(self):
+
+        if self._urls == None:
             result = []
             prototype_browser = self._browser
 
             all_buttons = prototype_browser.get_current_page().find_all('input')
             all_button_names = [button['value'] for button in all_buttons]
 
-            target_names = set()
+            raw_target_names = set()
             for template in self._args.urls:
-                # noinspection PyTypeChecker
                 match = partial(fnmatch, pat=template)
-                target_names.update(filter(match, all_button_names))
+                raw_target_names.update(filter(match, all_button_names))
 
-            show_progress = self._args.verbose >= 1
 
-            t = None
-            should_show_license = True
             root_url = None
-            for target_index, button_value in enumerate(target_names):
+            for target_index, button_value in enumerate(raw_target_names):
 
                 if root_url:
                     single_result = get_interpolated_url(root_url,button_value)
                 else:
-                    single_result = self.get_single_url(button_value, should_show_license)
+                    single_result = self._get_single_url(button_value)
 
-                if show_progress:
-                    if target_index == 0:
-                        if show_progress:
-                            bar_format = f'Reading urls {{l_bar}}{{bar: 92}} [remaining time: {{remaining}}]'
-                            t = tqdm(total=len(target_names) - 1, bar_format=bar_format, file=sys.stdout, leave=False)
-                    else:
-                        t.update()
-
-                ignored_names = [
-                    'Linux',
-                    'Irix',
-                    'Ppc',
-                    'SunOs',
-                    'OSF1',
-                    'Darwin_7.3.0',
-                    'Darwin_6.3'
-                ]
-                ignore_url = False
-                for ignored_name in ignored_names:
-                    if ignored_name.upper() in single_result.upper():
-                        print(f'NOTE: {ignored_name} currently not supported ignoring url {single_result}', file=sys.stderr)
-                        ignore_url = True
-                if ignore_url:
+                platform = self.get_platform(single_result)
+                if platform.lower() in IGNORED_PLATFORMS_LOWER:
+                    print(f'NOTE: {platform} currently not supported ignoring filename {single_result}', file=sys.stderr)
                     continue
+                result.append(single_result)
 
-                if single_result:
-                    should_show_license = False
-                    result.append(single_result)
-                    if self._optimise:
-                        root_url = urlparse(single_result)
-
-
-
-            if show_progress:
-                t.close()
-
-
-            url_versions = [arg.split('#')[0] for arg in result]
-            url_versions = self._urls_to_url_version(url_versions, self.get_version)
-            url_versions = self._sort_url_versions(url_versions)
-
-            if sorted_by_version:
-                result = list(url_versions.keys())
-
-            self.process_extra_info(url_versions)
-
-            self._cached_urls = tuple(result)
-        else:
-            result = self._cached_urls
         return result
 
-    def process_extra_info(self, url_versions):
+    @staticmethod
+    def get_platform(url):
+        result = 'any'
+        for name in PLATFORMS:
+            if name in url.lower():
+                result = name
 
-        done_versions = set()
-        for url, version in url_versions.items():
-            url_extension = url.split('.')[-1]
+        return result
 
-            if url.endswith('.sh'):
-                type = MAIN_FILE
-                done_versions.add(version)
-            else:
-                type = EXTRA_FILE
+    @staticmethod
+    def get_os(url):
 
-            self._url_extra_info[url] = {
-                VERSION: version,
-                FORMAT: url_extension,
-                TYPE: type
-            }
+        url = url.lower()
+        result = 'any'
+        if 'darwin' in url:
+            for version, os in darwin_versions.items():
+                if version in url:
+                    result = os
+        return result
 
-        url_extra_info_by_version = {}
+    @staticmethod
+    def get_target(url):
 
-        for url,version in url_versions.items():
-            url_extra_info_by_version.setdefault(version, {})[url] = self._url_extra_info[url]
+        url = url.lower()
+        result = 'x86_64'
+        for target in 'x86_64','x86':
+            if target in url:
+                result = target
+        return result
 
-        for version, urls_extrainfo in url_extra_info_by_version.items():
+    def set_cache_data(self, url, data):
+        self._url_extra_info =  data
 
-            if len(urls_extrainfo) == 2 and version not in done_versions:
-                for url, extra_info in urls_extrainfo.items():
-                    if '-db' not in url:
-                        extra_info[TYPE] = MAIN_FILE
-                done_versions.add(version)
+    def get_cache_data(self, url):
+        return {}
 
-            # TODO: I use a priority to get it working but really we ought to have one result and url for each db version pair
-            # but this needs the idea of os architecture varian etc
-            priorities = '-Darwin_12_x86_64.', '-Darwin_10_x86_64.', '-Darwin_8_x86.', '-Darwin_8.'
+    def login_and_get_url(self, url):
+        return url
 
-
-            if len(urls_extrainfo) >= 3 and version not in done_versions:
-
-                by_priority = []
-                for url, extra_info in urls_extrainfo.items():
-                    if '-db' in url:
-                        extra_info[TYPE] = EXTRA_FILE
-                    else:
-                        for priority, tag in enumerate(priorities):
-                            if tag in url:
-                                by_priority.append((priority, url))
-                by_priority.sort()
-
-
-                urls_extrainfo[by_priority[0][1]][TYPE] = MAIN_FILE
-                for priority, url in by_priority[1:]:
-                    urls_extrainfo[url][TYPE] = UNUSED_FILE
-
-
-
-
-
-    def get_single_url(self, button_value, should_show_license):
+    def _get_single_url(self, button_value):
 
         results = []
 
@@ -246,8 +216,9 @@ class XplorNavigator(Navigator):
         if 'LICENSE FOR NON-PROFIT INSTITUTIONS TO USE XPLOR-NIH' not in page.get_text():
             print(f"WARNING: ignored the selection {button_value} as it wasn't found in the page", file=sys.stderr)
         else:
-            if should_show_license:
+            if not self._license_shown:
                 show_license(page)
+                self._license_shown=True
                 if not self._args.yes:
                     if not query_yes_no('Do you accept the license?'):
                         msg = 'License not accepted!'
@@ -282,7 +253,35 @@ class XplorNavigator(Navigator):
                 WEBSITE: 'https://nmr.cit.nih.gov/xplor-nih/'
             }
 
-
-
     def get_extra_info(self, url):
-        return self._url_extra_info[url]
+
+        file_name = self._file_name_form_url(url)
+
+        if file_name.endswith('.sh'):
+            type = UNUSED_FILE
+        elif 'old' in file_name:
+            type=UNUSED_FILE
+        elif '-db' in file_name:
+            type = MAIN_FILE
+        else:
+            type = EXTRA_FILE
+
+        version = self.get_version(file_name)
+        url_extension = file_name.split('.')[-1]
+        target = self.get_target(file_name)
+        platform = self.get_platform(file_name)
+        os = self.get_os(file_name)
+
+        result = {
+            VERSION: version,
+            FORMAT: url_extension,
+            TYPE: type,
+            PLATFORM: platform,
+            OS: os,
+            TARGET: target
+        }
+
+        return result
+
+    def _file_name_form_url(self, url):
+        return Path(urlparse(url).path).parts[-1]
