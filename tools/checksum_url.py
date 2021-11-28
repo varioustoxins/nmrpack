@@ -344,6 +344,8 @@ class NavigatorABC(abc.ABC):
 
         return self.camel_case_to_spaced(name)
 
+    def login_and_get_url(self, url):
+        return url
 
 
 
