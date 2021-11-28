@@ -348,7 +348,6 @@ class NavigatorABC(abc.ABC):
 
 
 class Navigator(NavigatorABC):
-
     DEFAULT_VERSION_REGEX = r'([0-9]+\.(?:[0-9][A-Za-z0-9_-]*)(?:\.[0-9][A-Za-z0-9_-]*)*)'
 
     def __init__(self, target_session, target_args):
