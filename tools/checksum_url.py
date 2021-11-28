@@ -522,17 +522,15 @@ def load_cache_file(file_name):
     return result
 
 
-def get_cache(cache_file_name):
-
+def get_cache(cache_file_name, notes):
     if args.cache_file:
         if cache_file_exists(cache_file_name):
             result = load_cache_file(cache_file_name)
             if verbose:
-                print(f"NOTE: using cache file {cache_file_name}", file=sys.stderr)
+                notes.append(f"NOTE: using cache file {cache_file_name}")
 
         else:
-            print(f"NOTE: cache file {cache_file_name} doesn't exists creating a new one...", file=sys.stderr)
-            print(f'NOTE: path is relative to {os.getcwd()}', file=sys.stderr)
+            notes.append(f"NOTE: cache file {cache_file_name} doesn't exists creating a new one...")
             result = {}
     else:
         result = None
@@ -594,6 +592,8 @@ if __name__ == '__main__':
 
     parser.add_argument('urls', nargs='*')
 
+    notes = []
+
     args = parser.parse_args()
     args.password = tuple(args.password)
 
@@ -602,7 +602,7 @@ if __name__ == '__main__':
     if args.yes:
         show_yes_message_cancel_or_wait()
 
-    cache = get_cache(args.cache_file)
+    cache = get_cache(args.cache_file, notes)
 
     if cache != None:
         original_cache = copy.deepcopy(cache)
@@ -675,10 +675,9 @@ if __name__ == '__main__':
             if args.fail_early:
                 exit_if_asked()
 
-
-
-
-    out.finish(package_info, version_info)
+    for note in notes:
+        print(note, file=sys.stderr)
+        sys.stderr.flush()
 
     if cache != None and original_cache != cache:
         if verbose:
