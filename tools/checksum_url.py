@@ -323,6 +323,16 @@ class NavigatorABC(abc.ABC):
     def get_package_info(self):
         pass
 
+    def have_cache(self):
+        return False
+
+    def get_cache_data(self, type, url):
+        return {}
+
+    def set_cache_data(self, url, data):
+        ...
+
+
 
 class Navigator(NavigatorABC):
 
@@ -627,30 +637,40 @@ if __name__ == '__main__':
     package_info = get_package_from_cache(cache, navigator)
 
     version_info = OrderedDict()
+    hashes = {}
     for i, url in enumerate(urls):
         x_of_y = '%3i/%-3i' % (i + 1, len(urls))
 
         version = navigator.get_version(url)
 
+        hash_type = args.digest
 
-        if cache != None and version in cache:
-            have_cache = url in cache[version] and args.digest in cache[version][url]['digests']
+
+        if not navigator.have_cache():
+            if verbose >=1:
+                print(f"NOTE: cache requested but the navigator {navigator.name()} doesn't support caching", file=sys.stderr)
+            have_cache = False
+        elif cache != None and url in cache:
+            have_cache = url in cache and args.digest in cache[url][DIGESTS]
         else:
             have_cache = False
 
         try:
+            _hash = None
             if have_cache:
-                if verbose:
-                    print(f"NOTE: using cached data for {url} [version: {version}]", file=sys.stderr)
-                _hash = cache[version][url]['digests'][args.digest]
-                hash_type = args.digest
+                if hash_type in cache[url][DIGESTS] and navigator.have_cache():
+                    _hash = cache[url][DIGESTS][hash_type]
+                    hashes[url] = _hash
+                    navigator.set_cache_data(url, cache[url][CACHE_DATA])
 
-                url_version_info = {key : value for key, value in cache[version][url].items()}
-                version_info[url] = url_version_info
-            else:
-                _hash, hash_type = get_hash_from_url(url, session, args.verbose, x_of_y, digest=args.digest,
+                    if verbose >=1:
+                        notes.append(f"NOTE: using cached data for {url} [version: {version}]")
+
+            if _hash is None:
+                specific_url = navigator.login_and_get_url(url)
+                _hash, hash_type = get_hash_from_url(specific_url, session, verbose, x_of_y, digest=args.digest,
                                                      username_password=args.password, debug=args.debug)
-
+                hashes[url] = _hash
 
                 url_version_info = navigator.get_extra_info(url)
                 version_info[url]= url_version_info
@@ -665,12 +685,9 @@ if __name__ == '__main__':
             if args.debug:
                 _hash = f'!DEBUG!-{_hash}-!FAKE!'
 
-            out.display_hash(url, _hash, max_length_url, i+1, num_urls, hash_type=hash_type)
-
-
         except DownloadFailedException as e:
 
-            report_error(url, e, max_length_url, i+1)
+            report_error(url, e, max_length_url, i + 1)
 
             if args.fail_early:
                 exit_if_asked()
@@ -681,9 +698,21 @@ if __name__ == '__main__':
 
     if cache != None and original_cache != cache:
         if verbose:
-            print('NOTE: cache changed, updating...', file=sys.stderr)
+            notes.append('NOTE: cache changed, updating...')
         try:
             with open(args.cache_file, 'w') as cache_file:
-                cache_file.write(json.dumps(cache,indent=4))
+                cache_file.write(json.dumps(cache, indent=4))
         except IOError as err:
-            print(f'Error: failed to write cache to {args.cache_file} because {err}', file=sys.stderr)
+            notes.append(f'NOTE: failed to write cache to {args.cache_file} because {err}')
+
+    if len(notes):
+        print(file=sys.stderr)
+
+    for i, url in enumerate(urls):
+        out.display_hash(url, hashes[url], max_length_url, i + 1, num_urls, hash_type=hash_type)
+        version_info[url] = navigator.get_extra_info(url)
+
+    out.finish(package_info, version_info)
+
+
+
