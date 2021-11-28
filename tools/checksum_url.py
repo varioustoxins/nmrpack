@@ -332,6 +332,19 @@ class NavigatorABC(abc.ABC):
     def set_cache_data(self, url, data):
         ...
 
+    def camel_case_to_spaced(self, name):
+        name = re.sub(r'(?<!^)(?=[A-Z])', ' ', name)
+        return name
+
+    def name(self):
+        raw_name = self.__class__.__name__
+        raw_name = raw_name.strip('<>')
+        raw_name = raw_name.split()[0]
+        name = raw_name.split('.')[-1]
+
+        return self.camel_case_to_spaced(name)
+
+
 
 
 class Navigator(NavigatorABC):
