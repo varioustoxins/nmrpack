@@ -17,9 +17,8 @@ def read_releases(package):
 
     releases = syaml.load(open(file_name))
 
-    for release_id, release in releases.items():
-        url = f"{release['root_url']}/{release['install_file']}"
-        version_number = release['version']
+    for version_number, release in releases.items():
+        url = f"{release['root_url']}"
 
         check_sum = None
         for check_sum_name in 'md5', 'sha256', 'sha512':
