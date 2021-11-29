@@ -156,6 +156,9 @@ class XplorNavigator(Navigator):
                 else:
                     single_result = self._get_single_url(button_value)
 
+                if not root_url:
+                    root_url = urlparse(single_result)
+
                 platform = self.get_platform(single_result)
                 if platform.lower() in IGNORED_PLATFORMS_LOWER:
                     print(f'NOTE: {platform} currently not supported ignoring filename {single_result}', file=sys.stderr)
