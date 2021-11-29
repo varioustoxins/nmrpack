@@ -77,16 +77,16 @@ class NmrpackOutput(OutputBase):
 
     def get_when(self, extra_info, parts=False):
 
-        when_parts=[]
+        when= {}
         if 'os' in extra_info and extra_info['os'] != 'any':
-            when_parts.append(f'os={extra_info["os"]}')
+            when['os'] = extra_info["os"]
         if 'platform' in extra_info and extra_info['platform'] != '':
-            when_parts.append(f'platform={extra_info["platform"]}')
+            when['platform'] = extra_info["platform"]
         if 'target' in extra_info and extra_info['target'] != '':
-            when_parts.append(f'target={extra_info["target"]}')
+            when['target'] = extra_info["target"]
 
 
-        return' '.join(when_parts)
+        return when
 
     def finish(self, extra_package_info, extra_version_info):
 
