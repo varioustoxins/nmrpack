@@ -6,9 +6,13 @@
     xplor-nih-3.2-Darwin.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-Darwin.tar.gz
       hash: 45a3e86f4bbe0a1bcf381e9dcd3a23d69e12a117d4a490e64d987bb3241210d4
-      when: platform=darwin
+      when:
+        platform: darwin
+        target: x86_64
     xplor-nih-3.2-Linux_x86_64.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-Linux_x86_64.tar.gz
       hash: ea686159105c0cb0cef2313ed6d0f5b654f1b33d2596c74040386708c2a01399
-      when: platform=linux
+      when:
+        platform: linux
+        target: x86_64
 

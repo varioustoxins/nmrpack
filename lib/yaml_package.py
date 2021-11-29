@@ -1,7 +1,9 @@
 
 
 import pathlib
+import platform
 from pathlib import Path
+from types import MappingProxyType
 from urllib.parse import urlparse
 
 import spack.util.spack_yaml as syaml
@@ -23,7 +25,19 @@ def expandable(release, url):
         expand = True
     return expand
 
-def read_releases(package):
+
+def build_when_clause(when_clause: dict):
+
+    result =  {
+        'platform': platform.system().lower(),
+        'target': platform.machine().lower()
+    }
+    result.update(when_clause)
+    return result
+
+def read_releases(package, when_predicates = MappingProxyType({})):
+
+    when_predicates = build_when_clause(when_predicates)
 
     package_root = str(pathlib.Path(__file__).parents[1])
 
@@ -61,8 +75,15 @@ def read_releases(package):
                 when = info['when']
                 expand = expandable(info, url)
 
+
+                for when_key, when_value in when.items():
+                    if when_key in when_predicates:
+                        if when[when_key] != when_predicates[when_key]:
+                            continue
+
+
                 params = {'name': file_name, url_arg: url, 'sha256':sha256, 'expand': expand, 'destination': '.',
-                         'placement': f'tmp_{file_name}', 'when': f'@{version_number} {when}'}
+                         'placement': f'tmp_{file_name}', 'when': f'@{version_number}'}
 
                 resource(**params)
 
