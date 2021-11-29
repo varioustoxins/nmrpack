@@ -1,5 +1,5 @@
 
-
+import sys
 import pathlib
 import platform
 from pathlib import Path
@@ -75,18 +75,18 @@ def read_releases(package, when_predicates = MappingProxyType({})):
                 when = info['when']
                 expand = expandable(info, url)
 
-
+                use_resource = True
                 for when_key, when_value in when.items():
                     if when_key in when_predicates:
                         if when[when_key] != when_predicates[when_key]:
-                            continue
+                            use_resource = False
+                            break
 
+                if use_resource:
+                    params = {'name': file_name, url_arg: url, 'sha256':sha256, 'expand': expand, 'destination': '.',
+                             'placement': f'tmp_{file_name}', 'when': f'@{version_number}'}
 
-                params = {'name': file_name, url_arg: url, 'sha256':sha256, 'expand': expand, 'destination': '.',
-                         'placement': f'tmp_{file_name}', 'when': f'@{version_number}'}
-
-                resource(**params)
-
+                    resource(**params)
 
 
 
