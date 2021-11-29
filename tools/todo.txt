@@ -1,0 +1,1 @@
+it would be good if the caching was just of urls and checksums so the whole system could be rerun including the navigator - done
