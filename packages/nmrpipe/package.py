@@ -148,9 +148,7 @@ class Nmrpipe(Package):
 
     def setup_run_environment(self, env):
 
-
         environment_changes = get_environment_change(self.prefix, EXAMPLE_FILE)
-
 
         for name,type, value in environment_changes:
             if type == PREPEND:
