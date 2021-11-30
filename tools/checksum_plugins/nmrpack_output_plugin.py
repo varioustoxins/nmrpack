@@ -127,7 +127,8 @@ class NmrpackOutput(OutputBase):
                                             'hash': self._urls_and_hashes[url][1],
                                             'when': when
                                             }
-                    if 'when' == '':
+
+                    if when == {}:
                         del resources[file_name]['when']
 
 
