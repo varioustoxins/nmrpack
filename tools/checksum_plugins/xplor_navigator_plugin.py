@@ -127,11 +127,11 @@ class XplorNavigator(Navigator):
     def have_cache(self):
         return True
 
-    def get_cache_data(self, data):
-        return self._cache_data
+    def set_cache_data(self, url, data):
+        pass
 
-    def set_cache_data(self, data):
-        self._cache_data = data
+    def get_cache_data(self, url):
+        return {}
 
     def get_urls(self):
 
@@ -196,12 +196,6 @@ class XplorNavigator(Navigator):
             if target in url:
                 result = target
         return result
-
-    def set_cache_data(self, url, data):
-        self._url_extra_info =  data
-
-    def get_cache_data(self, url):
-        return {}
 
     def login_and_get_url(self, url):
         return url
