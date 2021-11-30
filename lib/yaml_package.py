@@ -72,8 +72,7 @@ def read_releases(package, when_predicates = MappingProxyType({})):
 
                 url = info['url']
                 sha256 = info['hash']
-                if when in info:
-                    when = info.setdefault('when', {})
+                when = info['when'] if 'when' in info else {}
 
                 expand = expandable(info, url)
 
