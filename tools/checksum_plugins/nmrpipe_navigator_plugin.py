@@ -98,8 +98,3 @@ class NmrPipeNavigator(UrlNavigator):
     def have_cache(self):
         return True
 
-    def set_cache_data(self, url, data):
-        self._extra_item_info[url] = data
-
-    def get_cache_data(self, url):
-        return self._extra_item_info[url]
