@@ -1,6 +1,7 @@
 '3.4':
   sha256: 9ce7bf22f40855c8089cd28856961b3a513c771ed56902374e95690ed4f5b69c
   root_url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.4-db.tar.gz
+  url_type: xplor_url
   resources:
     xplor-nih-3.4-Darwin.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.4-Darwin.tar.gz
@@ -17,6 +18,7 @@
 '3.3':
   sha256: 2865dd592f9ab02a6d7dedd7bfc0b9e812d7accb2122db512cefe13ba6a78726
   root_url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.3-db.tar.gz
+  url_type: xplor_url
   resources:
     xplor-nih-3.3-Darwin.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.3-Darwin.tar.gz
@@ -33,6 +35,7 @@
 '3.2':
   sha256: 9f6cb6ceb07ac3440628bde79a7697615ba4d2f1e16164711456c061f12bafc8
   root_url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-db.tar.gz
+  url_type: xplor_url
   resources:
     xplor-nih-3.2-Darwin.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.2-Darwin.tar.gz
@@ -49,6 +52,7 @@
 '3.1':
   sha256: 9dfe6da8de7e7365d00a686efb18ab28cf9d2c70e6f76efdffa56cde0574c643
   root_url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.1-db.tar.gz
+  url_type: xplor_url
   resources:
     xplor-nih-3.1-Darwin.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.1-Darwin.tar.gz
@@ -65,6 +69,7 @@
 3.0.3:
   sha256: fd61e890b462b968afee6d7c15da790de627ba55213567230bd62219845bacc1
   root_url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0.3-db.tar.gz
+  url_type: xplor_url
   resources:
     xplor-nih-3.0.3-Darwin.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0.3-Darwin.tar.gz
@@ -81,6 +86,7 @@
 '3.0':
   sha256: 031e1e348c6d9a2fd272edcddab608f4cb8ca8ff1f0034b2e93fd87fe636a4d4
   root_url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0-db.tar.gz
+  url_type: xplor_url
   resources:
     xplor-nih-3.0-Darwin.tar.gz:
       url: https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.0-Darwin.tar.gz
