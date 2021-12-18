@@ -47,13 +47,13 @@ def get_urls_from_args(root, target_urls):
 @register_navigator()
 class UrlNavigator(Navigator):
 
-    NAME = 'url [default]'
+    NAME = 'url'
 
     def __init__(self, browser, target_args):
         super(UrlNavigator, self).__init__(browser, target_args)
         self._root = None
 
-    def login_with_form(self, root, password, form=None):
+    def login_with_form(self, root, password, form=None, verbose=0):
         self._root = check_root_exists_or_exit(root, self._target_session, password)
         return self._root
 
@@ -76,5 +76,14 @@ class UrlNavigator(Navigator):
             print(f'Bad combination of template {target_args.use_templates} and root {target_args.root}')
 
         return result
+
+    def get_version(self, url):
+        return None
+
+    def get_extra_info(self, url):
+        return {}
+
+    def get_package_info(self):
+        return 'none available'
 
 
