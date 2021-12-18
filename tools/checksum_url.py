@@ -19,6 +19,7 @@ from tqdm import tqdm
 import os
 from plugins import load_and_register_factory_classes, list_navigators, list_outputs, get_navigator, get_output
 from cmp_version import VersionString
+from urllib.parse import urlparse
 
 CACHE_DATA = 'cache_data'
 
@@ -203,6 +204,15 @@ def transfer_page(target_session, target_url, username_password=(None, None)):
         response = target_session.get(target_url, allow_redirects=True, timeout=10, stream=True)
     return response
 
+
+def get_hash_from_file(path,digest='sha256'):
+    digester_factory = getattr(hashlib, digest)
+    digester = digester_factory()
+
+    with open(path, 'rb') as fh:
+        digester.update(fh.read())
+
+    return digester.hexdigest(), digester.name
 
 def get_hash_from_url(target_url, target_session, verbose, count, digest='sha256',
                       username_password=(None, None), debug=False):
@@ -523,6 +533,14 @@ def get_max_string_length(in_urls):
     return result
 
 
+def is_url(url):
+    try:
+        result = urlparse(url)
+        result = all([result.scheme, result.netloc])
+    except ValueError:
+        result = False
+    return result
+
 class OutputBase:
 
     def __init__(self, target_args):
@@ -572,6 +590,17 @@ def get_package_from_cache(cache, navigator):
     else:
         package_info = None
     return package_info
+
+
+def exit_if_file_doesnt_exist(url):
+    path = Path(url)
+    if not path.is_file():
+        print(f"Error: the file {url} doesn't exist...")
+        print(f"       current working directory is {os.getcwd()}")
+        print('')
+        print('exiting...')
+
+        sys.exit(1)
 
 
 if __name__ == '__main__':
@@ -687,9 +716,14 @@ if __name__ == '__main__':
                         notes.append(f"NOTE: using cached data for {url} [version: {version}]")
 
             if _hash is None:
-                specific_url = navigator.login_and_get_url(url)
-                _hash, hash_type = get_hash_from_url(specific_url, session, verbose, x_of_y, digest=args.digest,
-                                                     username_password=args.password, debug=args.debug)
+                if is_url(url):
+                    specific_url = navigator.login_and_get_url(url)
+                    _hash, hash_type = get_hash_from_url(specific_url, session, verbose, x_of_y, digest=args.digest,
+                                                         username_password=args.password, debug=args.debug)
+                else:
+                    exit_if_file_doesnt_exist(url)
+                    _hash, hash_type = get_hash_from_file(url,digest=args.digest)
+
                 hashes[url] = _hash
 
                 if cache != None  and navigator.have_cache():
