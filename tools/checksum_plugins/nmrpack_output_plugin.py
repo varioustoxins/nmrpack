@@ -5,7 +5,7 @@ from pathlib import Path
 import pluggy
 
 # noinspection PyUnresolvedReferences
-from checksum_url import Navigator, transfer_page, OutputBase, MAIN_FILE
+from checksum_url import Navigator, transfer_page, OutputBase, MAIN_FILE, URL_TYPE
 from plugins import register_output
 from cmp_version import VersionString
 
@@ -112,6 +112,8 @@ class NmrpackOutput(OutputBase):
 
             version_dict[self._urls_and_hashes[main_url][0]] = self._urls_and_hashes[main_url][1]
             version_dict['root_url'] = main_url
+            if URL_TYPE in extra_version_info[main_url]:
+                version_dict[URL_TYPE] = extra_version_info[main_url][URL_TYPE]
             resources = {}
             version_dict['resources'] = resources
 

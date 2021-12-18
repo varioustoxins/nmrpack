@@ -49,6 +49,7 @@ X86_64 = 'x86_64'
 X86 = 'x86'
 MX = 'mx'
 OS = 'os'
+URL_TYPE='url_type'
 
 # https://gist.github.com/michelbl/efda48b19d3e587685e3441a74457024
 # Windows
