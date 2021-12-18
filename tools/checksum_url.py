@@ -639,12 +639,17 @@ if __name__ == '__main__':
 
     navigator = navigators[0](session, args)
 
-    navigator.login_with_form(args.root, args.password, args.form, verbose=args.verbose)
+    if args.root != None:
+        navigator.login_with_form(args.root, args.password, args.form, verbose=args.verbose)
 
     out = get_output(name=args.output_format, target_args=args)
     out.digest = args.digest
 
-    urls = navigator.get_urls()
+    if args.root != None:
+        urls = navigator.get_urls()
+    else:
+        urls=args.urls
+
     max_length_url = get_max_string_length(urls)
     num_urls = len(urls)
 
