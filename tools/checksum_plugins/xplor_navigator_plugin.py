@@ -7,7 +7,7 @@ from html2text import html2text
 
 # noinspection PyUnresolvedReferences
 from checksum_url import Navigator, VERSION, FORMAT, TYPE, EXTRA_FILE, MAIN_FILE, NAME, INFO, WEBSITE, UNUSED_FILE, \
-    PLATFORM, OS, TARGET
+    PLATFORM, OS, TARGET, URL_TYPE
 from plugins import register_navigator
 
 
@@ -275,7 +275,8 @@ class XplorNavigator(Navigator):
             TYPE: type,
             PLATFORM: platform,
             OS: os,
-            TARGET: target
+            TARGET: target,
+            URL_TYPE: 'xplor_url'
         }
 
         return result
