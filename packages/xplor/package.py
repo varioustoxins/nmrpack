@@ -62,7 +62,7 @@ class Xplor(Package):
 
     homepage = "https://nmr.cit.nih.gov/xplor-nih"
 
-    url='https://nmr.cit.nih.gov/xplor-nih/download.cgi?file=xplor-nih-3.3-db.tar.gz'
+    url='https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.4-db.tar.gz'
     variant('configuration', default='none', description='where to find the configuration file', validator=check_config_file)
 
 
