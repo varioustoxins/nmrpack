@@ -46,48 +46,51 @@ def read_releases(package, when_predicates = MappingProxyType({})):
 
     releases = syaml.load(open(file_name))
 
-    for version_number, release in releases.items():
-        url = f"{release['root_url']}"
+    for main_version, main_release in releases.items():
+        if 'root_url' in main_release:
 
-        check_sum = None
-        for check_sum_name in 'md5', 'sha256', 'sha512':
-            if check_sum_name in release:
-                check_sum = release[check_sum_name]
-                break
-
-        if 'url_type' in release:
-            url_arg = release['url_type']
+            read_release(main_release, main_version, when_predicates)
         else:
-            url_arg = 'url'
-        params = {url_arg : url,  check_sum_name : check_sum}
+            for sub_release in main_release.values():
+                read_release(sub_release, main_version, when_predicates)
 
-        expand = expandable(release, url)
+def read_release(release, version_number, when_predicates):
+    url = f"{release['root_url']}"
+    check_sum = None
+    for check_sum_name in 'md5', 'sha256', 'sha512':
+        if check_sum_name in release:
+            check_sum = release[check_sum_name]
+            break
+    if 'url_type' in release:
+        url_arg = release['url_type']
+    else:
+        url_arg = 'url'
+    params = {url_arg: url, check_sum_name: check_sum}
+    expand = expandable(release, url)
+    version(version_number, **params, expand=expand)
+    # NOTE: we could be downloading resources we don't need because a variant is marked as not required
+    # however, how to access variants from the spec at this point...
+    if 'resources' in release and release['resources'] is not None:
+        for file_name, info in release['resources'].items():
 
-        version(version_number, **params, expand=expand)
+            url = info['url']
+            sha256 = info['hash']
+            when = info['when'] if 'when' in info else {}
 
-        # NOTE: we could be downloading resources we don't need because a variant is marked as not required
-        # however, how to access variants from the spec at this point...
-        if 'resources' in release and release['resources'] is not None:
-            for file_name, info in release['resources'].items():
+            expand = expandable(info, url)
 
-                url = info['url']
-                sha256 = info['hash']
-                when = info['when'] if 'when' in info else {}
+            use_resource = True
+            for when_key, when_value in when.items():
+                if when_key in when_predicates:
+                    if when[when_key] != when_predicates[when_key]:
+                        use_resource = False
+                        break
 
-                expand = expandable(info, url)
+            if use_resource:
+                params = {'name': file_name, url_arg: url, 'sha256': sha256, 'expand': expand, 'destination': '.',
+                          'placement': f'tmp_{file_name}', 'when': f'@{version_number}'}
 
-                use_resource = True
-                for when_key, when_value in when.items():
-                    if when_key in when_predicates:
-                        if when[when_key] != when_predicates[when_key]:
-                            use_resource = False
-                            break
-
-                if use_resource:
-                    params = {'name': file_name, url_arg: url, 'sha256':sha256, 'expand': expand, 'destination': '.',
-                             'placement': f'tmp_{file_name}', 'when': f'@{version_number}'}
-
-                    resource(**params)
+                resource(**params)
 
 
 
