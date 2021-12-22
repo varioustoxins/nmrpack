@@ -1,0 +1,21 @@
+1.2:
+  linux:
+    root_url: http://www3.mpibpc.mpg.de/groups/zweckstetter/_software_files/_mars/mars-1.2_linux.tar.gz
+    sha256: c909aa781296d806f89c8d51d89b7345c3e94dd33fc8cc72554573a78ff21b2b
+    when:
+      platform: linux
+      target:
+        - x86
+        - x86_64
+  macos:
+    root_url: https://github.com/locsmith/mars-tracker/releases/download/1.2-macos-intel/mars-1.2_mac_intel.tar.gz
+    sha256: 84ddb7fc48f6e5d76e0bb57f61e64af196e0705afde7c8a311f6779b6bf822d9
+    expand: true
+    when:
+      platform: darwin
+      target:
+        - x86
+        - x86_64
+
+#  resources:
+#    http://www3.mpibpc.mpg.de/groups/zweckstetter/_software_files/_mars/marsgui-1.0.tar.gz
