@@ -583,13 +583,13 @@ def get_cache(cache_file_name, notes):
 def get_package_from_cache(cache, navigator):
 
     if cache != None and 'package' in cache:
-        package_info = cache['package']
-    elif cache != None:
-        package_info = navigator.get_package_info()
-        cache['package'] = package_info
+        package_ = cache['package']
     else:
-        package_info = None
-    return package_info
+        package_ = navigator.get_package_info()
+        if cache is not None:
+            cache['package'] = package_
+
+    return package_
 
 
 def exit_if_file_doesnt_exist(url):
