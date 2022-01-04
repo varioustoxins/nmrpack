@@ -696,7 +696,7 @@ if __name__ == '__main__':
 
 
         if not navigator.have_cache():
-            if verbose >=1:
+            if verbose >=2:
                 print(f"NOTE: cache requested but the navigator {navigator.name()} doesn't support caching", file=sys.stderr)
             have_cache = False
         elif cache != None and url in cache:
