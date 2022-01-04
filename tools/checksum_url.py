@@ -764,6 +764,7 @@ if __name__ == '__main__':
         out.display_hash(url, hashes[url], max_length_url, i + 1, num_urls, hash_type=hash_type)
         version_info[url] = navigator.get_extra_info(url)
 
+    print()
     out.finish(package_info, version_info)
 
 
