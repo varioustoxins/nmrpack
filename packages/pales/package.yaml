@@ -1,0 +1,31 @@
+1.2:
+  linux:
+    root_url:  http://www3.mpibpc.mpg.de/groups/zweckstetter/_software_files/_pales/pales-linux
+    sha256: 6cb07c7fffbfb51b7eb41541ae4afad94657c6081ffc029b563c9ff2ae29e21e
+    when:
+      platform: linux
+      target:
+        - x86
+        - x86_64
+
+  macos:
+    root_url:  http://www3.mpibpc.mpg.de/groups/zweckstetter/_software_files/_pales/pales-apple-intel
+    sha256: 2b80b6108ce454d3931651c027f35868c168bac50cdd8a12f88cfa8263d39777
+    expand: false
+    when:
+      platform: darwin
+      target:
+        - x86
+        - x86_64
+#  resources:
+#    url: http://www3.mpibpc.mpg.de/groups/zweckstetter/_software_files/_pales/potential_1D_Pf1.tar.Z
+#    hash: 55f51aa0f69860e3e9e6f682cf2743186f745b621a27304bd5bbb0241d870a69
+#    when:
+#      platform:
+#        - linux
+#        - darwin
+#      target:
+#        - x86
+#        - x86_64
+#  resources:
+#    http://www3.mpibpc.mpg.de/groups/zweckstetter/_software_files/_mars/marsgui-1.0.tar.gz
