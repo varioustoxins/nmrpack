@@ -83,7 +83,7 @@ class Cns(Package):
     patch('machvar_fpeps.patch', when='@1.21+fp_epsilon',
           sha256='a00db99086c63961abe4e19d253590421973a80a9e104ac85dbcc07d472b6485')
 
-    def install(self, spec, prefix):
+    def install(self, _, prefix):
 
         # edit cns_solve_environment to allow a build
         shutil.copy('cns_solve_env','cns_solve_env.back')
