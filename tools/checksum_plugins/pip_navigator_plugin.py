@@ -62,8 +62,8 @@ class PipNavigator(UrlNavigator):
 
         return result
 
-    def login_with_form(self, root, password, form=None):
-        result = super(PipNavigator, self).login_with_form(root, password, form)
+    def login_with_form(self, root, password, form=None, verbose=False):
+        result = super(PipNavigator, self).login_with_form(root, password, form, verbose)
 
         info_url = self._root_url_to_json(root)
 
@@ -124,7 +124,7 @@ class PipNavigator(UrlNavigator):
 
         return results
 
-    def get_version_info(self, url):
+    def get_extra_info(self, url):
 
         result = {
                     TYPE: MAIN_FILE,
