@@ -33,7 +33,7 @@ if not package_root in sys.path:
 from nmrpack.lib.yaml_package import read_releases
 
 # this triggers
-import nmrpack.packages.cns.fetchers as fetchers
+from nmrpack.packages.cns import cns_fetcher
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
 
