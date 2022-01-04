@@ -1,0 +1,45 @@
+2.1.1:
+  sha256: bd6119a21a9184ea6f06c04ac7782baa982926a0bbf0c24760e154b690905a39
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.1.1.tar.gz
+2.1.0:
+  sha256: 18f3273c72633be90759f69a09443a17114fb3f84d473b96c8077fc80c2bf9b4
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.1.0.tar.gz
+2.0.6:
+  sha256: d826700eda76bc7601b723d1a4389af4d27c94ae3d6675da918e679df0a1d7c9
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.0.6.tar.gz
+2.0.5:
+  sha256: 9b2bad9de9e7cc9578004b3adca163c2f6db6eea49937b5be6bd115886b6dd79
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.0.5.tar.gz
+2.0.4:
+  sha256: e47a09e5e36c947e9457263729f598a662cd1f6648bb143343c5d7645d9f1b65
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.0.4.tar.gz
+2.0.3:
+  sha256: 14516dbab856a5ea99e6bbb38b805b285f41e894c180c34d636f84cc4a3848ff
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.0.3.tar.gz
+2.0.2:
+  sha256: fa5dd38d98be4790c72eb9f9b89d184746a1fa513c336cc2efa38c0c477d458b
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.0.2.tar.gz
+2.0.1:
+  sha256: 7746104f28391df2d9a1ffebdb66c202d9027df02b7605a6a32a091fad3bc587
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.0.1.tar.gz
+2.0.0:
+  sha256: 9471727b25250d4d07d481be36a9a3db1a4f73e8ddfe9ac84c8e06bc079b1071
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-2.0.0.tar.gz
+1.1.0:
+  sha256: 3cdb2c638896815f36c3c9e590407c0d480ad12dffa84d4996c5913e56c43843
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-1.1.0.tar.gz
+1.0.4:
+  sha256: d46716a58451803ab9365f6214d81c6260ed72726a26f884e031c337603b5cb0
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-1.0.4.tar.gz
+1.0.3:
+  sha256: 343e803780ccb5a2d8ca57174356f2b641ee23f6f34318ca0748f59561df35db
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-1.0.3.tar.gz
+1.0.2:
+  sha256: 88e3e330033604b1ad91ba0b32a9fd9f4a8476c8cf14d4b1d89cc4df0ea3de5c
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-1.0.2.tar.gz
+1.0.1:
+  sha256: 9bf2bb4d631aca97d2d7ad868a77f7211537841f8da8475feb791eafbf6a0fd5
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-1.0.1.tar.gz
+1.0.0:
+  sha256: 7aca33f7028cb281133118588b308438e4bccf48f4fff2c49cc4970b0d29e001
+  root_url: https://pypi.io/packages/source/n/nmrstarlib/nmrstarlib-1.0.0.tar.gz
