@@ -721,8 +721,9 @@ if __name__ == '__main__':
                     _hash, hash_type = get_hash_from_url(specific_url, session, verbose, x_of_y, digest=args.digest,
                                                          username_password=args.password, debug=args.debug)
                 else:
-                    exit_if_file_doesnt_exist(url)
-                    _hash, hash_type = get_hash_from_file(url,digest=args.digest)
+                    file_name = os.path.expanduser(url)
+                    exit_if_file_doesnt_exist(file_name)
+                    _hash, hash_type = get_hash_from_file(file_name,digest=args.digest)
 
                 hashes[url] = _hash
 
