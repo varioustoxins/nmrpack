@@ -115,7 +115,6 @@ class NmrpackOutput(OutputBase):
             if URL_TYPE in extra_version_info[main_url]:
                 version_dict[URL_TYPE] = extra_version_info[main_url][URL_TYPE]
             resources = {}
-            version_dict['resources'] = resources
 
             for url in sorted(extra_version_info):
                 extra_info = extra_version_info[url]
@@ -133,7 +132,8 @@ class NmrpackOutput(OutputBase):
                     if when == {}:
                         del resources[file_name]['when']
 
-
+            if resources:
+                version_dict['resources'] = resources
 
         print(yaml.dump(result, default_flow_style=False, sort_keys=False))
 
