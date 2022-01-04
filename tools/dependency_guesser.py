@@ -151,7 +151,7 @@ def guess_dependencies(directory, target_url):
     _, version, _ = get_url_info(url)
     print()
     for elem in result:
-        print("depends on(py-%s%s, type='run' when='%s')" % (elem.name, python_spec_to_spack(elem), version))
+        print("depends_on('py-%s%s', type='run' when='@%s')" % (elem.name, python_spec_to_spack(elem), version))
     return result
 
 
