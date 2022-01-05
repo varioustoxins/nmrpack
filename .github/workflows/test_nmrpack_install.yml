@@ -32,18 +32,18 @@ jobs:
         cd spack
         echo `pwd`
         . .github/workflows/install_spack.sh
-#        cd ..
+        cd ..
 
-    - name: install nmrpack
-      run: |
-        curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o nmrpack-master.zip
-        unzip nmrpack-master.zip
-        mv nmrpack-master nmrpack
-        spack repo add nmrpack
-
-    - name: test nmrpack
-      run: |
-        spack repo list | grep nmrpack
+##    - name: install nmrpack
+##      run: |
+#        curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o nmrpack-master.zip
+#        unzip nmrpack-master.zip
+#        mv nmrpack-master nmrpack
+#        spack repo add nmrpack
+#
+##    - name: test nmrpack
+##      run: |
+#        spack repo list | grep nmrpack
 
 
 
