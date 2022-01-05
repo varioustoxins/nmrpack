@@ -16,8 +16,6 @@ jobs:
     name: install nmrpack and spack
     runs-on: macos-latest
 
-    uses: github/actions/install_spack.ym
-
     steps:
     - uses: actions/setup-python@v2
       with:
