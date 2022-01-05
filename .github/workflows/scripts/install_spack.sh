@@ -15,7 +15,7 @@ compilers:
       f77: /usr/local/bin/gfortran-9
       fc: /usr/local/bin/gfortran-9
     modules: []
-    operating_system: catalina
+    operating_system: bigsur
     target: x86_64
 EOF
 spack compiler info apple-clang
