@@ -23,7 +23,7 @@ jobs:
 
     - name: setup nmrpack
       run: |
-        . .github/workflows/scripts/install_spack.sh
+        . .github/workflows/scripts/install_nmrpack.sh
 
     - name: test nmrpack
       run: |
