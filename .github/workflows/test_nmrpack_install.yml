@@ -1,4 +1,4 @@
-name: Test spack install of nmrpipe
+name: Test nmrpack install
 
 on:
 
