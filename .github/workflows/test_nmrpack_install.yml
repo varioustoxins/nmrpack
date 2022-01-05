@@ -36,6 +36,8 @@ jobs:
 
     - name: install nmrpack
       run: |
+        echo `pwd`
+        echo `ls`
         curl -L https://github.com/varioustoxins/nmrpack/archive/master.zip -o nmrpack-master.zip
         unzip nmrpack-master.zip
         mv nmrpack-master nmrpack
