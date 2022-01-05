@@ -19,7 +19,7 @@ jobs:
     - uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - uses: ./.github/actions/install_spack
+    - uses: ./.github/actions/install_spack.yml
 
 
     - name: test nmrpack
