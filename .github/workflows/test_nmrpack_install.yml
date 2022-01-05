@@ -23,6 +23,7 @@ jobs:
 
     - name: setup nmrpack
       run: |
+        echo `ls -a`
         . .github/workflows/scripts/install_nmrpack.sh
 
     - name: test nmrpack
