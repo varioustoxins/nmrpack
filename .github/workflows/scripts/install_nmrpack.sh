@@ -1,5 +1,5 @@
 
-SPACK_VERSION=$(<spack_version.txt)
+SPACK_VERSION=$(<../spack_version.txt)
 
 curl -L https://github.com/spack/spack/releases/download/v${SPACK_VERSION}/spack-${SPACK_VERSION}.tar.gz -o spack.tar.gz
 mkdir spack
