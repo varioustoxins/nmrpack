@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # copied from spack...
-. share/spack/setup-env.sh
+. spack/share/spack/setup-env.sh
 echo -e "config:\n  build_jobs: 2" > etc/spack/config.yaml
 spack config add "packages:all:target:[x86_64]"
 # TODO: remove this explicit setting once apple-clang detection is fixed
