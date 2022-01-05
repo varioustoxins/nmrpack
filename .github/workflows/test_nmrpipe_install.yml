@@ -31,6 +31,7 @@ jobs:
         . .github/workflows/scripts/install_nmrpack.sh
 
     - name: install and test nmrpipe
+      run: |
         . spack/share/spack/setup-env.sh
         spack install nmrpipe
 
