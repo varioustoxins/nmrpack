@@ -21,6 +21,9 @@ jobs:
       with:
         python-version: 3.9
 
+    - name: checkout nmrpack
+      uses: actions/checkout@v2
+
     - name: setup nmrpack
       run: |
         echo `pwd`
