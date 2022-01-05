@@ -25,7 +25,7 @@ jobs:
 
     - name: setup nmrpack
       run: |
-        . install_spack.sh
+        . scripts/install_spack.sh
 
     - name: test nmrpack
       run: |
