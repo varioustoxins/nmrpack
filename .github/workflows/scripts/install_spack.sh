@@ -4,7 +4,7 @@
 echo -e "config:\n  build_jobs: 2" > etc/spack/config.yaml
 spack config add "packages:all:target:[x86_64]"
 # TODO: remove this explicit setting once apple-clang detection is fixed
-cat <<EOF > etc/spack/compilers.yaml
+cat <<EOF > spack/etc/spack/compilers.yaml
 compilers:
 - compiler:
     spec: apple-clang@11.0.3
