@@ -12,7 +12,7 @@ jobs:
 
   install_nmrpipe:
     name: install nmrpipe with spack
-    runs-on: macos-10.15 #macos-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/setup-python@v2
@@ -33,7 +33,7 @@ jobs:
     - name: install and test nmrpipe
       run: |
         . spack/share/spack/setup-env.sh
-        spack install nmrpipe
+        spack --verbose --debug install nmrpipe
 
 
 
