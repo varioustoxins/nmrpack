@@ -44,10 +44,11 @@ jobs:
         mv nmrpack-master nmrpack
         . spack/share/spack/setup-env.sh
         spack repo add nmrpack
-#
-##    - name: test nmrpack
-##      run: |
-#        spack repo list | grep nmrpack
+
+    - name: test nmrpack
+      run: |
+        . spack/share/spack/setup-env.sh
+        spack repo list | grep nmrpack
 
 
 
