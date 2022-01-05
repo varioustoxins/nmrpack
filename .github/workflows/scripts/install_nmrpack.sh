@@ -3,7 +3,7 @@ SPACK_VERSION=$(<.github/workflows/spack_version.txt)
 
 curl -L https://github.com/spack/spack/releases/download/v${SPACK_VERSION}/spack-${SPACK_VERSION}.tar.gz -o spack.tar.gz
 mkdir spack
-tar --strip-components=1  -C spack -zxvf spack.tar.gz
+tar --strip-components=1  -C spack -zxf spack.tar.gz
 
 . .github/workflows/scripts/install_spack.sh
 
