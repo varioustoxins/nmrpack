@@ -20,12 +20,12 @@ jobs:
 
     - name: download spack
       run: |
-        git clone https://github.com/spack/spack spack
+        curl -L https://github.com/spack/spack/releases/download/v0.16.0/spack-0.16.0.tar.gz -o spack.tar.gz
 
-    - name: checkout latest spack
+    - name: extract spack
       run: |
-        cd spack
-        git checkout releases/v0.16
+        mkdir spack
+        tar --strip-components=1  -C spack -zxvf spack.tar.gz
 
     - name: install spack
       run: |
