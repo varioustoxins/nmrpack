@@ -10,8 +10,8 @@ on:
 
 jobs:
 
-  install_nmrpipe:
-    name: install nmrpipe with spack
+  install_nmrpack:
+    name: install nmrpack and spack
     runs-on: macos-latest
     steps:
     - uses: actions/setup-python@v2
@@ -49,7 +49,3 @@ jobs:
       run: |
         . spack/share/spack/setup-env.sh
         spack repo list | grep nmrpack
-
-
-
-
