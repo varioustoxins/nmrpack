@@ -20,6 +20,8 @@ import pathlib
 import shutil
 from os import listdir
 from os.path import isfile, join
+
+from icecream import ic
 from spack import *
 from spack.package import Package
 from spack.directives import variant,patch, version, resource
@@ -47,14 +49,13 @@ csh = which('csh')
 def check_config_file(*args,**kwargs):
 
     value = args[-1][0]
-    indent = ' '* len('==> Error: ')
     if value == 'none':
-        msg = 'the configuration flag is required and needs a configuration file ' \
-              'as an argument [configuration=<FILE_NAME>]'
+        msg = 'the option configuration is required and needs a value ' \
+              'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
         raise error.SpecError(msg)
     else:
-        result = fetchers.CNS_URL_Fetch_Strategy.check_configuration_file(value)
-        if result != fetchers.CNS_URL_Fetch_Strategy.OK:
+        result = cns_fetcher.CNS_URL_Fetch_Strategy.check_configuration_file(value)
+        if result != cns_fetcher.CNS_URL_Fetch_Strategy.OK:
             raise error.SpecError(f'Error with configuration {value} {result}')
 
 
@@ -64,9 +65,11 @@ class Cns(Package):
 
     # FIXME: Add a proper url for your package's homepage here.
     homepage = "http://cns-online.org"
-    url      = "http://cns-online.org/download/v1.21/cns_solve_1.21_all-mp.tar.gz"
 
     read_releases('cns')
+
+    resource(name='aria2.3.2', aria_url='http://aria.pasteur.fr/archives/aria2.3.2.tar.gz',
+             sha256='13a41f8916e895e2edeec1dd0eb84eb632f10b0fef9558e195d8876801daa4fa', destination='.')
 
     # patch to make SETFPEPS (set floating point epsilon work)
     # see https://ask.bioexcel.eu/t/cns-errors-before-after-recompilation/54
@@ -74,9 +77,6 @@ class Cns(Package):
     variant('configuration', default='none', description='where to find the configuration file', validator=check_config_file)
     variant('fp_epsilon', default=True, description='SETFPEPS required for modern compilers')
     variant('aria', default=True, description='patches required to run aria')
-
-    resource(name='aria2.3.2', aria_url='http://aria.pasteur.fr/archives/aria2.3.2.tar.gz',
-             sha256='a06e9c256bf876f8bbab244a80b9c52bbd891f14cb956d85bb3bd0312b5cd5c6', destination='.')
 
     patch('getarch_darwin_x86_64.patch', when='@1.21',
           sha256='42a0d10d7684000d5c4cf1114e14d5549cc19c84b19df4d42419abd7187cf887')

@@ -1,0 +1,15 @@
+---
+  2.3.2:
+    version: 2.3.2
+    sha256 : 13a41f8916e895e2edeec1dd0eb84eb632f10b0fef9558e195d8876801daa4fa
+    url_type: aria_url
+    root_url: http://aria.pasteur.fr/archives/aria2.3.2.tar.gz
+    expand: true
+
+
+#    resources:
+#        null
+#        # http://aria.pasteur.fr/archives/aria2.3.2.tar.gz
+##        aria2.3.2.tar.gz : ['file:/Users/gst9/Dropbox/git/nmrpack/packages/cns', '1022338fb342c62af376dffcac318411', 'aria']
+#        aria2.3.2.tar.gz : ['http-cns://aria.pasteur.fr/archives', '1022338fb342c62af376dffcac318411', 'aria']
+
