@@ -35,11 +35,7 @@ if not package_root in sys.path:
 from nmrpack.lib.yaml_package import read_releases
 
 # this triggers
-# from nmrpack.lib.fetchers import configuration
-
-from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
-
-import llnl.util.tty as tty
+from nmrpack.packages.aria import aria_fetcher
 
 CNS_SOLVE_ENV = 'cns_solve_env'
 
@@ -54,7 +50,7 @@ class Aria(Package):
 
     read_releases('aria')
 
-    variant('configuration', default='none', description='where to find the configuration file')
+    variant('configuration', default='none', description='where to find the configuration file', validator=aria_fetcher.check_aria_config_file)
 
     depends_on('python@2.7.18+tkinter+tix')
     # no hash
@@ -67,7 +63,7 @@ class Aria(Package):
     depends_on('tix')
     # depends_on('py-matplotlib@2.2.5')
     # # depends_on('py-nmrstarlib')
-    # # depends_on(f'cns {configuration}')
+    depends_on('cns')
 
     def install(self, spec, prefix):
 
