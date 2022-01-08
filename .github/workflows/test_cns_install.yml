@@ -1,0 +1,41 @@
+name: Test spack install of cns
+
+on:
+
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+
+jobs:
+
+  install_cns:
+    name: install nmrpipe with spack
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: checkout nmrpack
+      uses: actions/checkout@v2
+
+    - name: setup actions
+      run: |
+        . .github/workflows/scripts/setup_actions.sh
+
+    - name: setup nmrpack
+      run: |
+        . .github/workflows/scripts/install_nmrpack.sh
+
+    - name: install and test nmrpipe
+      run: |
+        . spack/share/spack/setup-env.sh
+        spack --verbose --debug install cns
+
+
+
+
+
