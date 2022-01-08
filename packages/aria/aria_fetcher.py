@@ -1,4 +1,6 @@
 
+from spack.fetch_strategy import fetcher
+from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base
 
 @fetcher
 class ARIA_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):

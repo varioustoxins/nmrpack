@@ -34,10 +34,12 @@ if not package_root in sys.path:
 
 from nmrpack.lib.yaml_package import read_releases
 
-# this triggers
+# this triggers these fetchers
 from nmrpack.packages.cns import cns_fetcher
+from nmrpack.packages.aria import aria_fetcher
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
+from nmrpack.lib.fetchers import find_configuration_file_in_args
 
 import llnl.util.tty as tty
 import spack.error as error
@@ -46,7 +48,7 @@ CNS_SOLVE_ENV = 'cns_solve_env'
 
 csh = which('csh')
 
-def check_config_file(*args,**kwargs):
+def check_cns_config_file(*args,**kwargs):
 
     value = args[-1][0]
     if value == 'none':
@@ -54,9 +56,26 @@ def check_config_file(*args,**kwargs):
               'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
         raise error.SpecError(msg)
     else:
-        result = cns_fetcher.CNS_URL_Fetch_Strategy.check_configuration_file(value)
-        if result != cns_fetcher.CNS_URL_Fetch_Strategy.OK:
-            raise error.SpecError(f'Error with configuration {value} {result}')
+        cns_result = cns_fetcher.CNS_URL_Fetch_Strategy.check_configuration_file(value)
+        if cns_result != cns_fetcher.CNS_URL_Fetch_Strategy.OK:
+            raise error.SpecError(f'Error with configuration {value} {cns_result}')
+
+def check_aria_config_file(*args,**kwargs):
+
+    do_check = args[-1][0]
+
+    if do_check:
+        value = find_configuration_file_in_args()
+        if value == 'none':
+            msg = 'the option configuration is required and needs a value ' \
+                  'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
+            raise error.SpecError(msg)
+
+        # need to find configuration option here
+        aria_result = aria_fetcher.ARIA_URL_Fetch_Strategy.check_configuration_file(value)
+        if aria_result != aria_fetcher.ARIA_URL_Fetch_Strategy.OK:
+            raise error.SpecError(f'Error with configuration {value} {cns_result}')
+
 
 
 
@@ -74,9 +93,9 @@ class Cns(Package):
     # patch to make SETFPEPS (set floating point epsilon work)
     # see https://ask.bioexcel.eu/t/cns-errors-before-after-recompilation/54
     # main patch courtesy of Brian Smith U of Glasgow
-    variant('configuration', default='none', description='where to find the configuration file', validator=check_config_file)
+    variant('configuration', default='none', description='where to find the configuration file', validator=check_cns_config_file)
     variant('fp_epsilon', default=True, description='SETFPEPS required for modern compilers')
-    variant('aria', default=True, description='patches required to run aria')
+    variant('aria', default=True, description='patches required to run aria', validator=check_aria_config_file)
 
     patch('getarch_darwin_x86_64.patch', when='@1.21',
           sha256='42a0d10d7684000d5c4cf1114e14d5549cc19c84b19df4d42419abd7187cf887')
