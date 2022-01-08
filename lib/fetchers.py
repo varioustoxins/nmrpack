@@ -133,6 +133,14 @@ for arg in reversed(sys.argv):
         configuration=arg
         break
 
+def find_configuration_file_in_args():
+    result = None
+    for arg in sys.argv:
+        if arg.startswith('configuration='):
+            result = arg.split('=')[1]
+            break
+    return result
+
 class NullRequestModifier:
     def __init__(self):
         pass
@@ -334,14 +342,6 @@ class Password_Fetcher_Strategy_Base(URLFetchStrategy):
     def format_name(cls):
         return cls.url_attr.split('_')[0]
 
-    def _find_configuration_file_in_args(self):
-        result = None
-        for arg in sys.argv:
-            if arg.startswith('configuration='):
-                result = arg.split('=')[1]
-                break
-        return result
-
     def _read_configuation_file(self, file_name):
         result = None
         try:
@@ -427,7 +427,7 @@ class Password_Fetcher_Strategy_Base(URLFetchStrategy):
     def get_credentials_from_configuration(self):
         username = None
         password = None
-        config_file_name = self._find_configuration_file_in_args()
+        config_file_name = find_configuration_file_in_args()
         config_data = None
         try:
             config_data = self._read_configuation_file(config_file_name)
