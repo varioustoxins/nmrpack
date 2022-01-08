@@ -5,7 +5,7 @@ import shutil
 import sys
 from pathlib import Path
 
-from html2text import html2text
+# from html2text import html2text
 
 
 from mechanicalsoup import StatefulBrowser
@@ -489,9 +489,9 @@ def display_text(text, header):
     tty.msg()
     tty.msg('-' * (under_length * 2 + len(header)))
 
-def display_response(response, header='response'):
-    text = html2text(response.text)
-    display_text(text, header)
+# def display_response(response, header='response'):
+#     text = html2text(response.text)
+#     display_text(text, header)
 
 
 PLATFORMS = ['darwin', 'linux', 'Irix', 'Ppc', 'SunOs', 'OSF1', ]
@@ -523,8 +523,8 @@ class XPLOR_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
 
         response = browser.open(target_url)
 
-        if verbose > 1:
-            display_response(response, 'login-form')
+        # if verbose > 1:
+        #     display_response(response, 'login-form')
 
         if response.status_code != 200:
             raise DownloadFailedException(f"couldn't open the password page\n\n{response.text}")
@@ -540,8 +540,8 @@ class XPLOR_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
             browser[pass_field] = password
             response = browser.submit_selected()
 
-        if verbose > 1:
-            display_response(response, 'login-response')
+        # if verbose > 1:
+        #     display_response(response, 'login-response')
 
         if response.status_code != 200:
             raise DownloadFailedException(f"bad response from password page\n\n{response.text}")
