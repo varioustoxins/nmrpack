@@ -127,12 +127,6 @@ def read_from_url(url, accept_content_type=None, request_modifier: RequestModifi
 
     return result
 
-configuration=''
-for arg in reversed(sys.argv):
-    if arg.startswith('configuration='):
-        configuration=arg
-        break
-
 def find_configuration_file_in_args():
     result = None
     for arg in sys.argv:
