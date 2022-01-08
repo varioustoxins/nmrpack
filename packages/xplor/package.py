@@ -33,7 +33,7 @@ if not package_root in sys.path:
 from nmrpack.lib.yaml_package import read_releases
 
 # this triggers
-import nmrpack.lib.fetchers as fetchers
+from nmrpack.packages.xplor import xplor_fetcher
 
 import llnl.util.tty as tty
 import spack.error as error
@@ -45,14 +45,14 @@ bash = which('bash')
 def check_config_file(*args,**kwargs):
 
     value = args[-1][0]
-    indent = ' '* len('==> Error: ')
+
     if value == 'none':
         msg = 'the configuration flag is required and needs a configuration file ' \
               'as an argument [configuration=<FILE_NAME>]'
         raise error.SpecError(msg)
     else:
-        result = fetchers.XPLOR_URL_Fetch_Strategy.check_configuration_file(value)
-        if result != fetchers.XPLOR_URL_Fetch_Strategy.OK:
+        result = xplor_fetcher.XPLOR_URL_Fetch_Strategy.check_configuration_file(value)
+        if result != xplor_fetcher.XPLOR_URL_Fetch_Strategy.OK:
             raise error.SpecError(f'Error with configuration {value} {result}')
 
 
