@@ -18,10 +18,8 @@ import sys
 import os
 import pathlib
 import shutil
-from os import listdir
-from os.path import isfile, join
 
-from icecream import ic
+from os.path import join
 from spack import *
 from spack.package import Package
 from spack.directives import variant,patch, version, resource
