@@ -431,8 +431,7 @@ class Password_Fetcher_Strategy_Base(URLFetchStrategy):
             if username_environ in os.environ and password_environ in os.environ:
                 username = os.environ[username_environ]
                 password = os.environ[password_environ]
-            else:
-                tty.msg(f"ERROR: couldn't find one or both of {username_environ} or {password_environ} in environment")
+
         else:
             config_data = self._read_config_file_or_error(config_file_name)
 
