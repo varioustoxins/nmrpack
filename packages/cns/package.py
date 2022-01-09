@@ -53,7 +53,7 @@ class Cns(Package):
     read_releases('cns')
 
     resource(name='aria2.3.2', aria_url='http://aria.pasteur.fr/archives/aria2.3.2.tar.gz',
-             sha256='13a41f8916e895e2edeec1dd0eb84eb632f10b0fef9558e195d8876801daa4fa', destination='.')
+             sha256='13a41f8916e895e2edeec1dd0eb84eb632f10b0fef9558e195d8876801daa4fa', destination='.', when='+aria')
 
     # patch to make SETFPEPS (set floating point epsilon work)
     # see https://ask.bioexcel.eu/t/cns-errors-before-after-recompilation/54
