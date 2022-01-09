@@ -24,6 +24,7 @@ def check_cns_config_file(*args,**kwargs):
         value = find_configuration_file_in_args()
     ic(value)
 
+
     if value == 'none' or value is None:
         msg = 'the option configuration is required and needs a value ' \
               'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
