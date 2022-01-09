@@ -11,7 +11,7 @@ on:
 jobs:
 
   install_cns:
-    name: install nmrpipe with spack
+    name: install cns with spack
     runs-on: macos-latest
 
     steps:
