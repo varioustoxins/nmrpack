@@ -1,4 +1,6 @@
-from spack.fetch_strategy import fetcher, Password_Fetcher_Strategy_Base, DownloadFailedException
+from spack.fetch_strategy import fetcher
+from nmrpack.lib.fetchers import DownloadFailedException
+from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base
 
 from mechanicalsoup import StatefulBrowser
 from html2text import html2text
