@@ -5,10 +5,6 @@ import shutil
 import sys
 from pathlib import Path
 
-
-
-
-
 import spack
 from spack.fetch_strategy import URLFetchStrategy
 from spack.fetch_strategy import fetcher, _needs_stage, FailedDownloadError
@@ -25,6 +21,8 @@ from six.moves.urllib.error import URLError
 import ssl
 
 from collections import namedtuple
+
+ENVIRONMENT_AS_FILE = '@ENVIRON'
 
 RequestInfo = namedtuple('RequestInfo', 'url timeout cafile capath context'.split())
 
@@ -419,23 +417,40 @@ class Password_Fetcher_Strategy_Base(URLFetchStrategy):
         self.curl.add_default_arg(f'{user_name}:{password}')
 
     def get_credentials_from_configuration(self):
+
+        format_name = self.format_name()
+
         username = None
         password = None
         config_file_name = find_configuration_file_in_args()
-        config_data = None
+
+        if config_file_name == ENVIRONMENT_AS_FILE:
+            username_environ = f'NMRPACK_{self.format_name().upper()}_USER'
+            password_environ = f'NMRPACK_{self.format_name().upper()}_PASS'
+
+            if username_environ in os.environ and password_environ in os.environ:
+                username = os.environ[username_environ]
+                password = os.environ[password_environ]
+            else:
+                tty.msg(f"ERROR: couldn't find one or both of {username_environ} or {password_environ} in environment")
+        else:
+            config_data = self._read_config_file_or_error(config_file_name)
+
+
+            if config_data:
+
+                if self.check_configuration_data(config_data, config_file_name):
+                    username = config_data[format_name]['user_name']
+                    password = config_data[format_name]['password']
+
+        return username, password
+
+    def _read_config_file_or_error(self, config_file_name):
         try:
             config_data = self._read_configuation_file(config_file_name)
         except Exception as e:
             tty.msg(f"ERROR: couldn't read config file because {' '.join(e.args())}")
-
-
-        if config_data:
-
-            if self.check_configuration_data(config_data, config_file_name):
-                username = config_data[self.format_name()]['user_name']
-                password = config_data[self.format_name()]['password']
-
-        return username, password
+        return config_data
 
     def add_credentials_to_kwargs(self, kwargs):
 

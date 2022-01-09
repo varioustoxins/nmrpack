@@ -1,7 +1,9 @@
 
 from spack.fetch_strategy import fetcher
-from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base, find_configuration_file_in_args
+from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base, find_configuration_file_in_args, ENVIRONMENT_AS_FILE
 import spack.error as error
+
+from os import environ
 
 @fetcher
 class CNS_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
@@ -25,6 +27,10 @@ def check_cns_config_file(*args,**kwargs):
         msg = 'the option configuration is required and needs a value ' \
               'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
         raise error.SpecError(msg)
+    elif value == ENVIRONMENT_AS_FILE and ('NMRPACK_ARIA_USER' not in environ or 'NMRPACK_ARIA_PASS' not in environ):
+        raise error.SpecError(f'Error with configuration expected envirionment variables NMRPACK_ARIA_USER and NMRPACK_ARIA_PASS when configuration is @ENVIRON@')
+    elif value == ENVIRONMENT_AS_FILE and ('NMRPACK_ARIA_USER' in environ and 'NMRPACK_ARIA_PASS' in environ):
+        pass
     else:
         cns_result = CNS_URL_Fetch_Strategy.check_configuration_file(value)
         if cns_result != CNS_URL_Fetch_Strategy.OK:
