@@ -22,7 +22,6 @@ def check_cns_config_file(*args,**kwargs):
 
     if value == 'none':
         value = find_configuration_file_in_args()
-    ic(value)
 
 
     if value == 'none' or value is None:
