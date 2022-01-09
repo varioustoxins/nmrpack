@@ -461,20 +461,20 @@ class Password_Fetcher_Strategy_Base(URLFetchStrategy):
         kwargs['fetch_options']['username'] = username
         kwargs['fetch_options']['password'] = password
 
-@fetcher
-class ARIA_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
-
-    url_attr = 'aria_url'
-
-    def __init__(self, **kwargs):
-
-        if not self.url_attr in kwargs:
-            raise ValueError(f'ARIA_URL_Fetch_Strategy requires an aria_url attribute, (i got {kwargs.keys()}):')
-
-        super(ARIA_URL_Fetch_Strategy, self).add_credentials_to_kwargs(kwargs)
-
-        super(ARIA_URL_Fetch_Strategy, self).__init__(**kwargs)
-
+# @fetcher
+# class ARIA_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
+#
+#     url_attr = 'aria_url'
+#
+#     def __init__(self, **kwargs):
+#
+#         if not self.url_attr in kwargs:
+#             raise ValueError(f'ARIA_URL_Fetch_Strategy requires an aria_url attribute, (i got {kwargs.keys()}):')
+#
+#         super(ARIA_URL_Fetch_Strategy, self).add_credentials_to_kwargs(kwargs)
+#
+#         super(ARIA_URL_Fetch_Strategy, self).__init__(**kwargs)
+#
 
 
 class DownloadFailedException(Exception):
