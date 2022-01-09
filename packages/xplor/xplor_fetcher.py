@@ -2,8 +2,8 @@ from spack.fetch_strategy import fetcher
 from nmrpack.lib.fetchers import DownloadFailedException
 from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base
 
-from mechanicalsoup import StatefulBrowser
-from html2text import html2text
+# from mechanicalsoup import StatefulBrowser
+# from html2text import html2text
 
 PLATFORMS = ['darwin', 'linux', 'Irix', 'Ppc', 'SunOs', 'OSF1', ]
 IGNORED_PLATFORMS = [
@@ -15,8 +15,9 @@ IGNORED_PLATFORMS = [
 IGNORED_PLATFORMS_LOWER = [platform.lower() for platform in IGNORED_PLATFORMS]
 
 def display_response(response, header='response'):
-    text = html2text(response.text)
-    display_text(text, header)
+    pass
+    # text = html2text(response.text)
+    # display_text(text, header)
 
 @fetcher
 class XPLOR_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
@@ -92,9 +93,9 @@ class XPLOR_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
 
         username_password = self.get_credentials_from_configuration()
 
-        self._browser = StatefulBrowser()
+        # self._browser = StatefulBrowser()
 
-        self.login_with_form('https://nmr.cit.nih.gov/xplor-nih/download.cgi', username_password)
+        # self.login_with_form('https://nmr.cit.nih.gov/xplor-nih/download.cgi', username_password)
 
         return super(XPLOR_URL_Fetch_Strategy, self).fetch()
 
