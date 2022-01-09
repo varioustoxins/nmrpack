@@ -27,10 +27,8 @@ def check_cns_config_file(*args,**kwargs):
         msg = 'the option configuration is required and needs a value ' \
               'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
         raise error.SpecError(msg)
-    elif value == ENVIRONMENT_AS_FILE and ('NMRPACK_ARIA_USER' not in environ or 'NMRPACK_ARIA_PASS' not in environ):
-        raise error.SpecError(f'Error with configuration expected envirionment variables NMRPACK_ARIA_USER and NMRPACK_ARIA_PASS when configuration is @ENVIRON@')
-    elif value == ENVIRONMENT_AS_FILE and ('NMRPACK_ARIA_USER' in environ and 'NMRPACK_ARIA_PASS' in environ):
-        pass
+    elif value == ENVIRONMENT_AS_FILE and ('NMRPACK_CNS_USER' not in environ or 'NMRPACK_CNS_PASS' not in environ):
+        raise error.SpecError(f'Error with configuration expected envirionment variables NMRPACK_CNS_USER and NMRPACK_CNS_PASS when configuration is @ENVIRON@')
     else:
         cns_result = CNS_URL_Fetch_Strategy.check_configuration_file(value)
         if cns_result != CNS_URL_Fetch_Strategy.OK:
