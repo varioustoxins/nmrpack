@@ -1,4 +1,4 @@
-from icecream import ic
+
 from spack.fetch_strategy import fetcher
 from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base, find_configuration_file_in_args, ENVIRONMENT_AS_FILE
 import spack.error as error
