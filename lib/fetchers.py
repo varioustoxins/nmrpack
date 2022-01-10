@@ -347,9 +347,11 @@ class Password_Fetcher_Strategy_Base(URLFetchStrategy):
 
         result = cls.OK
 
-        path = Path(file_name).expanduser()
+        path = None
+        if not file_name is None:
+            path = Path(file_name).expanduser()
 
-        if not path.is_file():
+        if path and not path.is_file():
             result = (f"file {file_name} isn't a file")
 
         if result == cls.OK:
