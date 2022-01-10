@@ -37,6 +37,7 @@ from nmrpack.packages.cns import cns_fetcher
 from nmrpack.packages.aria import aria_fetcher
 
 from nmrpack.lib.environment import get_environment_change,PREPEND,NEW
+from nmrpack.lib.version import parse
 
 import llnl.util.tty as tty
 
@@ -66,13 +67,12 @@ class Cns(Package):
           sha256='42a0d10d7684000d5c4cf1114e14d5549cc19c84b19df4d42419abd7187cf887')
     patch('machvar_fpeps.patch', when='@1.21+fp_epsilon',
           sha256='a00db99086c63961abe4e19d253590421973a80a9e104ac85dbcc07d472b6485')
-    depends_on('py-packaging', type='build')
+
 
     def get_gfortran_version(self):
         gfortran = which('gfortran')
         version_string = gfortran('--version', output=str)
         gfortran_version_string = version_string.split('\n')[0].split()[-1]
-        from packaging.version import parse
         return parse(gfortran_version_string)
 
     def install(self, _, prefix):
@@ -88,7 +88,6 @@ class Cns(Package):
 
 
         gfortran_version = self.get_gfortran_version()
-        from packaging.version import parse
         if gfortran_version >= parse('10.0.0'):
             # patch the machine make file, can't be done with a patch statement it doesn't exists till we copy it
             # tried just copying the file from the package directory but it caused a lockup
