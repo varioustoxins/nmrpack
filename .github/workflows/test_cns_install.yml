@@ -30,13 +30,13 @@ jobs:
       run: |
         . .github/workflows/scripts/install_nmrpack.sh
 
-    - name: install and test nmrpipe
+    - name: install and test cns
       env:
         NMRPACK_CNS_USER: ${{ secrets.NMRPACK_CNS_USER }}
         NMRPACK_CNS_PASS: ${{ secrets.NMRPACK_CNS_PASS }}
       run: |
         . spack/share/spack/setup-env.sh
-        spack --verbose --debug install cns configuration=@ENVIRON aria=False
+        spack --verbose --debug install cns configuration=@ENVIRON
 
 
 
