@@ -1,0 +1,44 @@
+name: Test spack install of aria
+
+on:
+
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+
+jobs:
+
+  install_aria:
+    name: install aria with spack
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: checkout nmrpack
+      uses: actions/checkout@v2
+
+    - name: setup actions
+      run: |
+        . .github/workflows/scripts/setup_actions.sh
+
+    - name: setup nmrpack
+      run: |
+        . .github/workflows/scripts/install_nmrpack.sh
+
+    - name: install and test aria
+      env:
+        NMRPACK_ARIA_USER: ${{ secrets.NMRPACK_aria_USER }}
+        NMRPACK_ARIA_PASS: ${{ secrets.NMRPACK_aria_PASS }}
+      run: |
+        . spack/share/spack/setup-env.sh
+        spack --verbose --debug install aria configuration=@ENVIRON
+
+
+
+
+
