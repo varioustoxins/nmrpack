@@ -22,6 +22,10 @@ def check_aria_config_file(*args,**kwargs):
 
     if do_check:
         value = find_configuration_file_in_args()
+
+        if value is None:
+            raise error.SpecError(f'Error: please define a configuration file on the command line: configuration=<PATH-TO-FILE>')
+
         if value == 'none':
             msg = 'the option configuration is required and needs a value ' \
                   'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
