@@ -35,4 +35,4 @@ def check_aria_config_file(*args,**kwargs):
         else:
             result = ARIA_URL_Fetch_Strategy.check_configuration_file(value)
             if result != ARIA_URL_Fetch_Strategy.OK:
-                raise error.SpecError(f'Error with configuration {value} {result}')
+                raise error.SpecError(f'Error with configuration {value}: {result}')
