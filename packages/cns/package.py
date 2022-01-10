@@ -66,6 +66,14 @@ class Cns(Package):
           sha256='42a0d10d7684000d5c4cf1114e14d5549cc19c84b19df4d42419abd7187cf887')
     patch('machvar_fpeps.patch', when='@1.21+fp_epsilon',
           sha256='a00db99086c63961abe4e19d253590421973a80a9e104ac85dbcc07d472b6485')
+    depends_on('py-packaging', type='build')
+
+    def get_gfortran_version(self):
+        gfortran = which('gfortran')
+        version_string = gfortran('--version', output=str)
+        gfortran_version_string = version_string.split('\n')[0].split()[-1]
+        from packaging.version import parse
+        return parse(gfortran_version_string)
 
     def install(self, _, prefix):
 
@@ -79,12 +87,14 @@ class Cns(Package):
         shutil.move(src_file, dest_file)
 
 
-        if not self.spec.satisfies('%fortran@:10.0.0'):
+        gfortran_version = self.get_gfortran_version()
+        from packaging.version import parse
+        if gfortran_version >= parse('10.0.0'):
             # patch the machine make file, can't be done with a patch statement it doesn't exists till we copy it
             # tried just copying the file from the package directory but it caused a lockup
             patch = which('patch')
             patch_file = join_path(package_root,'nmrpack/packages/cns', 'gfortran_10_allow_argument_mismatch.patch')
-            patch('-p1', '-i',patch_file)
+            patch('-p1', '-i', patch_file)
 
         if '+aria' in self.spec:
             from_path=pathlib.Path('aria2.3/cns/src')
