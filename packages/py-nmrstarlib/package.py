@@ -32,7 +32,7 @@ class PyNmrstarlib(Package):
     read_releases('py-nmrstarlib')
 
     extends('python')
-    depends_on('py-pip^python@2.7.18', type='build')
+    depends_on('py-pip^python@2.6:2.8', type='build')
 
     depends_on('python@2.7', type='run')
 
