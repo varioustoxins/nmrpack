@@ -62,7 +62,7 @@ class Aria(Package):
     # depends_on('py-nmrstarlib')
     depends_on('tix')
     # depends_on('py-matplotlib@2.2.5')
-    depends_on('py-nmrstarlib')
+    # depends_on('py-nmrstarlib')
     # this should most probably have the configuration avriant pulled through...
     depends_on('cns')
 
