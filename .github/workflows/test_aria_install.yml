@@ -32,8 +32,10 @@ jobs:
 
     - name: install and test aria
       env:
-        NMRPACK_ARIA_USER: ${{ secrets.NMRPACK_aria_USER }}
-        NMRPACK_ARIA_PASS: ${{ secrets.NMRPACK_aria_PASS }}
+        NMRPACK_ARIA_USER: ${{ secrets.NMRPACK_ARIA_USER }}
+        NMRPACK_ARIA_PASS: ${{ secrets.NMRPACK_ARIA_PASS }}
+        NMRPACK_CNS_USER: ${{ secrets.NMRPACK_CNS_USER }}
+        NMRPACK_CNS_PASS: ${{ secrets.NMRPACK_CNS_PASS }}
       run: |
         . spack/share/spack/setup-env.sh
         spack --verbose --debug install aria configuration=@ENVIRON
