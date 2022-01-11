@@ -1,4 +1,4 @@
-name: Test spack install of aria
+name: Test spack spec for aria
 
 on:
 
