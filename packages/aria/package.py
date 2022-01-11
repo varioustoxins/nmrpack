@@ -1,5 +1,5 @@
 #
-# NMRPack copyright 2020 G.S.Thompson & the University of Kent
+# NMRPack copyright 20202-2021 G.S.Thompson & the University of Kent
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -57,9 +57,9 @@ class Aria(Package):
     depends_on('py-numpy@1.15.4')
     # #needed to allow python2.7
     # # no hash
-    # depends_on('py-setuptools@44.0.0')
+    # depends_on('py-setuptools@44.0.0', type='build')
 
-    depends_on('py-nmrstarlib')
+    # depends_on('py-nmrstarlib')
     depends_on('tix')
     # depends_on('py-matplotlib@2.2.5')
     # # depends_on('py-nmrstarlib')
