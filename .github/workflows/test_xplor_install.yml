@@ -2,8 +2,8 @@ name: Test spack install of xplor
 
 on:
 
-  push:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
 
   workflow_dispatch:
 
@@ -32,8 +32,8 @@ jobs:
 
     - name: install and test xplor
       env:
-        NMRPACK_XPLOR_USER: ${{ secrets.NMRPACK_xplor_USER }}
-        NMRPACK_XPLOR_PASS: ${{ secrets.NMRPACK_xplor_PASS }}
+        NMRPACK_XPLOR_USER: ${{ secrets.NMRPACK_XPLOR_USER }}
+        NMRPACK_XPLOR_PASS: ${{ secrets.NMRPACK_XPLOR_PASS }}
       run: |
         . spack/share/spack/setup-env.sh
         spack --verbose --debug install xplor configuration=@ENVIRON

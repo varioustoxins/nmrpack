@@ -2,8 +2,8 @@ name: Test spack install of mars
 
 on:
 
-  push:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
 
   workflow_dispatch:
 
