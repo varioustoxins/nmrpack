@@ -1,5 +1,5 @@
 #
-# NMRPack copyright 2020 G.S.Thompson & the University of Kent
+# NMRPack copyright 2020-2022 G.S.Thompson & the University of Kent
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ class PyNmrstarlib(Package):
     extends('python')
     depends_on('py-pip', type='build')
 
-    # depends_on('python@2.7', type='run')
+    depends_on('python@2.7.0:2.7', type=['run', 'build'])
 
     def install(self, _, prefix):
         pip = which('pip')
