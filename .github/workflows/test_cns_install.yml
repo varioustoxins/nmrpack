@@ -34,6 +34,8 @@ jobs:
       env:
         NMRPACK_CNS_USER: ${{ secrets.NMRPACK_CNS_USER }}
         NMRPACK_CNS_PASS: ${{ secrets.NMRPACK_CNS_PASS }}
+        NMRPACK_ARIA_USER: ${{ secrets.NMRPACK_ARIA_USER }}
+        NMRPACK_ARIA_PASS: ${{ secrets.NMRPACK_ARIA_PASS }}
       run: |
         . spack/share/spack/setup-env.sh
         spack --verbose --debug install cns configuration=@ENVIRON aria=False
