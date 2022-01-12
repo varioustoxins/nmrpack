@@ -15,7 +15,6 @@
 #
 
 import sys
-import os
 import pathlib
 import shutil
 
@@ -78,7 +77,6 @@ class Cns(Package):
     def install(self, _, prefix):
 
         # edit cns_solve_environment to allow a build
-        shutil.copy('cns_solve_env','cns_solve_env.back')
         filter_file(r"setenv CNS_SOLVE '_CNSsolve_location_'", f"setenv CNS_SOLVE '{self.stage.source_path}'", 'cns_solve_env')
 
         # copy over an almost right machine make file we could have got it from v1.3 but this is simpler
@@ -114,15 +112,7 @@ class Cns(Package):
 
         install_tree('.',prefix)
 
-        with working_dir(prefix):
-            shutil.move('cns_solve_env.back', 'cns_solve_env')
 
-
-            replacement_env = f" setenv CNS_SOLVE  '{prefix}'"
-            filter_file(r"setenv CNS_SOLVE '_CNSsolve_location_'", replacement_env, 'cns_solve_env')
-
-        # remove a leftover from our previous edits
-        os.remove(pathlib.Path(prefix)  / pathlib.Path('cns_solve_env' + '~'))
 
     @run_after('install')
     @on_package_attributes(run_tests=True)
