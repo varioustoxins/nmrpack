@@ -63,7 +63,7 @@ class Xplor(Package):
     homepage = "https://nmr.cit.nih.gov/xplor-nih"
 
     url='https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.4-db.tar.gz'
-    variant('configuration', default='none', description='where to find the configuration file', validator=xplor_fetcher.check_aria_config_file)
+    variant('configuration', default='none', description='where to find the configuration file', validator=xplor_fetcher.check_xplor_config_file)
 
 
     read_releases('xplor')
