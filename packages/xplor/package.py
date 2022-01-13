@@ -1,5 +1,5 @@
 #
-# NMRPack copyright 2020 G.S.Thompson & the University of Kent
+# NMRPack copyright 2020-2022 G.S.Thompson & the University of Kent
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -51,7 +51,7 @@ def check_config_file(*args,**kwargs):
               'as an argument [configuration=<FILE_NAME>]'
         raise error.SpecError(msg)
     else:
-        result = xplor_fetcher.XPLOR_URL_Fetch_Strategy.check_configuration_file(value)
+        result = check_xplor_config_file(value)
         if result != xplor_fetcher.XPLOR_URL_Fetch_Strategy.OK:
             raise error.SpecError(f'Error with configuration {value} {result}')
 
@@ -63,7 +63,7 @@ class Xplor(Package):
     homepage = "https://nmr.cit.nih.gov/xplor-nih"
 
     url='https://nmr.cit.nih.gov/xplor-nih/packages/xplor-nih-3.4-db.tar.gz'
-    variant('configuration', default='none', description='where to find the configuration file', validator=check_config_file)
+    variant('configuration', default='none', description='where to find the configuration file', validator=xplor_fetcher.check_aria_config_file)
 
 
     read_releases('xplor')

@@ -1,6 +1,8 @@
 from spack.fetch_strategy import fetcher
-from nmrpack.lib.fetchers import DownloadFailedException
-from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base
+from nmrpack.lib.fetchers import Password_Fetcher_Strategy_Base, find_configuration_file_in_args, ENVIRONMENT_AS_FILE
+from spack import error
+from os import environ
+
 
 # from mechanicalsoup import StatefulBrowser
 # from html2text import html2text
@@ -99,3 +101,27 @@ class XPLOR_URL_Fetch_Strategy(Password_Fetcher_Strategy_Base):
 
         return super(XPLOR_URL_Fetch_Strategy, self).fetch()
 
+
+def check_xplor_config_file(*args,**kwargs):
+
+    do_check = args[-1][0]
+
+    if do_check:
+        value = find_configuration_file_in_args()
+
+        if value is None:
+            raise error.SpecError(f'Error: please define a configuration file on the command line: configuration=<PATH-TO-FILE>')
+
+        if value == 'none':
+            msg = 'the option configuration is required and needs a value ' \
+                  'giving the path to a configuration file as an argument [configuration=<FILE_PATH>]'
+            raise error.SpecError(msg)
+        elif value == ENVIRONMENT_AS_FILE and ('NMRPACK_XPLOR_USER' in environ and 'NMRPACK_XPLOR_PASS' in environ):
+            pass
+        elif value == ENVIRONMENT_AS_FILE and ('NMRPACK_XPLOR_USER' not in environ or 'NMRPACK_XPLOR_PASS' not in environ):
+            raise error.SpecError(f'Error with configuration expected envirionment variables NMRPACK_ARIA_USER and NMRPACK_ARIA_PASS when configuration is {ENVIRONMENT_AS_FILE}')
+
+        else:
+            result = XPLOR_URL_Fetch_Strategy.check_configuration_file(value)
+            if result != XPLOR_URL_Fetch_Strategy.OK:
+                raise error.SpecError(f'Error with configuration {value}: {result}')
