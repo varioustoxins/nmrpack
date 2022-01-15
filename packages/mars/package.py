@@ -17,6 +17,7 @@ import os
 import pathlib
 import shutil
 import sys
+from llnl.util.filesystem import join_path
 
 from spack import *
 
@@ -25,6 +26,9 @@ if not package_root in sys.path:
     sys.path.insert(0, package_root)
 
 from nmrpack.lib.yaml_package import read_releases
+
+bash=which('bash')
+import llnl.util.tty as tty
 
 class Mars(Package):
     """MARS a powerful program for robust automatic backbone assignment of proteins. """
@@ -46,8 +50,47 @@ class Mars(Package):
         shutil.move('examples', prefix)
         shutil.move('merge-peaklists-cutoff-screen.awk', prefix.bin)
 
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        try:
+            import tempfile
+            with tempfile.TemporaryDirectory() as tmp_dir_name:
 
+                test_bash = f'''
+                cd {tmp_dir_name}
+                cp -r mars_prefix/examples/Input-1.2 test 
+                runmars mars.inp  > mars.out  2>&1 
+                '''
 
+                with open(join_path(tmp_dir_name, 'test.bash'), 'w') as fp:
+                    fp.write(test_bash)
+
+            bash(join(tmp_dir_name, 'test.csh'))
+
+            expected = 'MARS has been successfully finished !!'
+
+            ok = True
+            with open(f"{tmp_dir_name}/test_output.txt", 'r') as file_handle:
+                result = file_handle.readlines()
+                result = [line.strip() for line in result if len(line)]
+                for line in expected:
+                    if not line in result:
+                        tty.error(f'line --{line}-- not in result')
+                        ok = False
+                        break
+            if not ok:
+                tty.error(f'''during testing strings 
+                              {expected} 
+                              not found in test output")
+                           ''')
+                tty.error("")
+                tty.error(f" output was")
+                tty.error("")
+                for line in result:
+                    tty.error(line.strip())
+        except Exception as e:
+            tty.error('there was an error', e)
 
 
 
