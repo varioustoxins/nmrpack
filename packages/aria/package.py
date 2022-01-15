@@ -122,44 +122,18 @@ class Aria(Package):
 
         for d in spec.traverse():
             if d.name == 'python':
-                python = 'python' + str(d.version.up_to(2))
                 python_exec = join_path(d.prefix, 'bin', 'python')
                 break
 
-        python_paths = ["export PYTHONPATH=''"]
         for d in spec.traverse():
-            path = join_path( d.prefix, 'lib', python, 'site-packages')
-            print(path)
-            if os.path.isdir(path):
-                print(path)
-                python_paths.append(f'export PYTHONPATH=${{PYTHONPATH}}:{path}')
-        # for d in spec.traverse(deptype=('run')):
-        #     if d.package.extends(self.spec):
-        #         # Python libraries may be installed in lib or lib64
-        #         # See issues #18520 and #17126
-        #         for lib in ['lib', 'lib64']:
+            if d.name == 'cns':
+                cns_path=join_path(d.prefix, 'bin')
+                break
 
-
-        python_path = '\n'.join(python_paths)
-        python_path = dedent(python_path)
-
-
-        # python_path = join_path(spec['python'].prefix.bin, 'python')
-        # numpy_path = join_path(spec['py-numpy'].prefix.lib, 'python2.7/site-packages/')
-        # matplot_lib_path = join_path(spec['py-matplotlib'].prefix.lib, 'python2.7/site-packages/')
-        tix_path = spec['tix'].prefix.lib
-        tcl_path = spec['tcl'].prefix.lib
-        tk_path = spec['tk'].prefix.lib
-        tcl_lib_path = join_path(tcl_path, 'tcl8.5')
-        tk_lib_path = join_path(tk_path, 'tk8.5')
         ARIA2_TEMPLATE = f'''
             #!/bin/bash
-            export TCLLIBPATH="{tix_path}"
-            export DYLD_LIBRARY_PATH="{tcl_path}:{tk_path}:{tix_path}"
-            export TCL_LIBRARY="{tcl_lib_path}"
-            export TK_LIBRARY="{tk_lib_path}"
-            {python_path}
             export ARIA2="{prefix}"
+            echo Note: nmrpack installed cns in {cns_path}
             %(command)s
         '''
 
