@@ -1,5 +1,4 @@
 
-import sys
 import pathlib
 import platform
 from pathlib import Path
@@ -53,6 +52,7 @@ def read_releases(package, when_predicates = MappingProxyType({})):
         else:
             for sub_release in main_release.values():
                 read_release(sub_release, main_version, when_predicates)
+
 
 def read_release(release, version_number, when_predicates):
     url = f"{release['root_url']}"
