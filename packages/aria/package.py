@@ -39,10 +39,22 @@ from nmrpack.lib.yaml_package import read_releases
 
 # this triggers
 from nmrpack.packages.aria import aria_fetcher
+from nmrpack.lib.fetchers import find_configuration_file_in_args
 
 CNS_SOLVE_ENV = 'cns_solve_env'
 
 csh = which('csh')
+
+def get_configuration_variant_if_found():
+    configuration =  find_configuration_file_in_args()
+    result = ''
+    if configuration is not None:
+        configuration = os.path.expanduser(configuration)
+        result = f'configuration={configuration}'
+    return result
+
+
+
 
 class Aria(Package):
     """ARIA (Ambiguous Restraints for Iterative Assignment) a software for automated NOE assignment and NMR structure calculation. """
@@ -62,12 +74,7 @@ class Aria(Package):
     # # no hash
     # depends_on('py-setuptools@44.0.0', type='build')
 
-    # depends_on('py-nmrstarlib')
-    # depends_on('tix')
-    # depends_on('py-matplotlib@2.2.5')
-    # depends_on('py-nmrstarlib')
-    # this should most probably have the configuration avriant pulled through...
-    depends_on('cns')
+    depends_on(f'cns {get_configuration_variant_if_found()}', type='run')
 
     def install(self, spec, prefix):
 
