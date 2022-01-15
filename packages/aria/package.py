@@ -17,9 +17,7 @@
 import sys
 import os
 import pathlib
-import shutil
-from os import listdir
-from os.path import isfile, join
+from os.path import join
 from textwrap import dedent
 
 from spack import *
