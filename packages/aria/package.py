@@ -76,47 +76,10 @@ class Aria(Package):
 
     def install(self, spec, prefix):
 
-        # # edit cns_solve_environment to allow a build
-        # shutil.copy('cns_solve_env','cns_solve_env.back')
-        # filter_file(r"setenv CNS_SOLVE '_CNSsolve_location_'", f"setenv CNS_SOLVE '{self.stage.source_path}'", 'cns_solve_env')
-        #
-        # # copy over an almost right machine make file we could have got it from v1.3 but this is simpler
-        # src_file = 'instlib/machine/supported/intel-x86_64bit-linux/Makefile.header.2.gfortran'
-        # dest_file = 'instlib/machine/supported/mac-intel-darwin/Makefile.header.5.gfortran'
-        # shutil.move(src_file, dest_file)
-        #
-        #
-        # if not self.spec.satisfies('%fortran@:10.0.0'):
-        #     # patch the machine make file, can't be done with a patch statement it doesn't exists till we copy it
-        #     # tried just copying the file from the package directory but it caused a lockup
-        #     patch = which('patch')
-        #     patch_file = join_path(package_root,'nmrpack/packages/cns', 'gfortran_10_allow_argument_mismatch.patch')
-        #     patch('-p1', '-i',patch_file)
-        #
-        # if '+aria' in self.spec:
-        #     from_path=pathlib.Path('aria2.3/cns/src')
-        #     to_path='source'
-        #
-        #     for target_file in from_path.iterdir():
-        #         if target_file.is_file() and target_file.suffix in ('.f','.inc'):
-        #             print(f'copying {target_file} to {to_path}')
-        #             shutil.copy(target_file,to_path)
-        #         if target_file.is_dir():
-        #             print(f'copying {target_file} to {to_path}')
-        #             shutil.copytree(target_file, join_path(to_path, target_file.name))
-        #
-        #     shutil.copytree(from_path,'aria2.3_patches_applied')
-        #     shutil.rmtree('aria2.3')
-        #
-        # make('install')
-        #
         install_tree('.',prefix)
-
 
         with working_dir(self.prefix):
             os.mkdir('bin')
-
-
 
         for d in spec.traverse():
             if d.name == 'python':
