@@ -1,0 +1,7 @@
+needs
+
+1. suitable compilers
+2. spack
+3. spack compilers.yaml
+4. x11
+
