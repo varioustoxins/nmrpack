@@ -31,7 +31,7 @@ class PyNmrstarlib(Package):
 
     read_releases('py-nmrstarlib')
 
-    extends('python')
+    extends('python@:3.6')
     depends_on('py-pip', type='build')
 
     def install(self, _, prefix):
