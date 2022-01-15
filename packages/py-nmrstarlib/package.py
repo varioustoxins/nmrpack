@@ -32,9 +32,7 @@ class PyNmrstarlib(Package):
     read_releases('py-nmrstarlib')
 
     extends('python')
-    depends_on('py-pip^python@2.6:2.8^py-setuptools@44.1', type='build')
-
-    # depends_on('python@2.7', type='run')
+    depends_on('py-pip', type='build')
 
     def install(self, _, prefix):
         pip = which('pip')
