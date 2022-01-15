@@ -68,11 +68,9 @@ class Aria(Package):
     variant('configuration', default='none', description='where to find the configuration file', validator=aria_fetcher.check_aria_config_file)
 
     depends_on('python@2.7.18+tkinter+tix')
-    # no hash
     depends_on('py-numpy@1.15.4')
-    # #needed to allow python2.7
-    # # no hash
-    # depends_on('py-setuptools@44.0.0', type='build')
+    depends_on('py-nmrstarlib')
+    depends_on('py-matplotlib@2.2.5')
 
     depends_on(f'cns {get_configuration_variant_if_found()}', type='run')
 
