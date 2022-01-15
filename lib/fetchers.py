@@ -375,8 +375,12 @@ class Password_Fetcher_Strategy_Base(URLFetchStrategy):
     def check_configuration_data(cls, data, file_name):
         result = cls.OK
         for parameter_name in 'user_name', 'password':
+            format_name = cls.format_name()
+            if format_name not in data:
+                result = f"couldn't find section for format {format_name}"
+                break
             if parameter_name not in data[cls.format_name()]:
-                result = f"couldn't find parameter {parameter_name} in parameter_file {file_name}"
+                result = f"couldn't find parameter {parameter_name}"
                 break
         return result
 
