@@ -28,6 +28,9 @@ from spack.directives import variant, version, resource,depends_on
 from spack.util.executable import which
 from llnl.util.filesystem import filter_file, install_tree, working_dir, join_path
 
+import llnl.util.tty as tty
+
+
 package_root = str(pathlib.Path(__file__).parents[3])
 if not package_root in sys.path:
     sys.path.insert(0, package_root)
@@ -170,81 +173,49 @@ class Aria(Package):
     def setup_run_environment(self, env):
         env.prepend_path('PATH', join_path(self.prefix,'bin'))
 
-    # @run_after('install')
-    # @on_package_attributes(run_tests=True)
-    # def test(self):
-    #     try:
-    #         import tempfile
-    #         with tempfile.TemporaryDirectory() as tmp_dir_name:
-    #             tmp_dir_name = '/tmp'
-    #
-    #             test_inp = f'''
-    #             stop
-    #             '''
-    #
-    #             with open(join_path(tmp_dir_name,'test.inp'),'w') as fp:
-    #                 fp.write(test_inp)
-    #
-    #
-    #             test_csh = f'''
-    #             source  {self.prefix}/cns_solve_env
-    #
-    #             cns_solve < {tmp_dir_name}/test.inp >& {tmp_dir_name}/test_output.txt
-    #             '''
-    #
-    #             with open(join_path(tmp_dir_name,'test.csh'), 'w') as fp:
-    #                 fp.write(test_csh)
-    #
-    #         csh(join(tmp_dir_name,'test.csh'))
-    #
-    #
-    #         expected = '''
-    #         ============================================================
-    #         |                                                          |
-    #         |            Crystallography & NMR System (CNS)            |
-    #         |                         CNSsolve                         |
-    #         |                                                          |
-    #         ============================================================
-    #          Version: 1.2 at patch level 1
-    #          Status: General release with ARIA enhancements
-    #         ============================================================
-    #         '''.split("\n")
-    #         expected = [line.strip() for line in expected if len(line)]
-    #
-    #         ok = True
-    #         result= ''
-    #         with open(f"{tmp_dir_name}/test_output.txt", 'r') as file_handle:
-    #             result = file_handle.readlines()
-    #             result = [line.strip() for line in result if len(line)]
-    #             for line in expected:
-    #                 if not line in result:
-    #                     tty.error(f'line --{line}-- not in result')
-    #                     ok = False
-    #                     break
-    #         if not ok:
-    #             tty.error(f'''during testing strings
-    #                           {expected}
-    #                           not found in test output")
-    #                        ''')
-    #             tty.error("")
-    #             tty.error(f" output was")
-    #             tty.error("")
-    #             for line in result:
-    #                 tty.error(line.strip())
-    #     except Exception as e:
-    #         tty.error('there was an error',e)
-    #
-    #
-    # def setup_run_environment(self, env):
-    #
-    #     environment_changes = get_environment_change(self.prefix, CNS_SOLVE_ENV)
-    #
-    #     # print('** environment_changes **', environment_changes)
-    #     #
-    #     for name,type, value in environment_changes:
-    #         if type == PREPEND:
-    #             env.prepend_path(name, value)
-    #         elif type == NEW:
-    #             env.set(name, value)
-    #         else:
-    #             raise Exception(f'unexpected change type {type}')
+    @run_after('install')
+    @on_package_attributes(run_tests=True)
+    def test(self):
+        try:
+            import tempfile
+            with tempfile.TemporaryDirectory() as tmp_dir_name:
+
+                test_csh = f'''
+                
+
+                aria2 >& {tmp_dir_name}/test_output.txt
+                '''
+
+                with open(join_path(tmp_dir_name,'test.csh'), 'w') as fp:
+                    fp.write(test_csh)
+
+            csh(join(tmp_dir_name,'test.csh'))
+
+
+            expected = ['ARIA Version',
+                        'If you use this software, please quote the following reference(s):',
+                        'Usage: aria2 [options] [project XML file]'
+            ]
+            expected = [line.strip() for line in expected]
+
+            ok = True
+            with open(f"{tmp_dir_name}/test_output.txt", 'r') as file_handle:
+                result = file_handle.readlines()
+                result = [line.strip() for line in result if len(line)]
+                for line in expected:
+                    if not line in result:
+                        tty.error(f'line --{line}-- not in result')
+                        ok = False
+                        break
+            if not ok:
+                tty.error(f'''during testing strings
+                              {expected}
+                              not found in test output")
+                           ''')
+                tty.error("")
+                tty.error(f" output was")
+                tty.error("")
+                for line in result:
+                    tty.error(line.strip())
+        except Exception as e:
+            tty.error('there was an error',e)
