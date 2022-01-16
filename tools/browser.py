@@ -4,7 +4,7 @@ from PySide6 import QtWebChannel
 from PySide6.QtCore import QUrl, QFile, QIODevice
 
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWidgets import QMainWindow, QApplication
+from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox
 from bs4 import BeautifulSoup
 from icecream import ic
 from string import Template
@@ -91,6 +91,30 @@ selectors =  {
     'Position' : 'principal-investigator'
 }
 
+class CustomWebEnginePage(QWebEnginePage):
+
+
+    def __init__(self, *args, internal_urls=(), **kwargs):
+
+        super(CustomWebEnginePage, self).__init__(*args,**kwargs)
+        self._internal_urls = internal_urls
+
+    def acceptNavigationRequest(self, url,  _type, isMainFrame):
+
+        try:
+            if url in self._internal_urls:
+                print('ok navigation', url, _type, isMainFrame)
+                result = super().acceptNavigationRequest(url, _type, isMainFrame)
+            else:
+                print('bad navigation', url, _type, isMainFrame)
+                result = False
+                QDesktopServices.openUrl(QUrl("https://qt.io/"))
+
+        except Exception as e:
+            print(f'error, {e}')
+
+        return result
+
 class Window(QMainWindow):
 
     #defining constructor function
@@ -105,6 +129,7 @@ class Window(QMainWindow):
         self.browser = QWebEngineView()
 
         #setting url for browser, you can use any other url also
+        self.browser.setPage(CustomWebEnginePage(self, internal_urls=[self._page_url, cns_submit_url]))
         self.browser.setUrl(QUrl(self._page_url))
 
         self.browser.loadFinished.connect(self.process_load_finished)
@@ -117,6 +142,8 @@ class Window(QMainWindow):
         #-------------------full screen mode------------------
         #to display browser in full screen mode, you may comment below line if you don't want to open your browser in full screen mode
         self.showMaximized()
+
+        self._timer = None
 
 
 
@@ -185,17 +212,31 @@ class Window(QMainWindow):
 
         return self.substitute_strings(templates, values)
 
-    def process_page(self, text):
-        soup = BeautifulSoup(text, 'html.parser')
+    def display_error_dialog(self, message, icon):
+        msgBox = QMessageBox()
+        msgBox.setText(message)
+        msgBox.setTextFormat(Qt.RichText)
+        msgBox.setIcon(icon)
+        msgBox.exec()
 
-        if soup.body.findAll(text='CNS Request Form for Academic (Non-Profit) Institutions'):
+    def process_page(self, text):
+
+
+        processed_text = ' '.join(text.split('\n'))
+
+        soup = BeautifulSoup(processed_text, 'html.parser')
+
+        if 'CNS Request Form for Academic (Non-Profit) Institutions' in processed_text:
             self.setup_page(soup)
-        elif soup.body.findAll(text='Error: Missing data.'):
-            print('there was an error')
-        elif soup.body.findAll(text='You submitted the following information:'):
+        elif cns_submit_success in processed_text:
             print('success')
         else:
-            print('unknown error')
+
+            self.browser.setUrl(self._page_url)
+
+            QTimer.singleShot(0, lambda: self.display_error_dialog(text, QMessageBox.Warning))
+
+
 
     def setup_page(self, soup):
         form = soup.find('form')
