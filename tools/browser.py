@@ -84,6 +84,9 @@ cns_templates  = {
     "Email"             : "$email"
 }
 
+cns_submit_url = 'http://cns-online.org/cgi-bin/cns_request.cgi'
+cns_submit_success = 'An e-mail message will be sent to you with a password and instructions for getting the CNS software via the web.'
+
 buttons = {
     'OK_license' : True,
     'OK_Academic': True
