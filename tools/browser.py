@@ -1,12 +1,13 @@
 import sys
 
-from PySide6 import QtWebChannel
-from PySide6.QtCore import QUrl, QFile, QIODevice
+from PySide6 import QtCore
+from PySide6.QtCore import QUrl, Qt, QTimer, qInstallMessageHandler
+from PySide6.QtGui import QDesktopServices
+from PySide6.QtWebEngineCore import QWebEnginePage
 
 from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox
 from bs4 import BeautifulSoup
-from icecream import ic
 from string import Template
 
 COUNT = 'count'
@@ -159,11 +160,10 @@ class Window(QMainWindow):
     #     #changing the content(text) of searchBar
     #     self.searchBar.setText(url.toString())
     def page_navigated(self,url):
-        print(url)
+        print('navigated',url)
 
     def process_load_finished(self, ok):
         self.browser.page().toHtml(self.process_page)
-
 
     def get_fields(self, form):
         return  [input for input in form.find_all('input') if input['type'] =='text']
@@ -191,8 +191,8 @@ class Window(QMainWindow):
     def check_named_checkbox(self, name, checked, browser=None):
         browser = self.browser if browser is None else browser
         checked = 'true' if checked else 'false'
-        print(browser.page().runJavaScript(f'''
-             var els=document.getElementsByName("{name}")'''))
+        # print(browser.page().runJavaScript(f'''
+        #      var els=document.getElementsByName("{name}")'''))
 
         browser.page().runJavaScript(f'''
             var els=document.getElementsByName("{name}")
