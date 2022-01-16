@@ -279,4 +279,4 @@ if __name__ == '__main__':
     window = Window()
 
     #executing created app
-    MyApp.exec_()
+    MyApp.exec()
