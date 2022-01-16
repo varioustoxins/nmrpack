@@ -9,6 +9,43 @@ from bs4 import BeautifulSoup
 from icecream import ic
 from string import Template
 
+COUNT = 'count'
+
+debug = True
+
+MESSAGE_TYPES = {
+    0: 'Debug',
+    1: 'Warning',
+    2: 'Critical',
+    3: 'Fatal',
+    4: 'Info'
+
+}
+
+QtCore.QMessageLogContext = 'QT_MESSAGELOGCONTEXT'
+
+def my_handler(type, context, message):
+    global debug
+
+    if debug:
+        shown_header = False
+        for i, line in enumerate(message.split('\n')):
+            empty =  len(line.strip()) == 0
+
+            type_reported = f'{MESSAGE_TYPES[type]} from QT:'
+            context_reported = f' [file: {context.file} line: {context.line} function: {context.function}, category {context.category}]'
+            if context.file is None:
+                context_reported =  ''
+            if not shown_header:
+                if not empty:
+                    print(f'{type_reported} {line}{context_reported}')
+                    shown_header = True
+            else:
+                print(' ' * (len(type_reported)-2), '|', line)
+
+qInstallMessageHandler(my_handler)
+
+
 values = {
     "first_name"                            :   'Gary',
     "last_name"                             :   'Thompson',
@@ -176,8 +213,21 @@ class Window(QMainWindow):
             value = selector_values[selector]
             self.set_named_element_value(selector, value)
 
+def read_args():
+    # noinspection PyTypeChecker
+    parser = argparse.ArgumentParser(description='calculate hashes from web links.',
+                                     formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument('-d', '--debug', dest='debug', default=0, action=COUNT,
+                        help='debug output')
+    return parser.parse_args()
 
 if __name__ == '__main__':
+
+    args = read_args()
+
+    if not args.debug:
+       debug = False
+
     MyApp = QApplication(sys.argv)
 
     #setting application name
