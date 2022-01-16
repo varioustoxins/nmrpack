@@ -2,8 +2,8 @@ name: Test spack install of nmrstarlib
 
 on:
 
-  push:
-    branches: [ master ]
+#  push:
+#    branches: [ master ]
 
   workflow_dispatch:
 
