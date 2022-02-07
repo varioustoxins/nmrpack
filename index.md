@@ -53,7 +53,7 @@ This is an early version of NMRPack and it is still rough round the edges
 spack list -d nmrpack
 ```
 
-if you don't include the -d nmrpack it will list all the other installable software provided by spack
+if you don't include the ```-d nmrpack``` it will list all the other installable software provided by spack
 
 * To install software type
 
@@ -61,7 +61,7 @@ if you don't include the -d nmrpack it will list all the other installable softw
 spack install <PACKAGE-NAME>
 ```
 
-where <PACKAGE-NAME> can be something like nmrpipe or xplor
+where ```<PACKAGE-NAME>``` can be something like nmrpipe or xplor
    
 * To use a package after installing it you need to load it
  
@@ -69,7 +69,7 @@ where <PACKAGE-NAME> can be something like nmrpipe or xplor
    spack load <PACKAGE-NAME>
    ```
    
-where <PACKAGE-NAME> can be something like xplor or mars
+where ```<PACKAGE-NAME>``` can be something like xplor or mars
    
 this process needs to be repeated each time you use the software, but you can add it to you .cshsrc or .bash_profile or .zshenv file so it happpend at login
    
@@ -79,7 +79,7 @@ this process needs to be repeated each time you use the software, but you can ad
    spack unload <PACKAGE-NAME>
    ```
 
-where <PACKAGE-NAME> can be something like cns
+where ```<PACKAGE-NAME>``` can be something like cns
    
 * to uninstall a package
 
@@ -87,12 +87,12 @@ where <PACKAGE-NAME> can be something like cns
    spack uninstall <PACKAGE-NAME>
    ```
 
-where <PACKAGE-NAME> can be something like pales
+where ```<PACKAGE-NAME>``` can be something like pales
    
 # Information for specific packages
 
 Some packages need extra information to install them because they live on password protected sites (this process will hopefully improve in future versions).
-This includes ARIA2, CNS and xplor-nih. For these packages you need to register and get a username and password. Then fill in your username and password in the file login_data_template.yml, replacing <YOUR-USERNAME> and <YOUR-PASSWORD> with the usernames and passwords sent to you and save its as login_data.yaml (for example) somewhere conveninet and easy to find. You should end up with something like the following ~[not real usernames and passwords!]~.
+This includes ARIA2, CNS and xplor-nih. For these packages you need to register and get a username and password. Then fill in your username and password in the file login_data_template.yml, replacing ```<YOUR-USERNAME>``` and ```<YOUR-PASSWORD>``` with the usernames and passwords sent to you and save its as ```login_data.yaml``` (for example) somewhere convenient and easy to find. You should end up with something like the following ~[not real usernames and passwords!]~.
 
 ```yaml
 
@@ -120,3 +120,6 @@ so for xplor you would use
 be aware that the CNS password runs out every week on saturday pm!
 
 
+# Help Wanted!
+
+If you would like to help improvde nmrpack contact the author (all help welcome) or make clone the repo and make a pull request!
