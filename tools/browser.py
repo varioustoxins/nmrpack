@@ -67,33 +67,65 @@ values = {
     "email"                                 :   'g.s.thompson@kent.ac.uk'
 }
 
-cns_templates  = {
-    "First_Name" 		: "$first_name",
-    "Last_Name" 		: "$last_name",
-    "Organization" 		: "$organization",
-    "Department" 		: "$department",
-    "PI_First_Name" 	: "$principal_investigator_first_name",
-    "PI_Last_Name" 		: "$principal_investigator_last_name",
-    "Position"          : '$position',
-    "Address" 			: "$unit, $school, $faculty, $organization",
-    "City" 				: "$city",
-    "Post_Code" 		: "$post_code",
-    "Country" 			: "$country",
-    "Telephone_Number" 	: "$telephone",
-    "Fax_Number" 		: "$fax",
-    "Email"             : "$email"
-}
+TEMPLATE = 'TEMPLATE'
 
-cns_submit_url = 'http://cns-online.org/cgi-bin/cns_request.cgi'
-cns_submit_success = 'An e-mail message will be sent to you with a password and instructions for getting the CNS software via the web.'
+BUTTON = 'button'
+FIELD = 'field'
+LIST = 'list'
 
-buttons = {
-    'OK_license' : True,
-    'OK_Academic': True
-}
+# Note CNS list values
+# Principal Investigator
+# Post doc
+# Graduate Student
+# Undergraduate Student
+# System Administrator
 
-selectors =  {
-    'Position' : 'principal-investigator'
+SUBMIT_URL = 'submit_url'
+SIGN_UP_URL = 'sign_up_url'
+
+SUCCESS_CHECKER =  'success_checker'
+
+
+# tag selector
+NAME= 'name'
+SELECTOR = 0
+VALUE = 2
+
+
+# success checkers
+LITERAL = 'literal'
+
+pages = {
+    'cns': {
+        TEMPLATE:  {
+            (NAME, FIELD, "First_Name") 		: "$first_name",
+            (NAME, FIELD, "Last_Name") 		    : "$last_name",
+            (NAME, FIELD, "Organization") 		: "$organization",
+            (NAME, FIELD, "Department") 		: "$department",
+            (NAME, FIELD, "PI_First_Name") 	    : "$principal_investigator_first_name",
+            (NAME, FIELD, "PI_Last_Name") 		: "$principal_investigator_last_name",
+            (NAME, FIELD, "Position")           : '$position',
+            (NAME, FIELD, "Address") 			: "$unit, $school, $faculty, $organization",
+            (NAME, FIELD, "City") 				: "$city",
+            (NAME, FIELD, "Post_Code") 		    : "$post_code",
+            (NAME, FIELD, "Country") 			: "$country",
+            (NAME, FIELD, "Telephone_Number") 	: "$telephone",
+            (NAME, FIELD, "Fax_Number") 		: "$fax",
+            (NAME, FIELD, "Email")              : "$email",
+
+            (NAME, BUTTON, 'OK_License') : True,
+            (NAME, BUTTON, 'OK_Academic'): True,
+
+            (NAME, LIST, 'Position'): '$position'
+        },
+
+        SIGN_UP_URL: 'http://cns-online.org/cns_request/',
+
+        SUBMIT_URL: 'http://cns-online.org/cgi-bin/cns_request.cgi',
+
+        SUCCESS_CHECKER:  (LITERAL, 'An e-mail message will be sent to you with a password and instructions for getting the CNS software via the web.'),
+
+    }
 }
 
 class CustomWebEnginePage(QWebEnginePage):
@@ -123,18 +155,21 @@ class CustomWebEnginePage(QWebEnginePage):
 class Window(QMainWindow):
 
     #defining constructor function
-    def __init__(self):
+    def __init__(self, pages):
         #creating connnection with parent class constructor
         super(Window,self).__init__()
 
-        self._page_name = 'cns',
-        self._page_url = 'http://cns-online.org/cns_request/'
+        self._pages = pages
+
+        self._page_name = 'cns'
+        self._page_url = self.current_page[SIGN_UP_URL]
 
         #---------------------adding browser-------------------
         self.browser = QWebEngineView()
 
         #setting url for browser, you can use any other url also
-        self.browser.setPage(CustomWebEnginePage(self, internal_urls=[self._page_url, cns_submit_url]))
+        submit_url = self.current_page[SUBMIT_URL]
+        self.browser.setPage(CustomWebEnginePage(self, internal_urls=[self._page_url, submit_url]))
         self.browser.setUrl(QUrl(self._page_url))
 
         self.browser.loadFinished.connect(self.process_load_finished)
@@ -150,7 +185,9 @@ class Window(QMainWindow):
 
         self._timer = None
 
-
+    @property
+    def current_page(self):
+        return self._pages[self._page_name]
 
     # #method to load the required url
     # def loadUrl(self):
@@ -204,10 +241,14 @@ class Window(QMainWindow):
             els[i].checked = "{checked}";}}
         ''')
 
+    def substitute_string(self, template, values):
+        return  Template(template).safe_substitute(values)
+
+
     def substitute_strings(self, templates, values):
         result = {}
         for name, template in templates.items():
-            result[name] = Template(template).safe_substitute(values)
+            result[name] = self.substitute_string(template, values)
         return result
 
     def substitute_placeholders(self, templates, values):
@@ -232,7 +273,7 @@ class Window(QMainWindow):
 
         if 'CNS Request Form for Academic (Non-Profit) Institutions' in processed_text:
             self.setup_page(soup)
-        elif cns_submit_success in processed_text:
+        elif self.current_page[SUCCESS_CHECKER][1] in processed_text:
             print('success')
         else:
 
@@ -243,20 +284,36 @@ class Window(QMainWindow):
 
 
     def setup_page(self, soup):
+        template = self.current_page[TEMPLATE]
         form = soup.find('form')
         fields = self.get_field_names(form)
         checkboxes = self.get_checkbox_names(form)
         selectors = self.get_selector_names(form)
-        field_values = self.substitute_placeholders(cns_templates, values)
-        for field in fields:
-            value = field_values[field]
-            self.set_named_element_value(field, value)
-        for checkbox in checkboxes:
-            self.check_named_checkbox(checkbox, True)
-        for selector in selectors:
-            selector_values = self.substitute_strings(cns_templates, values)
-            value = selector_values[selector]
-            self.set_named_element_value(selector, value)
+        field_values = self.substitute_strings(values, values)
+
+        for key, value in template.items():
+
+            lookup, type, selector = key
+
+            if isinstance(value, str):
+                value = self.substitute_string(value, field_values)
+            if lookup == NAME:
+
+                if type == FIELD:
+                    if selector in fields:
+                        self.set_named_element_value(selector, value)
+                elif type == BUTTON:
+                    if selector in checkboxes:
+                        self.check_named_checkbox(selector, value)
+                elif type == LIST:
+                    if selector in selectors:
+                        self.set_named_element_value(selector, value)
+                else:
+                    possible_lookups = ', '.join((FIELD, BUTTON, LIST))
+                    raise Exception(f"Unknown object: '{type}' for key: {key} expected one of {(possible_lookups)}")
+
+            else:
+                raise Exception(f"Unknown lookup: '{lookup}' for key {key} expected '{NAME}'")
 
 def read_args():
     # noinspection PyTypeChecker
@@ -279,7 +336,7 @@ if __name__ == '__main__':
     QApplication.setApplicationName('NMRPack Register')
 
     #creating window
-    window = Window()
+    window = Window(pages)
 
     #executing created app
     MyApp.exec()
