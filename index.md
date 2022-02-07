@@ -23,7 +23,8 @@ This is an early version of NMRPack and it is still rough round the edges
 ---
 
 1. Download the installer file https://raw.githubusercontent.com/varioustoxins/nmrpack/master/installer/installer.sh
-2. if need be make it exceutable 
+2. 
+3. if need be make it exceutable 
    ```bash
    chmod u+x  Downloads/installer.sh
    ```
@@ -31,12 +32,13 @@ This is an early version of NMRPack and it is still rough round the edges
    ```bash
    Downloads/installer.sh
    ```
-4. If you are happy with the questions answer y
-5. Install something
+4. If you are happy with the changes the installer wants to make  answer y  and wait for the installation (this is currently can be quite slow, you may want to do it overnight)
+
+6. Install something
     ```bash
     spack install nmrpipe
     ```
-6. Check NMRPipe runs
+7. Check NMRPipe runs
     ```bash
     spack load nmpipe
     nmrPipe
@@ -124,7 +126,7 @@ To load a specific variant or version of a software package you need to name the
 # Information for specific packages
 
 Some packages need extra information to install them because they live on password protected sites (this process will hopefully improve in future versions).
-This includes ARIA2, CNS and xplor-nih. For these packages you need to register and get a username and password. Then fill in your username and password in the file login_data_template.yml, replacing ```<YOUR-USERNAME>``` and ```<YOUR-PASSWORD>``` with the usernames and passwords sent to you and save its as ```login_data.yaml``` (for example) somewhere convenient and easy to find. You should end up with something like the following ~[not real usernames and passwords!]~.
+This includes ARIA2, CNS and xplor-nih. For these packages you need to register and get a username and password. Then fill in your username and password in the file login_data_template.yml, replacing ```<YOUR-USERNAME>``` and ```<YOUR-PASSWORD>``` with the usernames and passwords sent to you and save its as ```login_data.yaml``` (for example) somewhere convenient and easy to find. You should end up with something like the following *[not real usernames and passwords!]*.
 
 ```yaml
 
