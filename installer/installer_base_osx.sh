@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 
-# LibBash
 source color.sh
 source output.sh
 

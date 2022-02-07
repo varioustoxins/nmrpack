@@ -15,7 +15,9 @@
 ##           cog.outl(f'# start of file - {file}')
 ##           cog.outl('#')
 ##           for line in fh:
-##                cog.out(line)
+##               if line.startswith('source'):
+##                   continue
+##               cog.out(line)
 ##           cog.outl()
 ##           cog.outl('#')
 ##           cog.outl(f'# end of file - {file}')
@@ -736,9 +738,6 @@ reset-color:() {
 #!/usr/bin/env bash
 
 
-# LibBash
-source color.sh
-source output.sh
 
 LOG_FILE="/tmp/nmpack-installer-log-`date +%F-%T`.txt"
 
