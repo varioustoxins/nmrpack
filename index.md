@@ -45,11 +45,53 @@ This is an early version of NMRPack and it is still rough round the edges
     ```bash
     ** NMRPipe System Version 10.9 Rev 2020.219.15.07 64-bit **
     ```
-        
+# Installing software
+
+* To list installable software from nmr pac ktype 
+
+```bash
+spack list -d nmrpack
+```
+if you fon't include the -d nmrpack it will list all the other installable software provided by spack
+
+* To install software type
+
+```bash
+spack install <PACKAGE-NAME>
+```
+
+where <PACKAGE-NAME> can be something like nmrpipe or xplor
+   
+* To use a package after installing it
+
+before using a package you need to load it
+ 
+```bash
+   spack load <PACKAGE-NAME>
+   ```
+   
+where <PACKAGE-NAME> can be something like xplor or mars
+   
+this process needs to be repeated each time you use the software, but you can add it to you .cshsrc or .bash_profile or .zashenv file
+   
+* to unload a package 
+
+```bash
+   spack unload <PACKAGE-NAME>
+   ```
+
+* to uninstall a package
+
+   ```bash
+   spack uninstall <PACKAGE-NAME>
+   ```
+
+where <PACKAGE-NAME> can be something like pales
+   
 # Information for specific packages
 
-Some packages need extra information to install them b ecause they live on password proitected sites. This process will improve as the code base improves.
-This includes ARIA2 CNS and xplor-nih. For these packages you need to register and get a username and password. Then fill in your username and password in the file file login_data_template.yml, replacing <YOUR-USERNAME> and <YOUR-PASSWORD> with the usernames and passwords sent to you. You should end up with something like the following [noot real data!].
+Some packages need extra information to install them b ecause they live on password proitected sites. This process will improve in future versions.
+This includes ARIA2 CNS and xplor-nih. For these packages you need to register and get a username and password. Then fill in your username and password in the file file login_data_template.yml, replacing <YOUR-USERNAME> and <YOUR-PASSWORD> with the usernames and passwords sent to youand save its as login_data.yaml. You should end up with something like the following ~[not real usernames and passwords!]~.
 
 ```yaml
 
@@ -65,5 +107,15 @@ xplor:
   user_name: varioustoxins
   password: toodlypip3
 ```
+
+then when installing xplor, cns or aria add the extra parameter configuration=login_data.yaml
+
+so for xplor you would use
+
+```bash
+   spack install xplor configuration=login_data.yaml
+   ```
+
+   be aware that the CNS password runs out every week on saturday pm!
 
 
