@@ -3,12 +3,12 @@
 #
 # this file was built with cog: https://nedbatchelder.com/code/cog/
 #
-# to find the main installer search for start of file - installer_base_osx.sh
+# to find the main installer search for: start of file - installer_base_osx.sh
 #
 
 ##[[[cog
 ##  import cog
-##  cog.outl('#!/bin/bash')
+##
 ##  for file in ['color.sh', 'output.sh', 'installer_base_osx.sh']:
 ##      with open(file, 'r') as fh:
 ##           cog.outl()
@@ -20,7 +20,6 @@
 ##           cog.outl('#')
 ##           cog.outl(f'# end of file - {file}')
 ##]]]
-#!/bin/bash
 
 # start of file - color.sh
 #
@@ -1628,4 +1627,4 @@ SH_HERE
 fi
 #
 # end of file - installer_base_osx.sh
-##[[[end]]] (checksum: 742851074750d321ed0b1f049ca587ca)
+##[[[end]]]
