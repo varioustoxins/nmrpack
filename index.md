@@ -79,6 +79,8 @@ this process needs to be repeated each time you use the software, but you can ad
    spack unload <PACKAGE-NAME>
    ```
 
+where <PACKAGE-NAME> can be something like cns
+   
 * to uninstall a package
 
    ```bash
