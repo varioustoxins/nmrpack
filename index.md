@@ -25,10 +25,12 @@ This is an early version of NMRPack and it is still rough round the edges
 1. Download the installer file https://raw.githubusercontent.com/varioustoxins/nmrpack/master/installer/installer.sh
 2. if need be make it exceutable 
    ```bash
-   chmod u+x  Downloads/installer.sh```
+   chmod u+x  Downloads/installer.sh
+   ```
 3. run it 
    ```bash
-   Downloads/installer.sh```
+   Downloads/installer.sh
+   ```
 4. If you are happy with the questions answer y
 5. Install something
     ```bash
