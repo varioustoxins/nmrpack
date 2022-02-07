@@ -46,4 +46,24 @@ This is an early version of NMRPack and it is still rough round the edges
     ** NMRPipe System Version 10.9 Rev 2020.219.15.07 64-bit **
     ```
         
-        
+# Information for specific packages
+
+Some packages need extra information to install them b ecause they live on password proitected sites. This process will improve as the code base improves.
+This includes ARIA2 CNS and xplor-nih. For these packages you need to register and get a username and password. Then fill in your username and password in the file file login_data_template.yml, replacing <YOUR-USERNAME> and <YOUR-PASSWORD> with the usernames and passwords sent to you. You should end up with something like the following [noot real data!].
+
+```yaml
+
+aria:
+  user_name: varioustoxins
+  password: wibble1
+
+cns:
+  user_name: varioustoxins
+  password: wobble2
+
+xplor:
+  user_name: varioustoxins
+  password: toodlypip3
+```
+
+
