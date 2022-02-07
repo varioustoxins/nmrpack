@@ -47,7 +47,6 @@ def my_handler(type, context, message):
 
 qInstallMessageHandler(my_handler)
 
-
 values = {
     "first_name"                            :   'Gary',
     "last_name"                             :   'Thompson',
@@ -127,7 +126,6 @@ pages = {
 
     }
 }
-
 class CustomWebEnginePage(QWebEnginePage):
 
 
@@ -157,7 +155,7 @@ class Window(QMainWindow):
     #defining constructor function
     def __init__(self, pages):
         #creating connnection with parent class constructor
-        super(Window,self).__init__()
+        super().__init__()
 
         self._pages = pages
 
