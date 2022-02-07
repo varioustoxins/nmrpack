@@ -88,7 +88,39 @@ where ```<PACKAGE-NAME>``` can be something like cns
    ```
 
 where ```<PACKAGE-NAME>``` can be something like pales
-   
+
+* to see what versions and variants of a piece of software are available
+
+   ```bash
+   spack info <PACKAGE-NAME>
+   ```
+
+where ```<PACKAGE-NAME>``` can be something like nmrpipe or xplor
+
+* To install a specific version of a piece of software
+
+```bash 
+spack install xplor@3.1
+```
+
+to install xplor version 3.1
+
+* To install a particular variant of a piece of software
+
+```bash
+spack install nmrpipe +dyn
+```
+
+this would install nmrpipe with the dyn package included (note if you have nmrpipe already installed this will be a separate installation, see loading a specific version of variant below)
+
+* Loading a specific version of variant of an installed  package
+
+To load a specific variant or version of a software package you need to name the version or variant
+
+```bash spack load xplor@3.1```  specifically loads xplor version 3.1 if you have it installed
+
+```bash spack load nmrpipe +dync```  specifically loads nmrpipe with support for the dyn package 
+
 # Information for specific packages
 
 Some packages need extra information to install them because they live on password protected sites (this process will hopefully improve in future versions).
@@ -118,7 +150,6 @@ so for xplor you would use
    ```
 
 be aware that the CNS password runs out every week on saturday pm!
-
 
 # Help Wanted!
 
