@@ -13,7 +13,7 @@ Packages that are currently supported include
 * Pales (32 bit only)
 * CNS (@1.21 including ARIA patches)
 
-# Using NMRPack
+# Installing NMRPack
 
 ---
 **NOTE**
