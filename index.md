@@ -153,4 +153,4 @@ be aware that the CNS password runs out every week on saturday pm!
 
 # Help Wanted!
 
-If you would like to help improvde nmrpack contact the author (all help welcome) or make clone the repo and make a pull request!
+If you would like to help improve nmrpack contact the author (all help welcome) or make a clone of the repo, imporve it and make a pull request!
