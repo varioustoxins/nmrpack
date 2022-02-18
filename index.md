@@ -22,7 +22,7 @@ This is an early version of NMRPack and it is still rough round the edges
 
 ---
 
-1. Download the installer file https://raw.githubusercontent.com/varioustoxins/nmrpack/master/installer/installer.sh
+1. Download the [installer file](https://raw.githubusercontent.com/varioustoxins/nmrpack/master/installer/installer.sh)
  
 2. if need be make it executable 
    ```bash
